@@ -1,0 +1,174 @@
+
+html {
+  height: 100%;
+}
+
+body {
+  height: 100%;
+  background-color: grey;
+  font-family: Arial, sans-serif;
+  /* text-size-adjust: auto; */
+  /* -webkit-text-size-adjust: none; */
+}
+
+/* Add a black background color to the top navigation */
+.topbar {
+  background-color: rgb(223, 0, 0);
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  height: 30px;
+  align-items: center;
+}
+
+.topbar_elm {
+  float: top;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 0px 16px;
+  text-decoration: none;
+  font-size: 17px;
+
+  align-items: center;
+  justify-content: space-between;
+}
+
+.page-content {
+  display: flex;
+  height: 100%;
+}
+
+.sidenav {
+  /* height: 100%; */
+  min-height: 100%;
+  width: 160px; /* Set the width of the sidebar */
+  /* z-index: 1; Stay on top */
+  /* top: 0;
+  left: 0; */
+  background-color: #111; /* Black */
+  /* overflow-x: hidden; */
+  /* padding-top: 20px; */
+  /* position:absolute; */
+
+}
+
+/* The navigation menu links */
+.sidenav a {
+  padding: 6px 8px 6px 16px;
+  text-decoration: none;
+  font-size: 25px;
+  color: #818181;
+
+  flex: 1 0 auto;
+}
+.sidenav a:hover {
+  color: #f1f1f1;
+}
+
+
+
+.main {
+ float: right;
+ height: 100%;
+ width: 100%;
+}
+
+.box {
+  border: 1px solid #CCC;
+  background: #FFF;
+  /* padding: 10px; */
+  margin: 8px;
+
+  border-radius: 10pt;
+  overflow: hidden;
+
+  padding-bottom: 10px;
+}
+
+.box_header {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: center;
+
+	padding: 10px 20px;
+	border-style: solid;
+	border-width: 0px 0px 1px 0px;
+	border-color: #CCC;
+	/* margin: 10px; */
+	background: #EEE;
+	margin-bottom: 10px;
+}
+
+.box_title {
+  color: black;
+  font-size: 16pt;
+  font-style: bold;
+}
+
+
+.line-entry {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+
+	background: #F8F8F8;
+	border: 3px;
+	margin: 0px 10px 0px 10px;
+	padding-left: 10px;
+	padding-right: 10px;
+	padding-top: 5px;
+	padding-bottom: 5px;
+}
+
+.line-entry:nth-child(even) {
+	background: #EEE;
+}
+
+.radioswitch {
+	float: right;
+	display: flex;
+}
+
+.radioswitch input { display: none;}
+
+.radioswitch input + label {
+  display: inline-block;
+  /* border: 1px solid #999; */
+  border-width: 1px 0px 1px 1px;
+  border-style: solid;
+  border-color: #999;
+  background: #EEE;
+  padding: 4px 12px;
+
+}
+.radioswitch input + label:first-of-type {
+      border-radius: 6px 0 0 6px;
+    }
+    
+.radioswitch input + label:last-of-type {
+      border-radius: 0 6px 6px 0;
+      border-width: 1px;
+    }
+
+.radioswitch input:checked + label {
+  background: #74b9ff;
+}
+
+
+table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+  margin: 40px 40px;
+}
+
+td, th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+
+tr:nth-child(even) {
+  background-color: #dddddd;
+}
