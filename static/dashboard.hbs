@@ -1,0 +1,33 @@
+
+    <div class="main">
+      <h1>My First Heading</h1>
+      <p>My first paragraph.</p>
+
+      <div class="box">
+        <div class="box_header">
+          <div class="box_title"> Subsystem </div>
+          <div id={{identifier}}.v> Voltage: </div>
+          <div id={{identifier}}.i> Current: </div>
+        </div>
+
+        <div class="line-entry">
+          <div class="line-label"> Pressure </div>
+          <div class="line-label" id="{{identifier}}"> XXX PSI </div>
+        </div>
+
+        <div class="line-entry">
+          <div class="line-label"> Temp </div>
+          <div class="line-label" id="{{identifier}}"> XXX PSI </div>
+        </div>
+
+        <div class="line-entry">
+          <div class="line-label">Mode: </div>
+          <div class="radioswitch">
+            <input type="radio" name="{{identifier}}" id="{{i}}"> <label for="0">Off</label>
+            <input type="radio" name="{{identifier}}" id="{{i}}"> <label for="1">Armed</label>
+            <input type="radio" name="{{identifier}}" id="{{i}}"> <label for="2">Safed</label>
+          </div>
+        </div>
+
+      </div>
+    </div>
