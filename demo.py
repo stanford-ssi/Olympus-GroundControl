@@ -53,8 +53,9 @@ class Main:
 
 
     async def push_serial_data(self):
-        await asyncio.sleep(1)
-        self.sio.emit("new", {"magic": [1,2,3]})
+        while 1:
+            await asyncio.sleep(1)
+            await self.sio.emit("new", {"magic": [1,2,3]})
 
     async def start_background_tasks(self, app):
         self.app.serial_pub = asyncio.create_task(self.push_serial_data())

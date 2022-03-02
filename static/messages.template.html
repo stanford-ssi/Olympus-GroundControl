@@ -5,13 +5,19 @@
 
 
   <script>
-    socket.on("new", (...args) => {
-      // ...
+    socket.on("new", (data) => {
+      console.log(data)
+
+      var table = document.getElementById("message_table");
+      var row = table.insertRow(0);
+      var cell = row.insertCell(0);
+      cell.innerHTML = JSON.stringify(data);
+
     });
 
   </script>
 
-  <table class='message_table'>
+  <table class='message_table' id='message_table'>
     <tr>
       <th>Company</th>
       <th>Contact</th>
