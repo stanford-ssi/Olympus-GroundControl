@@ -98,3 +98,15 @@ class Dashboard(Element):
 
         return self.format(template, page = dashboard)
 
+
+class Messages(Element):
+    # def __init__(self):
+    #     super().__init__(self.name)
+
+    def render(self):
+        # identifier = self.get_identifier()
+        # content = "\n".join(child.render() for child in self.nodes)
+        messages = self.load_template("static/messages.template.html")
+        template = self.load_template("static/main.template.html")
+
+        return self.format(template, page = messages)

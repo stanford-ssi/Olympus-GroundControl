@@ -1,52 +1,74 @@
 
 
-
 from aiohttp import web
 import socketio
 import asyncio
 
-from ui_elements import Dashboard
+from ui_elements import Dashboard, Messages
 
-# class Main:
+class Main:
 
-#     def __init__(self):
-#         pass
+    def __init__(self):
+        self.app = web.Application()
+        self.sio = socketio.AsyncServer(async_mode='aiohttp')
+        self.sio.attach(self.app)
 
-#     def start(self):
+        self.create_pages()
+        self.setup_routes()
 
-dashboard = Dashboard("test")
+        self.app.on_startup.append(self.start_background_tasks)
+        self.app.on_cleanup.append(self.cleanup_background_tasks)
 
-async def get_dashboard(request):
-    return web.Response(text=dashboard.render(), content_type='text/html')
-
-async def get_style(request):
-    return web.FileResponse('./static/style.css')
-
-async def get_normalize(request):
-    return web.FileResponse('./static/normalize.min.css')
-
-async def get_socketio(request):
-    return web.FileResponse('./static/socket.io.min.js')
-
-def setup_routes(app):
-    app.router.add_get('/', get_dashboard)
-    app.router.add_get('/style.css', get_style)
-    app.router.add_get('/normalize.min.css', get_normalize)
-    app.router.add_get('/socket.io.min.js', get_socketio)
-
-async def start_background_tasks(app):
-    app['callback'] = asyncio.create_task(listen_to_redis(app))
+    def start(self):
+        web.run_app(self.app, host="localhost", port=None)
 
 
-app = web.Application()
-sio = socketio.AsyncServer(async_mode='aiohttp')
+    def create_pages(self):
+        self.dashboard = Dashboard("test")
+        self.messages = Messages("test")
+        # self.messages = Dashboard("test")
 
-sio.attach(app)
+    async def get_dashboard(self, request):
+        return web.Response(text=self.dashboard.render(), content_type='text/html')
 
-setup_routes(app)
-web.run_app(app)
+    async def get_messages(self, request):
+        return web.Response(text=self.messages.render(), content_type='text/html')
+
+    async def get_style(self, request):
+        return web.FileResponse('./static/style.css')
+
+    async def get_normalize(self, request):
+        return web.FileResponse('./static/normalize.min.css')
+
+    async def get_socketio(self, request):
+        return web.FileResponse('./static/socket.io.min.js')
+
+    def setup_routes(self):
+        self.app.router.add_get('/', self.get_dashboard)
+        self.app.router.add_get('/dashboard', self.get_dashboard)
+        self.app.router.add_get('/messages', self.get_messages)
+        self.app.router.add_get('/style.css', self.get_style)
+        self.app.router.add_get('/normalize.min.css', self.get_normalize)
+        self.app.router.add_get('/socket.io.min.js', self.get_socketio)
+
+
+    async def push_serial_data(self):
+        await asyncio.sleep(1)
+        self.sio.emit("new", {"magic": [1,2,3]})
+
+    async def start_background_tasks(self, app):
+        self.app.serial_pub = asyncio.create_task(self.push_serial_data())
+
+    async def cleanup_background_tasks(self, app):
+        self.app.serial_pub.cancel()
+        await self.app.serial_pub
+
 
 # @sio.on('data_request')
 # def data_request(sid, data):
 #     # send back data
 #     pass
+
+if __name__ == "__main__":
+    page = Main()
+    page.start()

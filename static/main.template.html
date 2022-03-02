@@ -8,6 +8,9 @@
 
 <body>
 
+    <script src="socket.io.min.js"></script>
+    <script> var socket = io.connect({transports: ['websocket']}); </script>
+
     <div class="topbar">
         <a href="#" class="" topbar_elm">Logo</a>
         <p class="topbar_elm">Olympus Mission Control</p>
@@ -15,11 +18,11 @@
 
     <div class="page-content">
         <div id="sidenav" class="sidenav">
-            <a href="/main.html">Dashboard</a>
+            <a href="/dashboard">Dashboard</a>
             <a href="#">Sequencing</a>
             <a href="#">Graphs</a>
             <a href="#">Maps</a>
-            <a href="/messages.html">Messages</a>
+            <a href="/messages">Messages</a>
         </div>
 
         {{page}}
