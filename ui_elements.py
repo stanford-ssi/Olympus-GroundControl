@@ -110,3 +110,15 @@ class Messages(Element):
         template = self.load_template("static/main.template.html")
 
         return self.format(template, page = messages)
+
+class Maps(Element):
+    # def __init__(self):
+    #     super().__init__(self.name)
+
+    def render(self):
+        # identifier = self.get_identifier()
+        # content = "\n".join(child.render() for child in self.nodes)
+        map = self.load_template("static/map.template.html")
+        template = self.load_template("static/main.template.html")
+
+        return self.format(template, page = map)

@@ -4,7 +4,7 @@ from aiohttp import web
 import socketio
 import asyncio
 
-from ui_elements import Dashboard, Messages
+from ui_elements import Dashboard, Messages, Maps
 
 class Main:
 
@@ -26,6 +26,7 @@ class Main:
     def create_pages(self):
         self.dashboard = Dashboard("test")
         self.messages = Messages("test")
+        self.maps = Maps("test")
         # self.messages = Dashboard("test")
 
     async def get_dashboard(self, request):
@@ -33,6 +34,9 @@ class Main:
 
     async def get_messages(self, request):
         return web.Response(text=self.messages.render(), content_type='text/html')
+
+    async def get_maps(self, request):
+        return web.Response(text=self.maps.render(), content_type='text/html')
 
     async def get_style(self, request):
         return web.FileResponse('./static/style.css')
@@ -47,6 +51,7 @@ class Main:
         self.app.router.add_get('/', self.get_dashboard)
         self.app.router.add_get('/dashboard', self.get_dashboard)
         self.app.router.add_get('/messages', self.get_messages)
+        self.app.router.add_get('/maps', self.get_maps)
         self.app.router.add_get('/style.css', self.get_style)
         self.app.router.add_get('/normalize.min.css', self.get_normalize)
         self.app.router.add_get('/socket.io.min.js', self.get_socketio)

@@ -1,0 +1,56 @@
+
+<div class="main">
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>
+	<style>
+		html, body {
+			height: 100%;
+			margin: 0;
+		}
+		.leaflet-container {
+			height: 400px;
+			width: 600px;
+			max-width: 100%;
+			max-height: 100%;
+		}
+	</style>
+
+<div id="map" style="width: 600px; height: 400px;"></div>
+<script>
+
+    // starting location - stanford campus
+	var map = L.map('map').setView([37.4275, -122.1697], 14);
+
+    //we should use our own api key
+	var tiles = L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
+		maxZoom: 18,
+		attribution: '',
+		// id: 'mapbox/streets-v11',
+		id: 'mapbox/satellite-v9',
+		tileSize: 512,
+		zoomOffset: -1
+	}).addTo(map);
+
+	var marker = L.marker([37.4275, -122.1697]).addTo(map)
+		.bindPopup('<b>Hello world!</b><br />I am a popup.')
+
+	var circle = L.circle([37.4275, -122.1697], {
+		color: 'red',
+		fillColor: '#f03',
+		fillOpacity: 0.5,
+		radius: 500
+	}).addTo(map).bindPopup('I am a circle.');
+
+	function onMapClick(e) {
+		popup
+			.setLatLng(e.latlng)
+			.setContent('You clicked the map at ' + e.latlng.toString())
+			.openOn(map);
+	}
+
+	map.on('click', onMapClick);
+
+</script>
+
+</div>
