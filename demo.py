@@ -51,6 +51,11 @@ class Main:
     async def get_socketio(self, request):
         return web.FileResponse('./static/socket.io.min.js')
 
+    async def get_leaflet_js(self, request):
+        return web.FileResponse('./static/leaflet.js')
+    async def get_leaflet_css(self, request):
+        return web.FileResponse('./static/leaflet.css')
+
     async def get_mapdata(self, request):
         url = request.match_info['url']
         filename = 'cache/' + url.replace('/', "!slash!") + '.png'
@@ -77,6 +82,8 @@ class Main:
         self.app.router.add_get('/style.css', self.get_style)
         self.app.router.add_get('/normalize.min.css', self.get_normalize)
         self.app.router.add_get('/socket.io.min.js', self.get_socketio)
+        self.app.router.add_get('/leaflet.js', self.get_leaflet_js)
+        self.app.router.add_get('/leaflet.css', self.get_leaflet_css)
         self.app.router.add_get('/mapdata/{url:.*}', self.get_mapdata)
 
 
