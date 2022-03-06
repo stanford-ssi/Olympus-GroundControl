@@ -1,8 +1,4 @@
-from flask import Flask, render_template, send_file
-from flask_socketio import SocketIO
-
 from io import BytesIO
-import eventlet
 
 import re
 

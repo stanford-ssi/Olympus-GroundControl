@@ -1,8 +1,11 @@
 
 
 from aiohttp import web
+import aiohttp
 import socketio
 import asyncio
+import aiofiles
+from aiofiles import os
 
 from ui_elements import Dashboard, Messages, Maps
 
@@ -18,6 +21,7 @@ class Main:
 
         self.app.on_startup.append(self.start_background_tasks)
         self.app.on_cleanup.append(self.cleanup_background_tasks)
+
 
     def start(self):
         web.run_app(self.app, host="localhost", port=None)
@@ -47,6 +51,24 @@ class Main:
     async def get_socketio(self, request):
         return web.FileResponse('./static/socket.io.min.js')
 
+    async def get_mapdata(self, request):
+        url = request.match_info['url']
+        filename = 'cache/' + url.replace('/', "!slash!") + '.png'
+
+        mapbox_api = 'https://api.mapbox.com/{url}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw'
+
+        if await os.path.isfile(filename):
+            async with aiofiles.open(filename, 'br') as file:
+                data = await file.read()
+        else:
+            async with self.mapdata_session.get(mapbox_api.format(url = url)) as resp: 
+                data = await resp.read() 
+            async with aiofiles.open(filename, 'bw') as file:
+                await file.write(data)
+
+        #TODO support jpegs also
+        return web.Response(body=data, content_type='image/png')
+
     def setup_routes(self):
         self.app.router.add_get('/', self.get_dashboard)
         self.app.router.add_get('/dashboard', self.get_dashboard)
@@ -55,6 +77,7 @@ class Main:
         self.app.router.add_get('/style.css', self.get_style)
         self.app.router.add_get('/normalize.min.css', self.get_normalize)
         self.app.router.add_get('/socket.io.min.js', self.get_socketio)
+        self.app.router.add_get('/mapdata/{url:.*}', self.get_mapdata)
 
 
     async def push_serial_data(self):
@@ -64,6 +87,9 @@ class Main:
 
     async def start_background_tasks(self, app):
         self.app.serial_pub = asyncio.create_task(self.push_serial_data())
+
+        self.mapdata_session = aiohttp.ClientSession()
+        await os.makedirs('cache/', exist_ok=True)
 
     async def cleanup_background_tasks(self, app):
         self.app.serial_pub.cancel()
