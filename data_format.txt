@@ -1,5 +1,6 @@
 
 
+Dashboard UI:
 
 Quail System health:
 Voltage
@@ -8,7 +9,6 @@ Timestamp
 Armed ?
 Authorized user
 
-Dashboard UI:
 Sensors:
 ID Description Value Unit 
 
@@ -21,11 +21,25 @@ ID Description Armed Fire
 
 
 
-
 Data from Quail:
 
 
-{ "PT1": 600, "TC1": 250 }
+{"update": { "PT1": 600, "TC1": 250, ....}}
+
+
+{"meta": { "PT1": 
+            {
+            "Description": "Testing",
+            "Units": "psi",
+            "Type": "Pressure",
+            },
+           "SV1.armed": 
+            {
+            "Description": "Testing",
+            "Units": "psio",
+            "Type": "Pressure",
+            },
+
 
 Full metadata message:
 {
