@@ -8,7 +8,7 @@ import aiofiles
 from aiofiles import os
 import random
 
-from ui_elements import Dashboard, Messages, Maps, Graphs
+from ui_elements import Dashboard, Messages, Maps, Graphs, Configure
 
 class Main:
 
@@ -33,6 +33,7 @@ class Main:
         self.messages = Messages("test")
         self.maps = Maps("test")
         self.graphs = Graphs("test")
+        self.configure = Configure("test")
         # self.messages = Dashboard("test")
 
     async def get_dashboard(self, request):
@@ -46,6 +47,9 @@ class Main:
 
     async def get_graphs(self, request):
         return web.Response(text=self.graphs.render(), content_type='text/html')
+
+    async def get_configure(self, request):
+        return web.Response(text=self.configure.render(), content_type='text/html')
 
     async def get_mapdata(self, request):
         url = request.match_info['url']
@@ -71,6 +75,7 @@ class Main:
         self.app.router.add_get('/messages', self.get_messages)
         self.app.router.add_get('/maps', self.get_maps)
         self.app.router.add_get('/graphs', self.get_graphs)
+        self.app.router.add_get('/configure', self.get_configure)
         self.app.router.add_get('/mapdata/{url:.*}', self.get_mapdata)
         self.app.router.add_static('/static/', './static/')
 

@@ -112,3 +112,15 @@ class Graphs(Element):
         template = self.load_template("templates/main.template.html")
 
         return self.format(template, page = graphs)
+
+class Configure(Element):
+    # def __init__(self):
+    #     super().__init__(self.name)
+
+    def render(self):
+        # identifier = self.get_identifier()
+        # content = "\n".join(child.render() for child in self.nodes)
+        configure = self.load_template("templates/configure.template.html")
+        template = self.load_template("templates/main.template.html")
+
+        return self.format(template, page = configure)
