@@ -9,7 +9,21 @@
 <body>
 
     <script src="socket.io.min.js"></script>
-    <script> var socket = io.connect({transports: ['websocket']}); </script>
+    <script> 
+        var socket = io.connect({transports: ['websocket']});
+
+        //elements can add themselves to list to update on new data
+        new_data_callbacks = [ () => {console.log("got data", slate)}];
+        slate = {};
+
+        socket.on("new", (data) => {
+            slate = data;
+            for (func of new_data_callbacks) {
+                func();
+            }
+        });
+
+    </script>
 
     <div class="topbar">
         <a href="#" class="" topbar_elm">Logo</a>

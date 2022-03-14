@@ -1,0 +1,63 @@
+
+
+
+Data from Quail:
+
+
+{ "PT1": 600, "TC1": 250 }
+
+Full metadata message:
+{
+
+"Pressures":
+[
+    {"ID": "PT1",
+    "Description": "Testing",
+    "Units": "K",
+    "Type": "Temperature",
+    }
+]
+
+
+}
+
+
+Channel metadata:
+
+Type
+ID
+Description
+Units
+UpdateInterval
+
+
+Squibs:
+ID Description Fired Armed
+
+Solennoids:
+ID Description Status PulseTime Armed
+
+Pressure:
+ID Description Value
+
+Temperatures:
+ID Description Value
+
+
+
+Rocket data:
+Lat Long Altitude AscentRate 
+
+
+
+Tabs:
+
+Ground Support Manual
+Ground Support Sequencing
+
+Plotting
+Messages
+Commands
+
+Maps
+Rocket Data

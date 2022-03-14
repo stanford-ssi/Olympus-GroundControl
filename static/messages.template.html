@@ -5,13 +5,13 @@
 
 
   <script>
-    socket.on("new", (data) => {
-      console.log(data)
-
+    new_data_callbacks.push(
+      () => {
+      console.log(slate)
       var table = document.getElementById("message_table");
       var row = table.insertRow(0);
       var cell = row.insertCell(0);
-      cell.innerHTML = JSON.stringify(data);
+      cell.innerHTML = JSON.stringify(slate);
 
     });
 
