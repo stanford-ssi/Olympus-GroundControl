@@ -61,26 +61,8 @@ class Element:
 
         return to_formant.format(**kwargs) 
 
-class TopLevel(Element):
-    """ Generates the html boiler plate and manages Flask stuff """
-    def __init__(self):
-        self.name = "Mission Control"
-        super().__init__(self.name)
-
-    def render(self):
-        identifier = self.get_identifier()
-        content = "\n".join(child.render() for child in self.nodes)
-        template = self.load_template("static/main.template.html")
-        return self.format(template, page = page)
 
 
-        # @self.app.after_request
-        # def add_header(r):
-        #     r.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
-        #     r.headers["Pragma"] = "no-cache"
-        #     r.headers["Expires"] = "0"
-        #     r.headers['Cache-Control'] = 'public, max-age=0'
-        #     return r
 
 class Dashboard(Element):
     # def __init__(self):
@@ -118,3 +100,15 @@ class Maps(Element):
         template = self.load_template("templates/main.template.html")
 
         return self.format(template, page = map)
+
+class Graphs(Element):
+    # def __init__(self):
+    #     super().__init__(self.name)
+
+    def render(self):
+        # identifier = self.get_identifier()
+        # content = "\n".join(child.render() for child in self.nodes)
+        graphs = self.load_template("templates/graphs.template.html")
+        template = self.load_template("templates/main.template.html")
+
+        return self.format(template, page = graphs)

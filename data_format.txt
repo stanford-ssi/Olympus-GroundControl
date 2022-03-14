@@ -1,6 +1,27 @@
 
 
 
+Quail System health:
+Voltage
+Current
+Timestamp
+Armed ?
+Authorized user
+
+Dashboard UI:
+Sensors:
+ID Description Value Unit 
+
+Soleniods:
+ID Description Status 
+
+Squibs:
+ID Description Armed Fire
+
+
+
+
+
 Data from Quail:
 
 

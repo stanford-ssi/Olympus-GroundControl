@@ -1,0 +1,62 @@
+
+
+	<script language="javascript" type="text/javascript" src="jquery.js"></script>
+	<script language="javascript" type="text/javascript" src="jquery.canvaswrapper.js"></script>
+	<script language="javascript" type="text/javascript" src="jquery.colorhelpers.js"></script>
+	<script language="javascript" type="text/javascript" src="jquery.flot.js"></script>
+	<script language="javascript" type="text/javascript" src="jquery.flot.saturated.js"></script>
+	<script language="javascript" type="text/javascript" src="jquery.flot.browser.js"></script>
+	<script language="javascript" type="text/javascript" src="jquery.flot.drawSeries.js"></script>
+	<script language="javascript" type="text/javascript" src="jquery.flot.uiConstants.js"></script>
+	<script type="text/javascript">
+
+	$(function() {
+
+		var data = [];
+        var totalPoints = 20;
+
+		var plot = $.plot("#placeholder", [[ [0,1],[1,-1],[2,0] ]], {
+			series: {
+                shadowSize: 0	// Drawing is faster without shadows
+			},
+			yaxis: {
+                autoScale: 'loose',
+			},
+			xaxis: {
+                autoScale: 'loose',
+				// min: 0,
+				// max: 30,
+				show: true,
+			}
+		});
+
+        new_data_callbacks.push( () => {
+
+            console.log("here", data);
+            new_point = slate['rand'];
+            data.push(new_point);
+
+            while (data.length > totalPoints){
+                data.shift();
+            }
+
+			var res = [];
+			for (var i = 0; i < data.length; ++i) {
+				res.push([i, data[i]])
+			}
+            console.log("here", res);
+
+			plot.setData([res]);
+            plot.setupGrid(true);
+			plot.draw();
+
+        })
+
+	});
+
+	</script>
+
+
+<div class="demo-container">
+    <div id="placeholder" class="demo-placeholder"></div>
+</div>

@@ -6,8 +6,9 @@ import socketio
 import asyncio
 import aiofiles
 from aiofiles import os
+import random
 
-from ui_elements import Dashboard, Messages, Maps
+from ui_elements import Dashboard, Messages, Maps, Graphs
 
 class Main:
 
@@ -31,6 +32,7 @@ class Main:
         self.dashboard = Dashboard("test")
         self.messages = Messages("test")
         self.maps = Maps("test")
+        self.graphs = Graphs("test")
         # self.messages = Dashboard("test")
 
     async def get_dashboard(self, request):
@@ -41,6 +43,9 @@ class Main:
 
     async def get_maps(self, request):
         return web.Response(text=self.maps.render(), content_type='text/html')
+
+    async def get_graphs(self, request):
+        return web.Response(text=self.graphs.render(), content_type='text/html')
 
     async def get_mapdata(self, request):
         url = request.match_info['url']
@@ -65,6 +70,7 @@ class Main:
         self.app.router.add_get('/dashboard', self.get_dashboard)
         self.app.router.add_get('/messages', self.get_messages)
         self.app.router.add_get('/maps', self.get_maps)
+        self.app.router.add_get('/graphs', self.get_graphs)
         self.app.router.add_get('/mapdata/{url:.*}', self.get_mapdata)
         self.app.router.add_static('/', './static/')
 
@@ -72,7 +78,7 @@ class Main:
     async def push_serial_data(self):
         while 1:
             await asyncio.sleep(1)
-            await self.sio.emit("new", {"magic": [1,2,3]})
+            await self.sio.emit("new", {"magic": [1,2,3], "rand": random.random() })
 
     async def start_background_tasks(self, app):
         self.app.serial_pub = asyncio.create_task(self.push_serial_data())
