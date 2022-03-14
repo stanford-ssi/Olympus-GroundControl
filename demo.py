@@ -42,20 +42,6 @@ class Main:
     async def get_maps(self, request):
         return web.Response(text=self.maps.render(), content_type='text/html')
 
-    async def get_style(self, request):
-        return web.FileResponse('./static/style.css')
-
-    async def get_normalize(self, request):
-        return web.FileResponse('./static/normalize.min.css')
-
-    async def get_socketio(self, request):
-        return web.FileResponse('./static/socket.io.min.js')
-
-    async def get_leaflet_js(self, request):
-        return web.FileResponse('./static/leaflet.js')
-    async def get_leaflet_css(self, request):
-        return web.FileResponse('./static/leaflet.css')
-
     async def get_mapdata(self, request):
         url = request.match_info['url']
         filename = 'cache/' + url.replace('/', "!slash!") + '.png'
@@ -79,12 +65,8 @@ class Main:
         self.app.router.add_get('/dashboard', self.get_dashboard)
         self.app.router.add_get('/messages', self.get_messages)
         self.app.router.add_get('/maps', self.get_maps)
-        self.app.router.add_get('/style.css', self.get_style)
-        self.app.router.add_get('/normalize.min.css', self.get_normalize)
-        self.app.router.add_get('/socket.io.min.js', self.get_socketio)
-        self.app.router.add_get('/leaflet.js', self.get_leaflet_js)
-        self.app.router.add_get('/leaflet.css', self.get_leaflet_css)
         self.app.router.add_get('/mapdata/{url:.*}', self.get_mapdata)
+        self.app.router.add_static('/', './static/')
 
 
     async def push_serial_data(self):

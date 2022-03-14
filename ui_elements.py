@@ -89,8 +89,8 @@ class Dashboard(Element):
     def render(self):
         # identifier = self.get_identifier()
         # content = "\n".join(child.render() for child in self.nodes)
-        dashboard = self.load_template("static/dashboard.template.html")
-        template = self.load_template("static/main.template.html")
+        dashboard = self.load_template("templates/dashboard.template.html")
+        template = self.load_template("templates/main.template.html")
 
         return self.format(template, page = dashboard)
 
@@ -102,8 +102,8 @@ class Messages(Element):
     def render(self):
         # identifier = self.get_identifier()
         # content = "\n".join(child.render() for child in self.nodes)
-        messages = self.load_template("static/messages.template.html")
-        template = self.load_template("static/main.template.html")
+        messages = self.load_template("templates/messages.template.html")
+        template = self.load_template("templates/main.template.html")
 
         return self.format(template, page = messages)
 
@@ -114,7 +114,7 @@ class Maps(Element):
     def render(self):
         # identifier = self.get_identifier()
         # content = "\n".join(child.render() for child in self.nodes)
-        map = self.load_template("static/map.template.html")
-        template = self.load_template("static/main.template.html")
+        map = self.load_template("templates/map.template.html")
+        template = self.load_template("templates/main.template.html")
 
         return self.format(template, page = map)
