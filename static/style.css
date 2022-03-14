@@ -10,7 +10,7 @@ body {
 }
 
 .topbar {
-  background-color: rgb(223, 0, 0);
+  background-color: rgb(174, 48, 51);
   display: flex;
   flex-direction: row;
   width: 100%;

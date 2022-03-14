@@ -72,7 +72,7 @@ class Main:
         self.app.router.add_get('/maps', self.get_maps)
         self.app.router.add_get('/graphs', self.get_graphs)
         self.app.router.add_get('/mapdata/{url:.*}', self.get_mapdata)
-        self.app.router.add_static('/', './static/')
+        self.app.router.add_static('/static/', './static/')
 
 
     async def push_serial_data(self):

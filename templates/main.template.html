@@ -2,13 +2,13 @@
 <html>
 
 <head>
-    <link rel="stylesheet" href="normalize.min.css">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="static/normalize.min.css">
+    <link rel="stylesheet" href="static/style.css">
 </head>
 
 <body>
 
-    <script src="socket.io.min.js"></script>
+    <script src="static/socket.io.min.js"></script>
     <script> 
         var socket = io.connect({transports: ['websocket']});
 
@@ -26,7 +26,9 @@
     </script>
 
     <div class="topbar">
-        <a href="#" class="" topbar_elm">Logo</a>
+        <a href="/dashboard" class="" topbar_elm">
+            <img src="static/ssi_logo.png" alt="SSI Logo" style="height:30px;">
+        </a>
         <p class="topbar_elm">Olympus Mission Control</p>
     </div>
 
