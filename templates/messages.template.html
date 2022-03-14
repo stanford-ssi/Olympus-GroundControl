@@ -15,7 +15,20 @@
 
     });
 
+    new_data_callbacks.push(
+      () => {
+        var div = document.getElementById("raw_slate");
+        div.innerHTML = JSON.stringify(slate, null, "\t");
+
+    });
+
   </script>
+
+    <pre>
+      <code id="raw_slate" class="verbatim">
+      </code>
+    </pre>
+
 
   <table class='message_table' id='message_table'>
     <tr>

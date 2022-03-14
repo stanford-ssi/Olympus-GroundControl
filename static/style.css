@@ -143,3 +143,10 @@ body {
 .message_table tr:nth-child(even) {
   background-color: #dddddd;
 }
+
+pre code {
+  background-color: #eee;
+  border: 1px solid #999;
+  display: block;
+  padding: 20px;
+}
