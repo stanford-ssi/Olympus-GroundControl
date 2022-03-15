@@ -1,35 +1,35 @@
 
+<script>
+  new_data_callbacks.push(
+    () => {
+    console.log(slate)
+    var table = document.getElementById("message_table");
+    var row = table.insertRow(1);
+    var cell = row.insertCell(0);
+    cell.innerHTML = JSON.stringify(slate);
+
+  });
+
+  new_data_callbacks.push(
+    () => {
+      var div = document.getElementById("raw_slate");
+      div.innerHTML = JSON.stringify(slate, null, "\t");
+
+  });
+
+</script>
+
 <div class="main">
-  <h1>My First Heading</h1>
-  <p>My first paragraph.</p>
+  <h1 class="page-title">Messages</h1>
 
-
-  <script>
-    new_data_callbacks.push(
-      () => {
-      console.log(slate)
-      var table = document.getElementById("message_table");
-      var row = table.insertRow(0);
-      var cell = row.insertCell(0);
-      cell.innerHTML = JSON.stringify(slate);
-
-    });
-
-    new_data_callbacks.push(
-      () => {
-        var div = document.getElementById("raw_slate");
-        div.innerHTML = JSON.stringify(slate, null, "\t");
-
-    });
-
-  </script>
-
+  <p>Slate State</p>
     <pre>
       <code id="raw_slate" class="verbatim">
       </code>
     </pre>
 
 
+  <p>Recent Messages</p>
   <table class='message_table' id='message_table'>
     <tr>
       <th>Company</th>

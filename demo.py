@@ -101,6 +101,11 @@ class Main:
 #     # send back data
 #     pass
 
+def get_app():
+    page = Main()
+    return page.app
+    # page.start()
+
 if __name__ == "__main__":
     page = Main()
     page.start()

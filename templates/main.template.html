@@ -27,13 +27,14 @@
 
     <div class="topbar">
         <a href="/dashboard" class="" topbar_elm">
-            <img src="static/ssi_logo.png" alt="SSI Logo" style="height:30px;">
+            <img src="static/ssi_logo.png" alt="SSI Logo" class="ssi-logo">
         </a>
         <p class="topbar_elm">Olympus Mission Control</p>
+        <p class="topbar_elm" style="margin-left: auto;">Role: Observer</p>
     </div>
 
     <div class="page-content">
-        <div id="sidenav" class="sidenav">
+        <div class="sidenav">
             <a href="/dashboard">Dashboard</a>
             <a href="#">Sequencing</a>
             <a href="/graphs">Graphs</a>
@@ -42,8 +43,10 @@
             <a href="/configure">Configure</a>
         </div>
 
-        {{page}}
-
+        <div class="main-content">
+            {{page}}
+        </div>
     </div>
+
 </body>
 </html>

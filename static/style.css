@@ -14,7 +14,7 @@ body {
   display: flex;
   flex-direction: row;
   width: 100%;
-  height: 30px;
+  height: 40px;
   align-items: center;
 }
 
@@ -30,6 +30,12 @@ body {
   justify-content: space-between;
 }
 
+.ssi-logo {
+  height:30px;
+  padding:5px;
+  padding-top: 10px;
+}
+
 .page-content {
   display: flex;
   height: 100%;
@@ -37,7 +43,8 @@ body {
 }
 
 .sidenav {
-  min-height: 100%;
+  /* min-height: 100%; */
+  height: 100%;
   width: 160px; /* Set the width of the sidebar */
   background-color: #111; /* Black */
 }
@@ -55,6 +62,14 @@ body {
   color: #f1f1f1;
 }
 
+.main-content {
+ min-height: 100%;
+ width: 100%;
+}
+
+.page-title {
+  text-align: center;
+}
 
 .dashboard-page {
  /* height: 100%; */
@@ -68,9 +83,9 @@ body {
  width: 100%;
 
  display: grid;
- /* grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); */
- grid-template-columns: 1fr 1fr;
- /* grid-gap: 1rem; */
+ grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+ /* grid-template-columns: 1fr 1fr; */
+ grid-gap: 1rem;
 
 }
 
@@ -107,30 +122,12 @@ body {
 }
 
 
-.line-entry {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-
-	background: #F8F8F8;
-	border: 3px;
-	margin: 0px 10px 0px 10px;
-	padding-left: 10px;
-	padding-right: 10px;
-	padding-top: 5px;
-	padding-bottom: 5px;
-}
-
-.line-entry:nth-child(even) {
-	background: #EEE;
-}
-
 
 
 .message_table {
   font-family: arial, sans-serif;
   border-collapse: collapse;
-  width: 100%;
+  width: 90%;
   margin: 40px 40px;
 }
 
@@ -149,4 +146,5 @@ pre code {
   border: 1px solid #999;
   display: block;
   padding: 20px;
+  margin: 20px;
 }
