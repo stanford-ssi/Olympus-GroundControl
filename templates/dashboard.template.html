@@ -1,20 +1,22 @@
+<h2 class="page-title"> Dashboard </h2>
 
-  <h2 class="page-title"> Dashboard </h2>
+<div class="dashboard-cont">
 
-  <div class="dashboard-cont">
+  <div class="box">
+    <div class="box_header">
+      <div class="box_title"> Quail Health </div>
+    </div>
 
-    <div class="box">
-      <div class="box_header">
-        <div class="box_title"> Quail Health </div>
-      </div>
-
-      <table class="dashboard-table">
+    <table class="dashboard-table">
+      <thead>
         <tr>
           <th>ID</th>
           <th>Desc</th>
           <th>Value</th>
           <th>Units</th>
         </tr>
+      </thead>
+      <tbody>
         <tr>
           <td>V1</td>
           <td>Bus Voltage</td>
@@ -27,21 +29,25 @@
           <td>10</td>
           <td>A</td>
         </tr>
-      </table>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="box">
+    <div class="box_header">
+      <div class="box_title"> Sensors </div>
     </div>
 
-    <div class="box">
-      <div class="box_header">
-        <div class="box_title"> Sensors </div>
-      </div>
-
-      <table class="dashboard-table">
+    <table class="dashboard-table">
+      <thead>
         <tr>
           <th>ID</th>
           <th>Desc</th>
           <th>Value</th>
           <th>Units</th>
         </tr>
+      </thead>
+      <tbody>
         <tr>
           <td>PT1</td>
           <td>Tank Pressure</td>
@@ -54,27 +60,31 @@
           <td>1200</td>
           <td>Psi</td>
         </tr>
-      </table>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="box">
+    <div class="box_header">
+      <div class="box_title"> Squibs </div>
     </div>
 
-    <div class="box">
-      <div class="box_header">
-        <div class="box_title"> Squibs </div>
-      </div>
-
-      <table class="dashboard-table">
+    <table class="dashboard-table">
+      <thead>
         <tr>
           <th>ID</th>
           <th>Desc</th>
           <th> Armed? </th>
           <th> Status </th>
         </tr>
+      </thead>
+      <tbody>
         <tr>
           <td>EM1</td>
           <td>Engire Ignition</td>
           <td> <input type="checkbox"> </td>
           <td> <button type="button"> disarmed </button> </td>
-          
+
         </tr>
         <tr>
           <td>EM2</td>
@@ -88,7 +98,8 @@
           <td> <input type="checkbox"> </td>
           <td> <button type="button"> fired </button> </td>
         </tr>
-      </table>
-    </div>
-
+      </tbody>
+    </table>
   </div>
+
+</div>
