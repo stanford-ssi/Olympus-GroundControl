@@ -54,7 +54,6 @@
 
         })
 
-
 	});
 
 	</script>
@@ -69,4 +68,16 @@
 	<div class="demo-container">
 		<div id="placeholder" class="demo-placeholder"></div>
 	</div>
+
+	<script>
+
+   var input = document.getElementById('graph-key');
+   if (Cookies.get("graph-key")) {
+       input.value = Cookies.get("graph-key")
+   }
+   input.onchange = function () {
+		Cookies.set("graph-key", input.value)
+    }
+
+	</script>
 </div>
