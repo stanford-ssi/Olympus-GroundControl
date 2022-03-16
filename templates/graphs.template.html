@@ -1,5 +1,5 @@
 
-    <link rel="stylesheet" href="static/graphs-style.css">
+    <link rel="stylesheet" href="static/graphs.css">
 
 	<script language="javascript" type="text/javascript" src="static/jquery.js"></script>
 	<script language="javascript" type="text/javascript" src="static/jquery.canvaswrapper.js"></script>
@@ -22,19 +22,20 @@
 			},
 			yaxis: {
                 autoScale: 'loose',
+				min: 0,
 			},
 			xaxis: {
                 autoScale: 'loose',
-				// min: 0,
-				// max: 30,
 				show: true,
 			}
 		});
 
         new_data_callbacks.push( () => {
 
-            console.log("here", data);
-            new_point = slate['rand'];
+			var select = document.getElementById("graph-key");
+			// console.log
+
+            new_point = slate[select.value];
             data.push(new_point);
 
             while (data.length > totalPoints){
@@ -53,11 +54,19 @@
 
         })
 
+
 	});
 
 	</script>
 
+<div class="graph-page">
+	<select name="keys" id="graph-key" class="graph-dropdown">
+		<option value="rand">random numbers</option>
+		<option value="TC1">TC1 - something</option>
+		<option value="TC0">TC0 - explain</option>
+	</select>
 
-<div class="demo-container">
-    <div id="placeholder" class="demo-placeholder"></div>
+	<div class="demo-container">
+		<div id="placeholder" class="demo-placeholder"></div>
+	</div>
 </div>

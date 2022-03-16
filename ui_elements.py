@@ -21,17 +21,6 @@ class Element:
         self.nodes.append(child)
         child.parent = self
 
-    # def startup_state(self):
-    #     """ function that gets run when a new client connects """
-    #     for child in self.nodes:
-    #         child.startup_state()
-
-    # def register_callbacks(self, socketio):
-    #     """ allows for elements to register any socketio callbacks they need """
-    #     self.socketio = socketio
-    #     for child in self.nodes:
-    #         child.register_callbacks(socketio)
-
     def get_identifier(self):
         """ generates a unique (but consistent) id that can be used in client - server communication """
         if self.identifier is not None:

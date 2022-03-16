@@ -1,0 +1,25 @@
+
+.message_table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 90%;
+  margin: 40px 40px;
+}
+
+.message_table td, th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+
+.message_table tr:nth-child(even) {
+  background-color: #dddddd;
+}
+
+pre code {
+  background-color: #eee;
+  border: 1px solid #999;
+  display: block;
+  padding: 20px;
+  margin: 20px;
+}
