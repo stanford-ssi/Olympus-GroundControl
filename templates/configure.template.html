@@ -15,18 +15,19 @@
       return;
     }
 
-    socket.emit("command", json_cmd);
+    if(Cookies.get('commander') ){
+      socket.emit("command", json_cmd);
+    }else{
+      alert("Observers can't send commands");
+    }
+
   };
 
   // not real security 
-  function try_auth() {
-    var textbox = document.getElementById("passphrase")
-    socket.emit("try-auth", textbox.value);
+  function set_commander(commander) {
+    Cookies.set('commander', commander ? "1" : "")
+    document.getElementById("topbar-role").innerHTML = commander ? "Role: Commander" : "Role: Observer";
   }
-
-  socket.on("auth", (data) => {
-    document.getElementById("topbar-role").innerHTML = "Role: Commander";
-  });
 
 
 </script>
@@ -34,23 +35,31 @@
 <h2 class="page-title"> Configuration </h2>
 <div class="configure-page">
 
+      <div class="config-line radioswitch">
+        <input type="radio" name="role" id="role-commander" onclick="set_commander(true)"> <label for="role-commander">Commander</label>
+        <input type="radio" name="role" id="role-observer" onclick="set_commander(false)"> <label for="role-observer">Observer</label>
+      </div>
 
-    <p> Status: Observer </p>
-
-    <div>
-      <input type="text" id="passphrase">
-      <button type="button" onclick="try_auth()">Authenticate</button>
+    <div class="config-line">
+      <button type="button">Tare Load Cell 1</button>
+      <button type="button">Tare Load Cell 2</button>
     </div>
 
-    <button type="button">Tare Load Cell 1</button>
-    <button type="button">Tare Load Cell 2</button>
+    <div class="config-line">
+      <button type="button">Reset E-match status</button>
+      <button type="button">Reboot Quail</button>
+    </div>
 
-    <button type="button">Reset E-match status</button>
-    <button type="button">Reboot Quail</button>
-
-    <div>
+    <div class="config-line">
       <input type="text" id="command-text">
       <button type="button" id="button-command" onclick="send_command()">Send Command</button>
     </div>
+  
+    <script>
+
+      var radio = Cookies.get('commander') ? document.getElementById('role-commander') : document.getElementById('role-observer')
+      radio.checked = true;
+
+    </script>
   
   </div>

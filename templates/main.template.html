@@ -24,6 +24,7 @@
             }
         });
 
+
     </script>
 
     <div class="topbar">
@@ -48,6 +49,12 @@
             {{page}}
         </div>
     </div>
+
+<script>
+        if(Cookies.get('commander')){
+            document.getElementById("topbar-role").innerHTML = "Role: Commander";
+        }
+</script>
 
 </body>
 </html>
