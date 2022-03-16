@@ -8,6 +8,7 @@
 
 <body>
 
+    <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.1/dist/js.cookie.min.js"></script>
     <script src="static/socket.io.min.js"></script>
     <script> 
         var socket = io.connect({transports: ['websocket']});
@@ -30,7 +31,7 @@
             <img src="static/ssi_logo.png" alt="SSI Logo" class="ssi-logo">
         </a>
         <p class="topbar_elm">Olympus Mission Control</p>
-        <p class="topbar_elm" style="margin-left: auto;">Role: Observer</p>
+        <p class="topbar_elm" id="topbar-role" style="margin-left: auto;">Role: Observer</p>
     </div>
 
     <div class="page-content">

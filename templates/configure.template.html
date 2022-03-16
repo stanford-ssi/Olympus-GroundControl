@@ -18,6 +18,17 @@
     socket.emit("command", json_cmd);
   };
 
+  // not real security 
+  function try_auth() {
+    var textbox = document.getElementById("passphrase")
+    socket.emit("try-auth", textbox.value);
+  }
+
+  socket.on("auth", (data) => {
+    document.getElementById("topbar-role").innerHTML = "Role: Commander";
+  });
+
+
 </script>
 
 <h2 class="page-title"> Configuration </h2>
@@ -25,9 +36,9 @@
 
 
     <p> Status: Observer </p>
-    <div>
-      <input type="text">
-      <button type="button">Authenticate</button>
+
+    <div></div>
+    sadf
     </div>
 
     <button type="button">Tare Load Cell 1</button>

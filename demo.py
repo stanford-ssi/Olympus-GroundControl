@@ -81,9 +81,26 @@ class Main:
 
     def create_socketio_handlers(self):
 
+        self.command_sids = []
         @self.sio.on('command')
         async def command(sid, data):
             print(data)
+
+        @self.sio.event
+        async def connect(sid, environ, auth):
+            print("connected new client")
+            if sid in self.command_sids:
+                await self.sio.emit("auth")
+
+        @self.sio.on("try-auth")
+        async def try_auth(sid, data):
+            print("got message", data)
+            if sid in self.command_sids:
+                await self.sio.emit("auth")
+            if data == "MAGIC":
+                print("authenticated")
+                self.command_sids.append(sid)
+                await self.sio.emit("auth")
 
     async def push_serial_data(self):
         i = 0;
