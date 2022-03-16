@@ -1,6 +1,25 @@
 
   <link rel="stylesheet" href="static/configure.css">
 
+
+<script>
+
+  function send_command()  {
+    console.log("magci")
+    var textbox = document.getElementById("command-text")
+
+    try {
+        var json_cmd = JSON.parse(textbox.value);
+    } catch (e) {
+      alert("Invalid JSON command");
+      return;
+    }
+
+    socket.emit("command", json_cmd);
+  };
+
+</script>
+
 <h2 class="page-title"> Configuration </h2>
 <div class="configure-page">
 
@@ -18,8 +37,8 @@
     <button type="button">Reboot Quail</button>
 
     <div>
-      <input type="text">
-      <button type="button">Send Command</button>
+      <input type="text" id="command-text">
+      <button type="button" id="button-command" onclick="send_command()">Send Command</button>
     </div>
   
   </div>

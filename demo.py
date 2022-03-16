@@ -19,6 +19,7 @@ class Main:
 
         self.create_pages()
         self.setup_routes()
+        self.create_socketio_handlers()
 
         self.app.on_startup.append(self.start_background_tasks)
         self.app.on_cleanup.append(self.cleanup_background_tasks)
@@ -26,7 +27,6 @@ class Main:
 
     def start(self):
         web.run_app(self.app, host="localhost", port=None)
-
 
     def create_pages(self):
         self.dashboard = Dashboard("test")
@@ -79,6 +79,11 @@ class Main:
         self.app.router.add_get('/mapdata/{url:.*}', self.get_mapdata)
         self.app.router.add_static('/static/', './static/')
 
+    def create_socketio_handlers(self):
+
+        @self.sio.on('command')
+        async def command(sid, data):
+            print(data)
 
     async def push_serial_data(self):
         i = 0;
@@ -101,10 +106,6 @@ class Main:
         await self.app.serial_pub
 
 
-# @sio.on('data_request')
-# def data_request(sid, data):
-#     # send back data
-#     pass
 
 def get_app():
     page = Main()
