@@ -1,6 +1,7 @@
-from io import BytesIO
 
 import re
+
+from aiohttp import web
 
 class Element:
     """ base class for a node in the widget tree """
@@ -52,6 +53,41 @@ class Element:
 
 
 
+class DataLine(Element):
+    pass
+    def __init__(self, id):
+        self.id = id
+
+"""
+        <tr>
+          <td>{{ID}}</td>
+          <td>{{description}}</td>
+          <td>12</td>
+          <td>{{unit}}</td>
+        </tr>
+"""
+
+class Table(Element):
+    def __init__(self):
+        pass
+
+"""
+    <table class="dashboard-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Desc</th>
+          <th>Value</th>
+          <th>Units</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{content}}
+      </tbody>
+    </table>
+  </div>
+"""
+
 
 class Dashboard(Element):
     # def __init__(self):
@@ -64,6 +100,13 @@ class Dashboard(Element):
         template = self.load_template("templates/main.template.html")
 
         return self.format(template, page = dashboard)
+
+    async def get_dashboard(self, request):
+        return web.Response(text=self.dashboard.render(), content_type='text/html')
+
+    def add_routes(self):
+        self.app.router.add_get('/', self.get_dashboard)
+        self.app.router.add_get('/dashboard', self.get_dashboard)
 
 
 class Messages(Element):

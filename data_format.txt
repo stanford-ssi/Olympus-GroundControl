@@ -23,8 +23,115 @@ ID Description Armed Fire
 
 Data from Quail:
 
+{"update": {
+"press.ox_fill": 1200,
+"press.ox_vent": 400,
+"temp.ambient": 22,
+"temp.chamber": 200,
+"valves.ox_fill.status": false,
+"valves.ox_fill.cmd": 0,
+"health.v_bus": 12.1,
+"health.current": 1.2,
+}}
 
-{"update": { "PT1": 600, "TC1": 250, ....}}
+
+{"update": {
+
+"press": {
+    "ox_fill": 1200,
+    "ox_vent": 400,
+},
+"temp": {
+    "ambient": 22,
+    "chamber": 200,
+},
+"valves": {
+    "ox_fill": {
+        "status": false,
+        "cmd": 0,
+    }
+},
+"health": {
+        "v_bus": 12.1,
+        "current": 1.2,
+}
+
+}}
+
+
+{"meta": {
+
+"press": {
+    "ox_fill": 
+            {
+            "desc": "Oxidiser Fill",
+            "units": "psi",
+            "value": nill,
+            "editable": false,
+            "pin": "PT1",
+            },
+    "ox_vent": 
+            {
+            "desc": "Oxidiser Vent",
+            "units": "psi",
+            "value": nill,
+            "editable": false,
+            "pin": "PT2",
+            },
+},
+"temp": {
+    "ambient": 
+            {
+            "desc": "Ambient temperature",
+            "units": "C",
+            "value": nill,
+            "editable": false,
+            "pin": "TC1",
+            },
+    "chamber": 
+            {
+            "desc": "Engine Chanber Temperature",
+            "units": "C",
+            "value": nill,
+            "editable": false,
+            "pin": "TC2",
+            },
+},
+"valves": {
+    "ox_fill": {
+        "status":{
+            "desc": "Oxidiser Fill Valve",
+            "units": "bool",
+            "value": nill,
+            "editable": false,
+            "pin": "SV1",
+        }
+        "cmd":{
+            "desc": "oxidiser fill value pulse duration",
+            "units": "ms",
+            "value": nill,
+            "editable": true,
+        }
+    }
+},
+"health": {
+        "v_bus":{
+            "desc": "Quail Voltage Bus",
+            "units": "V",
+            "value": nill,
+            "editable": false,
+        }
+        "current":{
+            "desc": "Total quail current consumption",
+            "units": "A",
+            "value": nill,
+            "editable": false,
+        }
+}
+
+}}
+
+
 
 
 {"meta": { "PT1": 

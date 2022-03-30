@@ -1,6 +1,8 @@
 
 <link rel="stylesheet" href="static/dashboard.css">
 
+<script language="javascript" type="text/javascript" src="static/jquery.js"></script>
+
 <h2 class="page-title"> Dashboard </h2>
 
 <div class="dashboard-page">
@@ -9,6 +11,26 @@
     <div class="box_header">
       <div class="box_title"> Quail Health </div>
     </div>
+
+
+    <script>
+
+      //  function dict_recurse(dict) {
+         
+      //  }
+
+        new_data_callbacks.push( () => {
+          console.log("value")
+
+          //can't have dots in class names! :/
+          matches = document.querySelectorAll(".slate.health.v.value");
+          console.log(matches)
+          matches.forEach(function(item) {
+            item.innerHTML = get_data("slate.health.v.value")
+          });
+
+        })
+    </script>
 
     <table class="dashboard-table">
       <thead>
@@ -21,10 +43,10 @@
       </thead>
       <tbody>
         <tr>
-          <td>V1</td>
-          <td>Bus Voltage</td>
-          <td>12</td>
-          <td>V</td>
+          <td> <p class="slate.health.v.id" > </p></td>
+          <td> <p class="slate.health.v.desc" > </p> </td>
+          <td> <p class="slate.health.v.value" > </p> </td>
+          <td> <p class="slate.health.v.unit" > </p> </td>
         </tr>
         <tr>
           <td>I1</td>

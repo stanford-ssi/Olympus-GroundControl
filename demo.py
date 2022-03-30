@@ -25,6 +25,9 @@ class Main:
         self.app.on_cleanup.append(self.cleanup_background_tasks)
 
 
+        self.metadata = {}
+
+
     def start(self):
         web.run_app(self.app, host="localhost", port=None)
 
@@ -110,7 +113,11 @@ class Main:
             await self.sio.emit("new", {"magic": [1,2,3],
                                         "rand": random.random(),
                                         "TC1": 70 + 5*random.random(),
-                                        "TC0": i})
+                                        "TC0": i,
+                                        "health": {"v": {
+                                            "value": random.random(),
+                                            "desc": "Bus Voltage",
+                                        }}})
 
     async def start_background_tasks(self, app):
         self.app.serial_pub = asyncio.create_task(self.push_serial_data())
