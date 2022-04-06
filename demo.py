@@ -24,63 +24,77 @@ class Main:
         self.app.on_startup.append(self.start_background_tasks)
         self.app.on_cleanup.append(self.cleanup_background_tasks)
 
+        self.metadata = { "press": { "ox_fill": { "desc": "Oxidiser Fill", "units": "psi", "value": null, "editable": false, "pin": "PT1", }, "ox_vent": { "desc": "Oxidiser Vent", "units": "psi", "value": null, "editable": false, "pin": "PT2", }, }, "health": { "v_bus":{ "desc": "Quail Voltage Bus", "units": "V", "value": null, "editable": false, }, "current":{ "desc": "Total quail current consumption", "units": "A", "value": null, "editable": false, } } }
 
-        self.metadata = {}
+    def get_meta(self, path, endpoint=None):
+        path = path.split(".")
+        assert path[0] == "slate"
+        path.pop(0)
 
+        if endpoint:
+            path.append(endpoint)
+
+        node = self.metadata
+        for name in path:
+            node = node[name]
+
+        return node
 
     def start(self):
-        web.run_app(self.app, host="localhost", port=None)
+        web.run_app(self.app, host="localhost", port=8080)
 
     def create_pages(self):
-        self.dashboard = Dashboard("test")
-        self.messages = Messages("test")
-        self.maps = Maps("test")
-        self.graphs = Graphs("test")
-        self.configure = Configure("test")
+        self.dashboard = Dashboard("Dashboard", self)
+
+
+        # self.messages = Messages("test")
+        # self.maps = Maps("test")
+        # self.graphs = Graphs("test")
+        # self.configure = Configure("test")
         # self.messages = Dashboard("test")
 
-    async def get_dashboard(self, request):
-        return web.Response(text=self.dashboard.render(), content_type='text/html')
+    # async def get_dashboard(self, request):
+    #     return web.Response(text=self.dashboard.render(), content_type='text/html')
 
-    async def get_messages(self, request):
-        return web.Response(text=self.messages.render(), content_type='text/html')
+    # async def get_messages(self, request):
+    #     return web.Response(text=self.messages.render(), content_type='text/html')
 
-    async def get_maps(self, request):
-        return web.Response(text=self.maps.render(), content_type='text/html')
+    # async def get_maps(self, request):
+    #     return web.Response(text=self.maps.render(), content_type='text/html')
 
-    async def get_graphs(self, request):
-        return web.Response(text=self.graphs.render(), content_type='text/html')
+    # async def get_graphs(self, request):
+    #     return web.Response(text=self.graphs.render(), content_type='text/html')
 
-    async def get_configure(self, request):
-        return web.Response(text=self.configure.render(), content_type='text/html')
+    # async def get_configure(self, request):
+    #     return web.Response(text=self.configure.render(), content_type='text/html')
 
-    async def get_mapdata(self, request):
-        url = request.match_info['url']
-        filename = 'cache/' + url.replace('/', "!slash!") + '.png'
+    # async def get_mapdata(self, request):
+    #     url = request.match_info['url']
+    #     filename = 'cache/' + url.replace('/', "!slash!") + '.png'
 
-        mapbox_api = 'https://api.mapbox.com/{url}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw'
+    #     mapbox_api = 'https://api.mapbox.com/{url}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw'
 
-        if await os.path.isfile(filename):
-            async with aiofiles.open(filename, 'br') as file:
-                data = await file.read()
-        else:
-            async with self.mapdata_session.get(mapbox_api.format(url = url)) as resp: 
-                data = await resp.read() 
-            async with aiofiles.open(filename, 'bw') as file:
-                await file.write(data)
+    #     if await os.path.isfile(filename):
+    #         async with aiofiles.open(filename, 'br') as file:
+    #             data = await file.read()
+    #     else:
+    #         async with self.mapdata_session.get(mapbox_api.format(url = url)) as resp: 
+    #             data = await resp.read() 
+    #         async with aiofiles.open(filename, 'bw') as file:
+    #             await file.write(data)
 
-        #TODO support jpegs also
-        return web.Response(body=data, content_type='image/png')
+    #     #TODO support jpegs also
+    #     return web.Response(body=data, content_type='image/png')
 
-    def setup_routes(self):
-        self.app.router.add_get('/', self.get_dashboard)
-        self.app.router.add_get('/dashboard', self.get_dashboard)
-        self.app.router.add_get('/messages', self.get_messages)
-        self.app.router.add_get('/maps', self.get_maps)
-        self.app.router.add_get('/graphs', self.get_graphs)
-        self.app.router.add_get('/configure', self.get_configure)
-        self.app.router.add_get('/mapdata/{url:.*}', self.get_mapdata)
-        self.app.router.add_static('/static/', './static/')
+    # def setup_routes(self):
+    #     self.app.router.add_get('/', self.get_dashboard)
+    #     self.app.router.add_get('/dashboard', self.get_dashboard)
+    #     self.app.router.add_get('/messages', self.get_messages)
+    #     self.app.router.add_get('/maps', self.get_maps)
+    #     self.app.router.add_get('/graphs', self.get_graphs)
+    #     self.app.router.add_get('/configure', self.get_configure)
+    #     self.app.router.add_get('/mapdata/{url:.*}', self.get_mapdata)
+    #     self.app.router.add_static('/static/', './static/')
 
     def create_socketio_handlers(self):
 
