@@ -53,21 +53,14 @@ class Element:
 
         return to_formant.format(**kwargs) 
 
-    ## OLD
-    def get_identifier(self):
-        """ generates a unique (but consistent) id that can be used in client - server communication """
-        if self.identifier is not None:
-            return self.identifier
-        if self.parent is None:
-            self.identifier = self.name
-        else:
-            self.identifier = self.parent.get_identifier() + "." + self.name
-            # we assume an element's name is unique among siblings
-
-        return self.identifier
-
 
 class Graph(Element):
+    pass
+
+class SquibTable(Element):
+    pass
+
+class ValveTable(Element):
     pass
 
 class RawSensorTable(Element):
