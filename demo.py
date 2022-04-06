@@ -18,13 +18,15 @@ class Main:
         self.sio.attach(self.app)
 
         self.create_pages()
-        self.setup_routes()
+        # self.setup_routes()
         self.create_socketio_handlers()
+
+        self.app.router.add_static('/static/', './static/')
 
         self.app.on_startup.append(self.start_background_tasks)
         self.app.on_cleanup.append(self.cleanup_background_tasks)
 
-        self.metadata = { "press": { "ox_fill": { "desc": "Oxidiser Fill", "units": "psi", "value": null, "editable": false, "pin": "PT1", }, "ox_vent": { "desc": "Oxidiser Vent", "units": "psi", "value": null, "editable": false, "pin": "PT2", }, }, "health": { "v_bus":{ "desc": "Quail Voltage Bus", "units": "V", "value": null, "editable": false, }, "current":{ "desc": "Total quail current consumption", "units": "A", "value": null, "editable": false, } } }
+        self.metadata = { "press": { "ox_fill": { "desc": "Oxidiser Fill", "units": "psi", "value": None, "editable": False, "pin": "PT1", }, "ox_vent": { "desc": "Oxidiser Vent", "units": "psi", "value": None, "editable": False, "pin": "PT2", }, }, "health": { "v_bus":{ "desc": "Quail Voltage Bus", "units": "V", "value": None, "editable": False, }, "current":{ "desc": "Total quail current consumption", "units": "A", "value": None, "editable": False, } } }
 
     def get_meta(self, path, endpoint=None):
         path = path.split(".")
@@ -36,8 +38,12 @@ class Main:
 
         node = self.metadata
         for name in path:
-            node = node[name]
+            try:
+                node = node[name]
+            except KeyError:
+                return "null"
 
+        print(node)
         return node
 
     def start(self):
@@ -94,7 +100,6 @@ class Main:
     #     self.app.router.add_get('/graphs', self.get_graphs)
     #     self.app.router.add_get('/configure', self.get_configure)
     #     self.app.router.add_get('/mapdata/{url:.*}', self.get_mapdata)
-    #     self.app.router.add_static('/static/', './static/')
 
     def create_socketio_handlers(self):
 
@@ -125,6 +130,7 @@ class Main:
             await asyncio.sleep(1)
             i = (i +1)%100
             await self.sio.emit("new", {"magic": [1,2,3],
+                                        "press" : {"ox_fill": {"value": random.random()}, "ox_vent": {"value": random.random()}},
                                         "rand": random.random(),
                                         "TC1": 70 + 5*random.random(),
                                         "TC0": i,
@@ -132,6 +138,7 @@ class Main:
                                             "value": random.random(),
                                             "desc": "Bus Voltage",
                                         }}})
+
 
     async def start_background_tasks(self, app):
         self.app.serial_pub = asyncio.create_task(self.push_serial_data())

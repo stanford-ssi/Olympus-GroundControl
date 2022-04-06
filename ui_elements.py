@@ -24,8 +24,13 @@ class Element:
     @property
     def top(self):
         node = self
-        while node != None:
-            node = self.parent
+
+        while True:
+            try:
+                node = node.parent
+            except AttributeError:
+                break
+
         return node
 
     @staticmethod
@@ -70,6 +75,11 @@ class RawSensorTable(Element):
 
     def render(self):
         main = """
+  <div class="box">
+    <div class="box_header">
+      <div class="box_title"> {{title}} </div>
+    </div>
+
     <table class="dashboard-table">
       <thead>
         <tr>
@@ -90,29 +100,27 @@ class RawSensorTable(Element):
     {{update_code}}
     });
     </script>
+</div>
 """
 
-        line_template = """
-        <tr>
-          <td>{{id}}</td>
-          <td>{{desc}}</td>
-          <td>{{pin}}</td>
-          <td> <p id={{id}}> None </p> </td>
-          <td>{{unit}}</td>
-        </tr>
-"""
 
         lines = []
         update_code = []
         for id in self.line_ids:
-            lines.append( line_template.format(id=id, 
-                                 desc=self.get_meta(id, "desc"),
-                                 pin=self.get_meta(id, "pin"),
-                                 unit=self.get_meta(id, "unit") ))
+            line = f"""
+                            <tr>
+                            <td>{id}</td>
+                            <td>{self.top.get_meta(id, "pin")}</td>
+                            <td>{self.top.get_meta(id, "desc")}</td>
+                            <td> <p id={id}> None </p> </td>
+                            <td>{self.top.get_meta(id, "unit")}</td>
+                            </tr>
+                    """
+            lines.append(line)
 
-            update_code.append( f"document.getElementById(id).innerHTML = get_data({id})" )
+            update_code.append( f"document.getElementById( '{id}' ).innerHTML = {id}.value" )
 
-        return self.format(main, content = "\n".join(lines), update_code="\n".join(update_code))
+        return self.format(main, title = self.name, content = "\n".join(lines), update_code="\n".join(update_code))
 
 
 class Page(Element):
@@ -149,12 +157,11 @@ class Dashboard(Page):
         dashboard = self.load_template("templates/dashboard.template.html")
         template = self.load_template("templates/main.template.html")
 
-        dashboard_done = self.format(dashboard, content = "\n\n".join(child.render for child in self.nodes))
+        dashboard_done = self.format(dashboard, content = "\n\n".join(child.render() for child in self.nodes))
         return self.format(template, page = dashboard_done)
 
 
     def add_routes(self):
-        print("hi")
         self.top.app.router.add_get('/', self.get_page)
         self.top.app.router.add_get('/dashboard', self.get_page)
 

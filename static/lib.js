@@ -3,7 +3,8 @@
 var socket = io.connect({ transports: ['websocket'] });
 
 //elements can add themselves to list to update on new data
-new_data_callbacks = [() => { console.log("got data", slate) }];
+new_data_callbacks = [];
+// new_data_callbacks = [() => { console.log("got data", slate) }];
 slate = {};
 
 socket.on("new", (data) => {
@@ -17,6 +18,7 @@ function send_command(params) {
 }
 
 function get_data(path) {
+    console.log(path)
     path = path.split(".")
     if (path[0] != "slate") {
         return null
