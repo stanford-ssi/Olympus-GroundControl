@@ -1,6 +1,9 @@
 
 import re
 
+import aiofiles
+from aiofiles import os
+
 from aiohttp import web
 
 class Element:
@@ -128,6 +131,7 @@ class Page(Element):
     def __init__(self, name, parent):
         super().__init__(name)
         self.parent = parent
+        self.add_routes()
 
     def render(self):
         pass
@@ -145,7 +149,6 @@ class Dashboard(Page):
     def __init__(self, name, parent):
         super().__init__(name, parent)
 
-        self.add_routes()
 
         self.add_child(
             RawSensorTable("Sensors", ["slate.press.ox_fill",
@@ -166,50 +169,64 @@ class Dashboard(Page):
         self.top.app.router.add_get('/dashboard', self.get_page)
 
 
-class Messages(Element):
-    # def __init__(self):
-    #     super().__init__(self.name)
-
+class Messages(Page):
     def render(self):
-        # identifier = self.get_identifier()
-        # content = "\n".join(child.render() for child in self.nodes)
         messages = self.load_template("templates/messages.template.html")
         template = self.load_template("templates/main.template.html")
 
         return self.format(template, page = messages)
 
-class Maps(Element):
-    # def __init__(self):
-    #     super().__init__(self.name)
+    def add_routes(self):
+        self.top.app.router.add_get('/messages', self.get_page)
 
+class Maps(Page):
     def render(self):
-        # identifier = self.get_identifier()
-        # content = "\n".join(child.render() for child in self.nodes)
         map = self.load_template("templates/map.template.html")
         template = self.load_template("templates/main.template.html")
 
         return self.format(template, page = map)
 
-class Graphs(Element):
-    # def __init__(self):
-    #     super().__init__(self.name)
+    def add_routes(self):
+        self.top.app.router.add_get('/maps', self.get_page)
+        self.top.app.router.add_get('/mapdata/{url:.*}', self.get_mapdata)
+
+    async def get_mapdata(self, request):
+        url = request.match_info['url']
+        filename = 'cache/' + url.replace('/', "!slash!") + '.png'
+
+        mapbox_api = 'https://api.mapbox.com/{url}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw'
+
+        if await os.path.isfile(filename):
+            async with aiofiles.open(filename, 'br') as file:
+                data = await file.read()
+        else:
+            async with self.top.mapdata_session.get(mapbox_api.format(url = url)) as resp: 
+                data = await resp.read() 
+            async with aiofiles.open(filename, 'bw') as file:
+                await file.write(data)
+
+        #TODO support jpegs also
+        return web.Response(body=data, content_type='image/png')
+
+
+class Graphs(Page):
 
     def render(self):
-        # identifier = self.get_identifier()
-        # content = "\n".join(child.render() for child in self.nodes)
         graphs = self.load_template("templates/graphs.template.html")
         template = self.load_template("templates/main.template.html")
 
         return self.format(template, page = graphs)
 
-class Configure(Element):
-    # def __init__(self):
-    #     super().__init__(self.name)
+    def add_routes(self):
+        self.top.app.router.add_get('/graphs', self.get_page)
+
+class Configure(Page):
 
     def render(self):
-        # identifier = self.get_identifier()
-        # content = "\n".join(child.render() for child in self.nodes)
         configure = self.load_template("templates/configure.template.html")
         template = self.load_template("templates/main.template.html")
 
         return self.format(template, page = configure)
+
+    def add_routes(self):
+        self.top.app.router.add_get('/configure', self.get_page)
