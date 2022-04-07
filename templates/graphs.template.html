@@ -58,12 +58,34 @@
 
 	</script>
 
+<h2 class="page-title"> Graphs </h2>
+
 <div class="graph-page">
+
+	<div>
+
+	<p> History: </p>
+	<select name="keys" id="graph-time" class="graph-dropdown">
+		<option value="rand">random numbers</option>
+		<option value="TC1">TC1 - something</option>
+		<option value="TC0">TC0 - explain</option>
+	</select>
+
+	<p> Left Axis: </p>
+	<select name="keys" id="left-graph-key" class="graph-dropdown">
+		<option value="rand">random numbers</option>
+		<option value="TC1">TC1 - something</option>
+		<option value="TC0">TC0 - explain</option>
+	</select>
+
+	<p> Right Axis: </p>
 	<select name="keys" id="graph-key" class="graph-dropdown">
 		<option value="rand">random numbers</option>
 		<option value="TC1">TC1 - something</option>
 		<option value="TC0">TC0 - explain</option>
 	</select>
+
+	</div>
 
 	<div class="demo-container">
 		<div id="placeholder" class="demo-placeholder"></div>

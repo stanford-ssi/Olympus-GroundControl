@@ -57,6 +57,22 @@ class Element:
 class Graph(Element):
     pass
 
+    def calculate_all_ids(self):
+        return self.walk_ids(self.top.metadata, [])
+
+    def walk_ids(self, object, path):
+        if type(object) != dict:
+            return []
+
+        if "value" in object.keys():
+            return [ ".".join(path) ]
+
+        out = []
+        for key in object.keys():
+            out.extend( self.walk_ids(object[key], path + key) )
+
+        return out
+
 class SquibTable(Element):
     pass
 
