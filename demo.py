@@ -26,7 +26,54 @@ class Main:
         self.app.on_startup.append(self.start_background_tasks)
         self.app.on_cleanup.append(self.cleanup_background_tasks)
 
-        self.metadata = { "press": { "ox_fill": { "desc": "Oxidiser Fill", "units": "psi", "value": None, "editable": False, "pin": "PT1", }, "ox_vent": { "desc": "Oxidiser Vent", "units": "psi", "value": None, "editable": False, "pin": "PT2", }, }, "health": { "v_bus":{ "desc": "Quail Voltage Bus", "units": "V", "value": None, "editable": False, }, "current":{ "desc": "Total quail current consumption", "units": "A", "value": None, "editable": False, } } }
+        self.metadata = {
+            "press": {
+                "ox_fill": {
+                    "desc": "Oxidiser Fill",
+                    "unit": "psi",
+                    "value": None,
+                    "editable": False,
+                    "pin": "PT1",
+                },
+                "ox_vent": {
+                    "desc": "Oxidiser Vent",
+                    "unit": "psi",
+                    "value": None,
+                    "editable": False,
+                    "pin": "PT2",
+                },
+            },
+            "valves": {
+                "ox_fill": {
+                    "desc": "testing",
+                    "unit": "bool",
+                    "value": None,
+                    "editable": False,
+                    "pin": "SV1",
+                },
+                "ox_vent": {
+                    "desc": "testing",
+                    "unit": "bool",
+                    "value": None,
+                    "editable": False,
+                    "pin": "SV2",
+                },
+            },
+            "health": {
+                "v_bus": {
+                    "desc": "Quail Voltage Bus",
+                    "unit": "V",
+                    "value": None,
+                    "editable": False,
+                },
+                "current": {
+                    "desc": "Total quail current consumption",
+                    "unit": "A",
+                    "value": None,
+                    "editable": False,
+                }
+            }
+        }
 
     def get_meta(self, path, endpoint=None):
         path = path.split(".")
@@ -35,6 +82,7 @@ class Main:
 
         if endpoint:
             path.append(endpoint)
+        print(path)
 
         node = self.metadata
         for name in path:

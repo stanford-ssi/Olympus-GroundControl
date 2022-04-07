@@ -73,9 +73,9 @@
 
 	<p> Left Axis: </p>
 	<select name="keys" id="left-graph-key" class="graph-dropdown">
-		<option value="rand">random numbers</option>
-		<option value="TC1">TC1 - something</option>
-		<option value="TC0">TC0 - explain</option>
+		{% for item in list_ids %}
+			<option value="{{item.id}}"> {{item.id}} - {{item.desc}} </option>
+		{% endfor %}
 	</select>
 
 	<p> Right Axis: </p>

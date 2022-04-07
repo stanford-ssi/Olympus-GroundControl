@@ -63,7 +63,7 @@ grid-gap: 1rem;
 
 .dashboard-table th,
 .dashboard-table td {
-    padding: 12px 15px;
+    padding: 2px 5px;
     min-height: 30px;
 }
 

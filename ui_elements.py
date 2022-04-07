@@ -6,6 +6,8 @@ from aiofiles import os
 
 from aiohttp import web
 
+import jinja2
+
 class Element:
     """ base class for a node in the widget tree """
     def __init__(self, name):
@@ -57,27 +59,25 @@ class Element:
 class Graph(Element):
     pass
 
-    def calculate_all_ids(self):
-        return self.walk_ids(self.top.metadata, [])
-
-    def walk_ids(self, object, path):
-        if type(object) != dict:
-            return []
-
-        if "value" in object.keys():
-            return [ ".".join(path) ]
-
-        out = []
-        for key in object.keys():
-            out.extend( self.walk_ids(object[key], path + key) )
-
-        return out
 
 class SquibTable(Element):
     pass
 
 class ValveTable(Element):
-    pass
+    def __init__(self, name, line_ids):
+        super().__init__(name)
+        self.line_ids = line_ids
+
+    def render(self):
+        with open("templates/table.valves.template.html") as file:
+            box = jinja2.Template(file.read())
+
+        items = [ {"id":id,
+            "pin":self.top.get_meta(id, "pin"),
+            "desc":self.top.get_meta(id, "desc"), } for id in self.line_ids]
+
+        return box.render( {"list_ids": items, "title": self.name} )
+
 
 class RawSensorTable(Element):
 
@@ -149,7 +149,6 @@ class Page(Element):
         pass
 
     async def get_page(self, request):
-        print("getting")
         return web.Response(text=self.render(), content_type='text/html')
 
 
@@ -162,6 +161,12 @@ class Dashboard(Page):
         self.add_child(
             RawSensorTable("Sensors", ["slate.press.ox_fill",
                                        "slate.press.ox_vent"]
+            )
+        )
+
+        self.add_child(
+            ValveTable("Solenoids", ["slate.valves.ox_fill",
+                                       "slate.valves.ox_vent"]
             )
         )
 
@@ -224,10 +229,30 @@ class Graphs(Page):
         graphs = self.load_template("templates/graphs.template.html")
         template = self.load_template("templates/main.template.html")
 
-        return self.format(template, page = graphs)
+        with open("templates/graphs.template.html") as file:
+            graphs = jinja2.Template(file.read())
+
+        return self.format(template, page = graphs.render( {"list_ids": self.calculate_all_ids() } ))
 
     def add_routes(self):
         self.top.app.router.add_get('/graphs', self.get_page)
+
+    def calculate_all_ids(self):
+        return self.walk_ids(self.top.metadata, [])
+
+    def walk_ids(self, object, path):
+        if type(object) != dict:
+            return []
+
+        if "value" in object.keys():
+            print(object)
+            return [{"id": ".".join(path), "desc": object["desc"] }]
+
+        out = []
+        for key in object.keys():
+            out.extend( self.walk_ids(object[key], path + [key] ) )
+
+        return out
 
 class Configure(Page):
 
