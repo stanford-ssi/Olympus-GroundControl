@@ -15,6 +15,7 @@ socket.on("new", (data) => {
 });
 
 function send_command(params) {
+    socket.emit("cmd", params);
 }
 
 function get_data(path) {

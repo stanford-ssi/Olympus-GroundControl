@@ -107,7 +107,7 @@ class Main:
     def create_socketio_handlers(self):
 
         self.command_sids = []
-        @self.sio.on('command')
+        @self.sio.on('cmd')
         async def command(sid, data):
             print(data)
 

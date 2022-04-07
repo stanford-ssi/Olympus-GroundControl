@@ -22,7 +22,8 @@
                             <td> <p id="{{item.id}}"> None </p> </td>j
                             {# TODO save value for future#}
                             <td> <input type="number" id="{{item.id}}.pulse" step="10" value="100" style="width: 4em"> </td>
-                            <td> <button type="button" class="button"> Pulse </button> </td>
+                            <td> <button type="button" class="button"
+                                onclick="send_command({'{{item.id}}.test':document.getElementById('{{item.id}}.pulse').value})"> Pulse </button> </td>
                             </tr>
 		{% endfor %}
 
