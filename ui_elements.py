@@ -76,7 +76,9 @@ class ValveTable(Element):
             "pin":self.top.get_meta(id, "pin"),
             "desc":self.top.get_meta(id, "desc"), } for id in self.line_ids]
 
-        return box.render( {"list_ids": items, "title": self.name} )
+        test = box.render( {"list_ids": items, "title": self.name} )
+        print(test)
+        return test
 
 
 class RawSensorTable(Element):
@@ -91,7 +93,6 @@ class RawSensorTable(Element):
     <div class="box_header">
       <div class="box_title"> {{title}} </div>
     </div>
-
     <table class="dashboard-table">
       <thead>
         <tr>
