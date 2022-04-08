@@ -1,0 +1,50 @@
+<div class="box">
+    <div class="box_header">
+      <div class="box_title"> {{title}} </div>
+    </div>
+    <table class="dashboard-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>PIN</th>
+          <th>Desc</th>
+          <th>Enabled</th>
+          <th>Fire</th>
+        </tr>
+      </thead>
+      <tbody>
+		{% for item in list_ids %}
+          <tr>
+          <td>{{item.id}}</td>
+          <td>{{item.pin}}</td>
+          <td>{{item.desc}}</td>
+          <td> <input type="checkbox" id="{{item.id}}.check"> </td>
+          <td> <button type="button" class="button" id="{{item.id}}.button" disabled> Fire </button> </td>
+          </tr>
+          <script>
+            check = document.getElementById("{{item.id}}.check")
+            button = document.getElementById("{{item.id}}.button")
+
+            check.onchange = ()  => {
+              button.disabled = !check.checked;
+            }
+
+            button.onclick = () => {
+              if( document.getElementById("{{item.id}}.check").value ){
+                  send_command({'{{item.id}}.value': 1})
+                  button.style.background = "red"
+                  button.innerHTML = "Fired"
+              }
+            }
+          </script>
+		{% endfor %}
+
+      </tbody>
+    </table>
+
+    <!-- <script>
+    new_data_callbacks.push( () => { 
+    {{update_code}}
+    });
+    </script> -->
+</div>
