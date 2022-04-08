@@ -111,6 +111,22 @@ class RawSensorTable(Element):
         print(test)
         return test
 
+class DataTable(Element):
+    def __init__(self, name, line_ids):
+        super().__init__(name)
+        self.line_ids = line_ids
+
+    def render(self):
+        with open("templates/table.data.template.html") as file:
+            box = jinja2.Template(file.read())
+
+        items = [ {"id":id,
+            "unit":self.top.get_meta(id, "unit"),
+            "desc":self.top.get_meta(id, "desc"), } for id in self.line_ids]
+
+        test = box.render( {"list_ids": items, "title": self.name} )
+        print(test)
+        return test
 
 class Page(Element):
 
@@ -149,6 +165,11 @@ class Dashboard(Page):
 
         self.add_child(
             SquibTable("Squibs", ["slate.squibs.engine"]
+            )
+        )
+
+        self.add_child(
+            DataTable("Health", ["slate.health.v_bus", "slate.health.current"]
             )
         )
 
