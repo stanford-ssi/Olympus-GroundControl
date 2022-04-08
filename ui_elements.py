@@ -62,7 +62,19 @@ class Graph(Element):
 
 
 class SquibTable(Element):
-    pass
+    def __init__(self, name, line_ids):
+        super().__init__(name)
+        self.line_ids = line_ids
+
+    def render(self):
+        with open("templates/table.squibs.template.html") as file:
+            box = jinja2.Template(file.read())
+
+        items = [ {"id":id,
+            "pin":self.top.get_meta(id, "pin"),
+            "desc":self.top.get_meta(id, "desc"), } for id in self.line_ids]
+
+        return box.render( {"list_ids": items, "title": self.name} )
 
 class ValveTable(Element):
     def __init__(self, name, line_ids):
@@ -169,6 +181,11 @@ class Dashboard(Page):
         self.add_child(
             ValveTable("Solenoids", ["slate.valves.ox_fill",
                                        "slate.valves.ox_vent"]
+            )
+        )
+
+        self.add_child(
+            SquibTable("Squibs", ["slate.squibs.engine"]
             )
         )
 

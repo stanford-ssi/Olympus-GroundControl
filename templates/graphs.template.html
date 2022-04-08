@@ -11,12 +11,15 @@
 	<script language="javascript" type="text/javascript" src="static/jquery.flot.uiConstants.js"></script>
 	<script type="text/javascript">
 
+
+
 	$(function() {
 
-		var data = [];
+		var right_data = [];
+		var left_data = [];
         var totalPoints = 20;
 
-		var plot = $.plot("#placeholder", [[ [0,1],[1,-1],[2,0] ]], {
+		var plot = $.plot("#placeholder", [[ [0,1] ]], {
 			series: {
                 shadowSize: 0	// Drawing is faster without shadows
 			},
@@ -32,23 +35,34 @@
 
         new_data_callbacks.push( () => {
 			var right_graph_key = document.getElementById("graph-key");
+			var left_graph_key = document.getElementById("left-graph-key");
 
-            // new_point = slate[right_graph_key.value];
             new_point = get_data("slate." + right_graph_key.value + ".value")
-			console.log(new_point)
+            right_data.push(new_point);
 
-            data.push(new_point);
+            left_new_data = get_data("slate." + left_graph_key.value + ".value")
+            left_data.push(left_new_data);
 
-            while (data.length > totalPoints){
-                data.shift();
+            while (right_data.length > totalPoints){
+                right_data.shift();
+            }
+
+            while (left_data.length > totalPoints){
+                left_data.shift();
             }
 
 			var res = [];
-			for (var i = 0; i < data.length; ++i) {
-				res.push([i, data[i]])
+			for (var i = 0; i < right_data.length; ++i) {
+				res.push([i, right_data[i]])
 			}
 
-			plot.setData([res]);
+			var L_res = [];
+			for (var i = 0; i < left_data.length; ++i) {
+				L_res.push([i, left_data[i]])
+			}
+
+			plot.setData([ {"data":  res, "color":"rgb(255, 0, 0)", "lines": {"lineWidth": 2}  },
+						   {"data": L_res, "color":"rgb(0, 0, 255)", "lines": {"lineWidth": 4}  }   ])
             plot.setupGrid(true);
 			plot.draw();
 
@@ -66,9 +80,9 @@
 
 	<p> History: </p>
 	<select name="keys" id="graph-time" class="graph-dropdown">
-		<option value="rand">random numbers</option>
-		<option value="TC1">TC1 - something</option>
-		<option value="TC0">TC0 - explain</option>
+		<option value="TC1">15s</option>
+		<option value="TC0">60s</option>
+		<option value="TC0">5m</option>
 	</select>
 
 	<p> Left Axis: </p>

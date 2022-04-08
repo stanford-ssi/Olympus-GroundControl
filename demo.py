@@ -43,6 +43,15 @@ class Main:
                     "pin": "PT2",
                 },
             },
+            "squibs": {
+                "engine": {
+                    "desc": "light this candle",
+                    "unit": "bool",
+                    "value": 0,
+                    "editable": True,
+                    "pin": "EM1",
+                },
+            },
             "valves": {
                 "ox_fill": {
                     "desc": "testing",
@@ -156,7 +165,8 @@ class Main:
         def update_random_walk(node, path):
             assert "value" in node
             assert "desc" in node
-            node["value"] += random.random() - 0.5
+            if node["unit"] != "bool":
+                node["value"] += random.random() - 0.5
             return node
 
         def get_value_only(node, path):

@@ -30,11 +30,11 @@ function update_slate(update, meta) {
 }
 
 function send_command(params) {
+    //TODO: check if it is editable
     socket.emit("cmd", params);
 }
 
 function get_data(path) {
-    console.log(path)
     path = path.split(".")
     if (path[0] != "slate") {
         return null
