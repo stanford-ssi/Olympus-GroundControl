@@ -31,14 +31,14 @@ class Main:
                 "ox_fill": {
                     "desc": "Oxidiser Fill",
                     "unit": "psi",
-                    "value": None,
+                    "value": 0,
                     "editable": False,
                     "pin": "PT1",
                 },
                 "ox_vent": {
                     "desc": "Oxidiser Vent",
                     "unit": "psi",
-                    "value": None,
+                    "value": 0,
                     "editable": False,
                     "pin": "PT2",
                 },
@@ -47,14 +47,14 @@ class Main:
                 "ox_fill": {
                     "desc": "testing",
                     "unit": "bool",
-                    "value": None,
+                    "value": 0,
                     "editable": False,
                     "pin": "SV1",
                 },
                 "ox_vent": {
                     "desc": "testing",
                     "unit": "bool",
-                    "value": None,
+                    "value": 0,
                     "editable": False,
                     "pin": "SV2",
                 },
@@ -63,13 +63,13 @@ class Main:
                 "v_bus": {
                     "desc": "Quail Voltage Bus",
                     "unit": "V",
-                    "value": None,
+                    "value": 0,
                     "editable": False,
                 },
                 "current": {
                     "desc": "Total quail current consumption",
                     "unit": "A",
-                    "value": None,
+                    "value": 0,
                     "editable": False,
                 }
             }
@@ -153,14 +153,19 @@ class Main:
 
     async def push_serial_data(self):
 
-        def get_random_value(node, path):
+        def update_random_walk(node, path):
             assert "value" in node
             assert "desc" in node
-            return random.random()
+            node["value"] += random.random() - 0.5
+            return node
+
+        def get_value_only(node, path):
+            return node["value"]
+
         while 1:
-            await asyncio.sleep(0.05)
-            new_slate = self.transform_meta(get_random_value)
-            await self.sio.emit("new", new_slate)
+            await asyncio.sleep(0.1)
+            self.metadata = self.transform_meta(update_random_walk)
+            await self.sio.emit("new", self.transform_meta(get_value_only))
 
 
     async def start_background_tasks(self, app):
