@@ -5,6 +5,7 @@ import aiofiles
 from aiofiles import os
 
 from aiohttp import web
+import json
 
 import jinja2
 
@@ -176,7 +177,7 @@ class Dashboard(Page):
         template = self.load_template("templates/main.template.html")
 
         dashboard_done = self.format(dashboard, content = "\n\n".join(child.render() for child in self.nodes))
-        return self.format(template, page = dashboard_done)
+        return self.format(template, page = dashboard_done, meta= json.dumps(self.top.metadata))
 
 
     def add_routes(self):
@@ -189,7 +190,7 @@ class Messages(Page):
         messages = self.load_template("templates/messages.template.html")
         template = self.load_template("templates/main.template.html")
 
-        return self.format(template, page = messages)
+        return self.format(template, page = messages, meta= json.dumps(self.top.metadata))
 
     def add_routes(self):
         self.top.app.router.add_get('/messages', self.get_page)
@@ -199,7 +200,7 @@ class Maps(Page):
         map = self.load_template("templates/map.template.html")
         template = self.load_template("templates/main.template.html")
 
-        return self.format(template, page = map)
+        return self.format(template, page = map, meta= json.dumps(self.top.metadata))
 
     def add_routes(self):
         self.top.app.router.add_get('/maps', self.get_page)
@@ -233,7 +234,7 @@ class Graphs(Page):
         with open("templates/graphs.template.html") as file:
             graphs = jinja2.Template(file.read())
 
-        return self.format(template, page = graphs.render( {"list_ids": self.calculate_all_ids() } ))
+        return self.format(template, page = graphs.render( {"list_ids": self.calculate_all_ids() } ), meta= json.dumps(self.top.metadata))
 
     def add_routes(self):
         self.top.app.router.add_get('/graphs', self.get_page)

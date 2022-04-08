@@ -7,12 +7,27 @@ new_data_callbacks = [];
 // new_data_callbacks = [() => { console.log("got data", slate) }];
 slate = {};
 
-socket.on("new", (data) => {
-    slate = data;
+socket.on("new", (update) => {
+    update_slate(update, slate)
     for (func of new_data_callbacks) {
         func();
     }
 });
+
+
+function update_slate(update, meta) {
+    // console.log(update, meta)
+
+    if ("value" in meta){
+        meta["value"] = update
+        return
+    }
+
+    for (key in meta) {
+        update_slate(update[key], meta[key])
+    }
+    
+}
 
 function send_command(params) {
     socket.emit("cmd", params);

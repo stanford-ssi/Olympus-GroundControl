@@ -127,20 +127,40 @@ class Main:
                 self.command_sids.append(sid)
                 await self.sio.emit("auth")
 
+
+    def meta_endpoints(self, node=None):
+        if node is None:
+            node = self.metadata
+
+        if "value" in node.keys():
+            yield node
+
+        for key in node.keys():
+            if node[key] is dict:
+                yield from self.meta_endpoints(node)
+
+    def transform_meta(self, function, node=None, path=None):
+        if node is None:
+            node = self.metadata
+            path = ["slate"]
+
+        if "value" in node.keys():
+            return function(node, path)
+
+        if type(node) == dict:
+            return {key: self.transform_meta(function, node[key], path + [key] ) for key in node.keys()}
+    
+
     async def push_serial_data(self):
-        i = 0;
+
+        def get_random_value(node, path):
+            assert "value" in node
+            assert "desc" in node
+            return random.random()
         while 1:
-            await asyncio.sleep(1)
-            i = (i +1)%100
-            await self.sio.emit("new", {"magic": [1,2,3],
-                                        "press" : {"ox_fill": {"value": random.random()}, "ox_vent": {"value": random.random()}},
-                                        "rand": random.random(),
-                                        "TC1": 70 + 5*random.random(),
-                                        "TC0": i,
-                                        "health": {"v": {
-                                            "value": random.random(),
-                                            "desc": "Bus Voltage",
-                                        }}})
+            await asyncio.sleep(0.01)
+            new_slate = self.transform_meta(get_random_value)
+            await self.sio.emit("new", new_slate)
 
 
     async def start_background_tasks(self, app):
