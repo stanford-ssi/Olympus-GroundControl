@@ -31,11 +31,12 @@
 		});
 
         new_data_callbacks.push( () => {
+			var right_graph_key = document.getElementById("graph-key");
 
-			var select = document.getElementById("graph-key");
-			// console.log
+            // new_point = slate[right_graph_key.value];
+            new_point = get_data("slate." + right_graph_key.value + ".value")
+			console.log(new_point)
 
-            new_point = slate[select.value];
             data.push(new_point);
 
             while (data.length > totalPoints){
@@ -46,7 +47,6 @@
 			for (var i = 0; i < data.length; ++i) {
 				res.push([i, data[i]])
 			}
-            console.log("here", res);
 
 			plot.setData([res]);
             plot.setupGrid(true);
@@ -80,9 +80,9 @@
 
 	<p> Right Axis: </p>
 	<select name="keys" id="graph-key" class="graph-dropdown">
-		<option value="rand">random numbers</option>
-		<option value="TC1">TC1 - something</option>
-		<option value="TC0">TC0 - explain</option>
+		{% for item in list_ids %}
+			<option value="{{item.id}}"> {{item.id}} - {{item.desc}} </option>
+		{% endfor %}
 	</select>
 
 	</div>
@@ -98,6 +98,7 @@
        input.value = Cookies.get("graph-key")
    }
    input.onchange = function () {
+		console.log(input.value)
 		Cookies.set("graph-key", input.value)
     }
 

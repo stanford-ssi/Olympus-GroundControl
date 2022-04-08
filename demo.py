@@ -158,7 +158,7 @@ class Main:
             assert "desc" in node
             return random.random()
         while 1:
-            await asyncio.sleep(0.01)
+            await asyncio.sleep(0.05)
             new_slate = self.transform_meta(get_random_value)
             await self.sio.emit("new", new_slate)
 
