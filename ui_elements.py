@@ -93,60 +93,23 @@ class ValveTable(Element):
         print(test)
         return test
 
-
 class RawSensorTable(Element):
-
     def __init__(self, name, line_ids):
         super().__init__(name)
         self.line_ids = line_ids
 
     def render(self):
-        main = """
-  <div class="box">
-    <div class="box_header">
-      <div class="box_title"> {{title}} </div>
-    </div>
-    <table class="dashboard-table">
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>PIN</th>
-          <th>Desc</th>
-          <th>Value</th>
-          <th>Units</th>
-        </tr>
-      </thead>
-      <tbody>
-        {{content}}
-      </tbody>
-    </table>
+        with open("templates/table.sensors.template.html") as file:
+            box = jinja2.Template(file.read())
 
-    <script>
-    new_data_callbacks.push( () => { 
-    {{update_code}}
-    });
-    </script>
-</div>
-"""
+        items = [ {"id":id,
+            "pin":self.top.get_meta(id, "pin"),
+            "unit":self.top.get_meta(id, "unit"),
+            "desc":self.top.get_meta(id, "desc"), } for id in self.line_ids]
 
-
-        lines = []
-        update_code = []
-        for id in self.line_ids:
-            line = f"""
-                            <tr>
-                            <td>{id}</td>
-                            <td>{self.top.get_meta(id, "pin")}</td>
-                            <td>{self.top.get_meta(id, "desc")}</td>
-                            <td> <p id={id}> None </p> </td>
-                            <td>{self.top.get_meta(id, "unit")}</td>
-                            </tr>
-                    """
-            lines.append(line)
-
-            update_code.append( f"document.getElementById( '{id}' ).innerHTML = {id}.value" )
-
-        return self.format(main, title = self.name, content = "\n".join(lines), update_code="\n".join(update_code))
+        test = box.render( {"list_ids": items, "title": self.name} )
+        print(test)
+        return test
 
 
 class Page(Element):

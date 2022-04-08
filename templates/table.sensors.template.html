@@ -1,0 +1,36 @@
+<div class="box">
+    <div class="box_header">
+      <div class="box_title"> {{title}} </div>
+    </div>
+    <table class="dashboard-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>PIN</th>
+          <th>Desc</th>
+          <th>Value</th>
+          <th>Unit</th>
+        </tr>
+      </thead>
+      <tbody>
+		{% for item in list_ids %}
+                            <tr>
+                            <td>{{item.id}}</td>
+                            <td>{{item.pin}}</td>
+                            <td>{{item.desc}}</td>
+                            <td> <p id="{{item.id}}"> None </p> </td>
+                            <td>{{item.unit}}</td>
+                            </tr>
+		{% endfor %}
+
+      </tbody>
+    </table>
+
+    <script>
+    new_data_callbacks.push( () => { 
+      {% for item in list_ids %}
+              document.getElementById('{{item.id}}').innerHTML = {{item.id}}.value
+      {% endfor %}
+    });
+    </script>
+</div>
