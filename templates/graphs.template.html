@@ -36,6 +36,9 @@
         new_data_callbacks.push( () => {
 			var right_graph_key = document.getElementById("graph-key");
 			var left_graph_key = document.getElementById("left-graph-key");
+			var graph_time = document.getElementById("graph-time");
+
+			totalPoints = graph_time.value
 
             new_point = get_data("slate." + right_graph_key.value + ".value")
             right_data.push(new_point);
@@ -80,9 +83,10 @@
 
 	<p> History: </p>
 	<select name="keys" id="graph-time" class="graph-dropdown">
-		<option value="TC1">15s</option>
-		<option value="TC0">60s</option>
-		<option value="TC0">5m</option>
+		<option value="30">5s</option>
+		<option value="150">15s</option>
+		<option value="600">60s</option>
+		<option value="3000">5m</option>
 	</select>
 
 	<p> Left Axis: </p>

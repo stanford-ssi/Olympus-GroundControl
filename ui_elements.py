@@ -279,7 +279,7 @@ class Configure(Page):
         configure = self.load_template("templates/configure.template.html")
         template = self.load_template("templates/main.template.html")
 
-        return self.format(template, page = configure)
+        return self.format(template, page = configure, meta = self.top.metadata)
 
     def add_routes(self):
         self.top.app.router.add_get('/configure', self.get_page)
