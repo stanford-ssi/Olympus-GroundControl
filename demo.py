@@ -11,6 +11,7 @@ import aiofiles
 from aiofiles import os
 
 from ui_elements import Dashboard, Messages, Maps, Graphs, Configure
+from database import DataBase
 
 class Main:
 
@@ -84,6 +85,7 @@ class Main:
                 }
             }
         }
+        self.database = DataBase(self.metadata, self)
 
     def start(self):
         web.run_app(self.app, host="localhost", port=8080)
