@@ -5,6 +5,7 @@ import aiohttp
 import socketio
 import asyncio
 import random
+import secrets
 
 import aiofiles
 from aiofiles import os
@@ -115,26 +116,42 @@ class Main:
 
     def create_socketio_handlers(self):
 
-        self.command_sids = []
+        self.authenticated_ids = []
+
         @self.sio.on('cmd')
         async def command(sid, data):
+            print(self.authenticated_ids)
+            if data.get("auth") not in self.authenticated_ids:
+                print("not allow to execute")
+                return
+
+            print("executing command")
             print(data)
 
-        @self.sio.event
+        @self.sio.on("connect")
         async def connect(sid, environ, auth):
             print("connected new client")
-            if sid in self.command_sids:
-                await self.sio.emit("auth")
 
+        @self.sio.on("de-auth")
+        async def de_auth(sid, data):
+            self.authenticated_ids.remove(data)
+            print("deauthenticated", data)
+
+        # WARNING: This isn't real security as socketio isn't encrypted
+        # anyone snooping the connection can find out the super secret passcode
+        # this more more to prevent someone accidentaly sending a stupid command 
+        # in general the entire network is trusted and not internet conencted 
         @self.sio.on("try-auth")
         async def try_auth(sid, data):
-            print("got message", data)
-            if sid in self.command_sids:
-                await self.sio.emit("auth")
-            if data == "MAGIC":
-                print("authenticated")
-                self.command_sids.append(sid)
-                await self.sio.emit("auth")
+            print("trying to authenticate", data)
+            if data != "MAGIC":
+                print("Bad pass!", data)
+                return 
+
+            new_id = secrets.token_urlsafe(32)
+            print("authenticated", new_id)
+            self.authenticated_ids.append(new_id)
+            await self.sio.emit("auth", new_id)
 
 
     def meta_endpoints(self, node=None):

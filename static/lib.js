@@ -29,9 +29,17 @@ function update_slate(update, meta) {
     
 }
 
-function send_command(params) {
+function send_command(cmd) {
     //TODO: check if it is editable
-    socket.emit("cmd", params);
+
+    cmd['auth'] = Cookies.get('auth')
+
+    if(Cookies.get('commander') ){
+      socket.emit("cmd", cmd);
+    }else{
+      alert("Observers can't send commands");
+    }
+
 }
 
 function get_data(path) {

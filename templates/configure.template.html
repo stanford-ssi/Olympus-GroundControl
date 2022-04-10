@@ -5,7 +5,6 @@
 <script>
 
   function send_command_button()  {
-    console.log("magci")
     var textbox = document.getElementById("command-text")
 
     try {
@@ -15,19 +14,9 @@
       return;
     }
 
-    if(Cookies.get('commander') ){
-      socket.emit("command", json_cmd);
-    }else{
-      alert("Observers can't send commands");
-    }
+    send_command(json_cmd)
 
   };
-
-  // not real security 
-  function set_commander(commander) {
-    Cookies.set('commander', commander ? "1" : "")
-    document.getElementById("topbar-role").innerHTML = commander ? "Role: Commander" : "Role: Observer";
-  }
 
 
 </script>
@@ -35,10 +24,57 @@
 <h2 class="page-title"> Configuration </h2>
 <div class="configure-page">
 
-      <div class="config-line radioswitch">
-        <input type="radio" name="role" id="role-commander" onclick="set_commander(true)"> <label for="role-commander">Commander</label>
-        <input type="radio" name="role" id="role-observer" onclick="set_commander(false)"> <label for="role-observer">Observer</label>
+
+    <div class="config-line">
+      <div id="observer-option">
+        <span> Observer </span>
+        <input type="text" id="pass-text">
+        <button type="button" id="auth-button" onclick="send_command_button()">Authenticate</button>
       </div>
+
+      <div id="commander-option">
+        <span> Commander </span>
+        <button type="button" id="deauth-button" onclick="send_command_button()">Deauthenticate</button>
+      </div>
+    </div>
+
+
+    <script>
+      document.getElementById('auth-button').onclick = () => {
+        pass = document.getElementById("pass-text").value
+        socket.emit("try-auth", pass);
+      }
+
+      socket.on("auth", (data) => {
+          Cookies.set('auth', data)
+          document.getElementById("topbar-role").innerHTML = "Role: Commander";
+
+          document.getElementById('observer-option').hidden = true;
+          document.getElementById('commander-option').hidden = false;
+      });
+
+      document.getElementById('deauth-button').onclick = () => {
+          socket.emit("de-auth", Cookies.get('auth'));
+          Cookies.remove('auth')
+
+          document.getElementById("topbar-role").innerHTML = "Role: Observer";
+
+          document.getElementById('observer-option').hidden = false;
+          document.getElementById('commander-option').hidden = true;
+      }
+
+
+
+      if(Cookies.get('auth')){
+          document.getElementById('observer-option').hidden = true;
+          document.getElementById('commander-option').hidden = false;
+        }else{
+          document.getElementById('observer-option').hidden = false;
+          document.getElementById('commander-option').hidden = true;
+        }
+
+    </script>
+
 
     <div class="config-line">
       <button type="button">Tare Load Cell 1</button>
@@ -55,11 +91,5 @@
       <button type="button" id="button-command" onclick="send_command_button()">Send Command</button>
     </div>
   
-    <script>
-
-      var radio = Cookies.get('commander') ? document.getElementById('role-commander') : document.getElementById('role-observer')
-      radio.checked = true;
-
-    </script>
   
   </div>
