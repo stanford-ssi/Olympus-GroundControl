@@ -4,15 +4,20 @@
 height: 100%;
 width: 100%;
 
-display: grid;
-grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+/* column-count: 2 */
+columns: 500px;
+
+/* display: grid; */
+/* grid-template-columns: repeat(auto-fit, minmax(500px, 1fr)); */
+/* grid-template-rows: auto auto auto; */
+
 /* grid-template-columns: 1fr 1fr; */
-grid-template-rows: auto auto auto;
-grid-gap: 1rem;
 
 }
 
 .box {
+    break-inside: avoid;
+
     border: 1px solid #CCC;
     background: #FFF;
     margin: 8px;
@@ -42,7 +47,7 @@ grid-gap: 1rem;
 
 .box_title {
     color: black;
-    font-size: 16pt;
+    font-size: 12pt;
     font-style: bold;
 }
 

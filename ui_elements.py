@@ -60,6 +60,15 @@ class Element:
 class Graph(Element):
     pass
 
+    def render(self):
+        with open("templates/graphs.template.html") as file:
+            graphs = jinja2.Template(file.read())
+
+        def get_id_and_desc(node, path):
+            return {"id": ".".join(path[1:]), "desc": node["desc"] }
+
+        return graphs.render( list_ids =  self.top.flat_meta(get_id_and_desc), title = self.name )
+
 
 class SquibTable(Element):
     def __init__(self, name, line_ids):
@@ -170,6 +179,10 @@ class Dashboard(Page):
             )
         )
 
+        # self.add_child(
+        #     Graph("TEST")
+        # )
+
     def render(self):
         dashboard = self.load_template("templates/dashboard.template.html")
         template = self.load_template("templates/main.template.html")
@@ -235,7 +248,7 @@ class Graphs(Page):
         def get_id_and_desc(node, path):
             return {"id": ".".join(path[1:]), "desc": node["desc"] }
 
-        return self.format(template, page = graphs.render( {"list_ids": self.top.flat_meta(get_id_and_desc) } ), meta= json.dumps(self.top.metadata))
+        return self.format(template, page = graphs.render( list_ids =  self.top.flat_meta(get_id_and_desc), title = self.name ), meta= json.dumps(self.top.metadata))
 
     def add_routes(self):
         self.top.app.router.add_get('/graphs', self.get_page)

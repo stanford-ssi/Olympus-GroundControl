@@ -89,6 +89,7 @@ class Main:
         web.run_app(self.app, host="localhost", port=8080)
 
     def create_pages(self):
+        # Don't forget to add your page the the sidebar!
         self.dashboard = Dashboard("Dashboard", self)
         self.messages = Messages("test", self)
         self.maps = Maps("test", self)
