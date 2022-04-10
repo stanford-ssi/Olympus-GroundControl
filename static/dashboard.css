@@ -27,22 +27,28 @@ columns: 500px;
 
     height: auto;
 
-    padding-bottom: 10px;
+    /* padding-bottom: 10px; */
 }
 
 .box_header {
+
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+
+    /* justify-content: space-between; */
+    justify-content: center;
     align-items: center;
 
-    padding: 10px 20px;
+    padding: 5px 10px;
+
     border-style: solid;
     border-width: 0px 0px 1px 0px;
     border-color: #CCC;
+
     /* margin: 10px; */
     background: #EEE;
-    margin-bottom: 10px;
+
+    /* margin-bottom: 10px; */
 }
 
 .box_title {
