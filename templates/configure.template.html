@@ -1,26 +1,6 @@
 
   <link rel="stylesheet" href="static/configure.css">
 
-
-<script>
-
-  function send_command_button()  {
-    var textbox = document.getElementById("command-text")
-
-    try {
-        var json_cmd = JSON.parse(textbox.value);
-    } catch (e) {
-      alert("Invalid JSON command");
-      return;
-    }
-
-    send_command(json_cmd)
-
-  };
-
-
-</script>
-
 <h2 class="page-title"> Configuration </h2>
 <div class="configure-page">
 
@@ -82,8 +62,8 @@
     </div>
 
     <div class="config-line">
-      <button type="button">Reset E-match status</button>
-      <button type="button">Reboot Quail</button>
+      <button type="button" onlick="send_command({'slate.health.ematch_reset: 1'})" >Reset E-match status</button>
+      <button type="button" onlick="send_command({'slate.health.reboot: 1'})">Reboot Quail</button>
     </div>
 
     <div class="config-line">
@@ -91,5 +71,20 @@
       <button type="button" id="button-command" onclick="send_command_button()">Send Command</button>
     </div>
   
+    <script>
+      function send_command_button()  {
+        var textbox = document.getElementById("command-text")
+
+        try {
+            var json_cmd = JSON.parse(textbox.value);
+        } catch (e) {
+          alert("Invalid JSON command");
+          return;
+        }
+
+        send_command(json_cmd)
+
+      };
+    </script>
   
   </div>
