@@ -90,7 +90,6 @@ class ValveTable(Element):
             "desc":self.top.get_meta(id, "desc"), } for id in self.line_ids]
 
         test = box.render( {"list_ids": items, "title": self.name} )
-        print(test)
         return test
 
 class RawSensorTable(Element):
@@ -108,7 +107,6 @@ class RawSensorTable(Element):
             "desc":self.top.get_meta(id, "desc"), } for id in self.line_ids]
 
         test = box.render( {"list_ids": items, "title": self.name} )
-        print(test)
         return test
 
 class DataTable(Element):
@@ -125,7 +123,6 @@ class DataTable(Element):
             "desc":self.top.get_meta(id, "desc"), } for id in self.line_ids]
 
         test = box.render( {"list_ids": items, "title": self.name} )
-        print(test)
         return test
 
 class Page(Element):
@@ -235,27 +232,13 @@ class Graphs(Page):
         with open("templates/graphs.template.html") as file:
             graphs = jinja2.Template(file.read())
 
-        return self.format(template, page = graphs.render( {"list_ids": self.calculate_all_ids() } ), meta= json.dumps(self.top.metadata))
+        def get_id_and_desc(node, path):
+            return {"id": ".".join(path[1:]), "desc": node["desc"] }
+
+        return self.format(template, page = graphs.render( {"list_ids": self.top.flat_meta(get_id_and_desc) } ), meta= json.dumps(self.top.metadata))
 
     def add_routes(self):
         self.top.app.router.add_get('/graphs', self.get_page)
-
-    def calculate_all_ids(self):
-        return self.walk_ids(self.top.metadata, [])
-
-    def walk_ids(self, object, path):
-        if type(object) != dict:
-            return []
-
-        if "value" in object.keys():
-            print(object)
-            return [{"id": ".".join(path), "desc": object["desc"] }]
-
-        out = []
-        for key in object.keys():
-            out.extend( self.walk_ids(object[key], path + [key] ) )
-
-        return out
 
 class Configure(Page):
 

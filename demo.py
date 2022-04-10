@@ -85,25 +85,6 @@ class Main:
             }
         }
 
-    def get_meta(self, path, endpoint=None):
-        path = path.split(".")
-        assert path[0] == "slate"
-        path.pop(0)
-
-        if endpoint:
-            path.append(endpoint)
-        print(path)
-
-        node = self.metadata
-        for name in path:
-            try:
-                node = node[name]
-            except KeyError:
-                return "null"
-
-        print(node)
-        return node
-
     def start(self):
         web.run_app(self.app, host="localhost", port=8080)
 
@@ -153,17 +134,36 @@ class Main:
             self.authenticated_ids.append(new_id)
             await self.sio.emit("auth", new_id)
 
+    def get_meta(self, path, endpoint=None):
+        path = path.split(".")
+        assert path[0] == "slate"
+        path.pop(0)
 
-    def meta_endpoints(self, node=None):
+        if endpoint:
+            path.append(endpoint)
+
+        node = self.metadata
+        for name in path:
+            try:
+                node = node[name]
+            except KeyError:
+                return "null"
+
+        return node
+
+    def flat_meta(self, function, node=None, path=None):
         if node is None:
             node = self.metadata
+            path = ["slate"]
 
         if "value" in node.keys():
-            yield node
+            return [ function(node, path) ]
 
-        for key in node.keys():
-            if node[key] is dict:
-                yield from self.meta_endpoints(node)
+        if type(node) == dict:
+            list_of_lists = [ self.flat_meta(function, node[key], path + [key] ) for key in node.keys() ]
+            return [item for sublist in list_of_lists for item in sublist]
+
+        return []
 
     def transform_meta(self, function, node=None, path=None):
         if node is None:
