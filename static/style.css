@@ -76,9 +76,7 @@ body {
 .sidenav {
   flex-basis: auto;
   flex-grow: 1;
-
-  /* min-height: 100%; */
-  /* height: 100%; */
+  height: 100%;
 
   width: auto; 
 
@@ -116,7 +114,7 @@ body {
   }
 
   .main-content {
-    /* trigger wrapping */
+    /* trigger wrapping always */
     min-inline-size: 100%;
 
   }
