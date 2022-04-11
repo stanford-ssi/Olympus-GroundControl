@@ -65,7 +65,9 @@
 				L_res.push([i, left_data[i]])
 			}
 
-			plot.setData([ {"data":  res, "color":"rgb(255, 0, 0)", "lines": {"lineWidth": 2}  },
+			//first line is to ensure zero is always shown on screen
+			plot.setData([ {"data":  [[0,0]], "lines": {"lineWidth": 0}  },
+						   {"data":  res, "color":"rgb(255, 0, 0)", "lines": {"lineWidth": 2}  },
 						   {"data": L_res, "color":"rgb(0, 0, 255)", "lines": {"lineWidth": 4}  }   ])
             plot.setupGrid(true);
 			plot.draw();
