@@ -4,8 +4,9 @@
 <head>
     <link rel="stylesheet" href="static/normalize.min.css">
     <link rel="stylesheet" href="static/style.css">
-
     <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 
 <body>
@@ -19,11 +20,29 @@
             <img src="static/ssi_logo.png" alt="SSI Logo" class="ssi-logo">
         </a>
         <p class="topbar_elm">Olympus Mission Control</p>
+
+        <div id="hamburger-button">
+            <i class="fa fa-bars" style="color: white;"></i>
+        </div>
+        <script>
+            document.getElementById("hamburger-button").onclick = () => {
+                console.log('testin');
+                elem = document.getElementById("sidenav-bar");
+                if (elem.style.display === "none") {
+                        elem.style.display = "flex";
+                } else {
+                    elem.style.display = "none";
+                }
+            }
+        </script>
+
+
         <p class="topbar_elm" id="topbar-role" style="margin-left: auto;">Role: Observer</p>
     </div>
 
     <div class="page-content">
-        <div class="sidenav">
+
+        <div class="sidenav" id="sidenav-bar">
             <a href="/dashboard">Dashboard</a>
             <a href="#">Sequencing</a>
             <a href="/graphs">Graphs</a>
