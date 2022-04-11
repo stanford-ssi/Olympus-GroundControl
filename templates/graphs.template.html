@@ -66,6 +66,7 @@
 			}
 
 			//first line is to ensure zero is always shown on screen
+			plot.resize();
 			plot.setData([ {"data":  [[0,0]], "lines": {"lineWidth": 0}  },
 						   {"data":  res, "color":"rgb(255, 0, 0)", "lines": {"lineWidth": 2}  },
 						   {"data": L_res, "color":"rgb(0, 0, 255)", "lines": {"lineWidth": 4}  }   ])

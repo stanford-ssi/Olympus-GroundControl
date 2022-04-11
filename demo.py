@@ -86,6 +86,7 @@ class Main:
             }
         }
         self.database = DataBase(self.metadata, self)
+        self.history = {key: [] for key in  self.flat_meta( lambda node, path: ".".join(path) ) }
 
     def start(self):
         web.run_app(self.app, host="localhost", port=8080)
@@ -107,11 +108,23 @@ class Main:
             print(self.authenticated_ids)
             if data.get("auth") not in self.authenticated_ids:
                 print("not allow to execute")
-                await self.sio.emit("bad-auth")
+                await self.sio.emit("bad-auth", room=sid)
                 return
 
-            print("executing command")
-            print(data)
+            print("executing command", data)
+
+        @self.sio.on("get-data")
+        async def get_data(sid, data):
+            print(self.history)
+            return
+            last_n = data["last_n"]
+
+            out = {}
+            for id in data["ids"]:
+                out[id] = self.history[id][-last_n:]
+
+            print(out)
+            await self.sio.emit("deliver-data", out, room=sid)
 
         @self.sio.on("de-auth")
         async def de_auth(sid, data):
@@ -124,15 +137,15 @@ class Main:
         # in general the entire network is trusted and not internet conencted 
         @self.sio.on("try-auth")
         async def try_auth(sid, data):
-            print("trying to authenticate", data)
             if data != "MAGIC":
-                await self.sio.emit("bad-auth")
+                await self.sio.emit("bad-auth", room=sid)
+                print("invalid")
                 return 
 
             new_id = secrets.token_urlsafe(32)
             print("authenticated", new_id)
             self.authenticated_ids.append(new_id)
-            await self.sio.emit("auth", new_id)
+            await self.sio.emit("auth", new_id, room=sid)
 
     def get_meta(self, path, endpoint=None):
         path = path.split(".")
@@ -192,6 +205,12 @@ class Main:
         while 1:
             await asyncio.sleep(0.1)
             self.metadata = self.transform_meta(update_random_walk)
+            for key, value in self.flat_meta( lambda node, path: (".".join(path), node["value"]) ):
+                self.history[key].append(value)
+
+                while len(self.history[key]) > 10000:
+                    self.history[key].pop()
+
             await self.sio.emit("new", self.transform_meta(get_value_only))
 
 
