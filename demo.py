@@ -115,15 +115,15 @@ class Main:
 
         @self.sio.on("get-data")
         async def get_data(sid, data):
-            print(self.history)
-            return
-            last_n = data["last_n"]
+            last_n = int(data["last_n"])
 
+            # print(self.history)
+            # print(data)
             out = {}
             for id in data["ids"]:
-                out[id] = self.history[id][-last_n:]
+                out[id] = self.history["slate." + id][-last_n:]
 
-            print(out)
+            # print(out)
             await self.sio.emit("deliver-data", out, room=sid)
 
         @self.sio.on("de-auth")
@@ -139,7 +139,6 @@ class Main:
         async def try_auth(sid, data):
             if data != "MAGIC":
                 await self.sio.emit("bad-auth", room=sid)
-                print("invalid")
                 return 
 
             new_id = secrets.token_urlsafe(32)

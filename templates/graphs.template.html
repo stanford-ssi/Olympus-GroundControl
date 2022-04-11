@@ -20,9 +20,20 @@
 		var left_data = [];
         var totalPoints = 20;
 
+
+		socket.on("deliver-data", (data) => {
+			console.log("got data", data)
+
+			var right_graph_key = document.getElementById("right-graph-key").value;
+			var left_graph_key = document.getElementById("left-graph-key").value;
+
+			right_data = data[right_graph_key];
+			left_data = data[left_graph_key];
+      });
+
 		var plot = $.plot("#placeholder", [[ [0,1] ]], {
 			series: {
-                shadowSize: 0	// Drawing is faster without shadows
+                shadowSize: 0
 			},
 			yaxis: {
                 autoScale: 'loose',
@@ -34,26 +45,7 @@
 			}
 		});
 
-        new_data_callbacks.push( () => {
-			var right_graph_key = document.getElementById("graph-key");
-			var left_graph_key = document.getElementById("left-graph-key");
-			var graph_time = document.getElementById("graph-time");
-
-			totalPoints = graph_time.value
-
-            new_point = get_data("slate." + right_graph_key.value + ".value")
-            right_data.push(new_point);
-
-            left_new_data = get_data("slate." + left_graph_key.value + ".value")
-            left_data.push(left_new_data);
-
-            while (right_data.length > totalPoints){
-                right_data.shift();
-            }
-
-            while (left_data.length > totalPoints){
-                left_data.shift();
-            }
+		function replot() {
 
 			var res = [];
 			for (var i = 0; i < right_data.length; ++i) {
@@ -64,14 +56,41 @@
 			for (var i = 0; i < left_data.length; ++i) {
 				L_res.push([i, left_data[i]])
 			}
-
 			//first line is to ensure zero is always shown on screen
 			plot.resize();
 			plot.setData([ {"data":  [[0,0]], "lines": {"lineWidth": 0}  },
 						   {"data":  res, "color":"rgb(255, 0, 0)", "lines": {"lineWidth": 2}  },
-						   {"data": L_res, "color":"rgb(0, 0, 255)", "lines": {"lineWidth": 4}  }   ])
+						   {"data": L_res, "color":"rgb(0, 0, 255)", "lines": {"lineWidth": 2}  }   ])
             plot.setupGrid(true);
 			plot.draw();
+		}
+
+        new_data_callbacks.push( () => {
+			var right_graph_key = document.getElementById("right-graph-key").value;
+			var left_graph_key = document.getElementById("left-graph-key").value;
+			var graph_time = document.getElementById("graph-time");
+
+			totalPoints = graph_time.value
+
+			if( left_data.length < totalPoints || right_data.length < totalPoints ){
+				socket.emit("get-data", {"ids": [right_graph_key, left_graph_key], "last_n": totalPoints})	
+			}
+
+            new_point = get_data("slate." + right_graph_key + ".value")
+            right_data.push(new_point);
+
+            left_new_data = get_data("slate." + left_graph_key + ".value")
+            left_data.push(left_new_data);
+
+            while (right_data.length > totalPoints){
+                right_data.shift();
+            }
+
+            while (left_data.length > totalPoints){
+                left_data.shift();
+            }
+
+			replot();
 
         })
 
@@ -99,15 +118,15 @@
 			<option value="3000">5m</option>
 		</select>
 
-		<span> Left Axis: </span>
+		<span> Blue: </span>
 		<select name="keys" id="left-graph-key" class="graph-dropdown">
 			{% for item in list_ids %}
 				<option value="{{item.id}}"> {{item.id}} - {{item.desc}} </option>
 			{% endfor %}
 		</select>
 
-		<span> Right Axis: </span>
-		<select name="keys" id="graph-key" class="graph-dropdown">
+		<span> Red: </span>
+		<select name="keys" id="right-graph-key" class="graph-dropdown">
 			{% for item in list_ids %}
 				<option value="{{item.id}}"> {{item.id}} - {{item.desc}} </option>
 			{% endfor %}
@@ -121,14 +140,35 @@
 
 	<script>
 
-   var input = document.getElementById('graph-key');
-   if (Cookies.get("graph-key")) {
-       input.value = Cookies.get("graph-key")
+   var right = document.getElementById('right-graph-key');
+   var left = document.getElementById('left-graph-key');
+   var time = document.getElementById('graph-time');
+
+   if (Cookies.get("right-graph-key")) {
+       right.value = Cookies.get("right-graph-key")
    }
-   input.onchange = function () {
-		console.log(input.value)
-		Cookies.set("graph-key", input.value)
+
+   if (Cookies.get("left-graph-key")) {
+       left.value = Cookies.get("left-graph-key")
+   }
+
+   if (Cookies.get("graph-time")) {
+       time.value = Cookies.get("graph-time")
+   }
+
+   update_graph = function () {
+		Cookies.set("right-graph-key", right.value)
+		Cookies.set("left-graph-key", left.value)
+		Cookies.set("graph-time", time.value)
+
+		totalPoints = time.value
+
+		socket.emit("get-data", {"ids": [right.value, left.value], "last_n": totalPoints})	
     }
+
+	left.onchange = update_graph;
+	right.onchange = update_graph;
+	time.onchange = update_graph;
 
 	</script>
 
