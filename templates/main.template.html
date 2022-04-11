@@ -4,14 +4,16 @@
 <head>
     <link rel="stylesheet" href="static/normalize.min.css">
     <link rel="stylesheet" href="static/style.css">
+
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-</head>
+</headk>
 
 <body>
 
-    <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.1/dist/js.cookie.min.js"></script>
+    <script src="static/cookie.min.js"></script>
+
     <script src="static/socket.io.min.js"></script>
     <script src="static/lib.js"></script>
 
@@ -28,7 +30,9 @@
             document.getElementById("hamburger-button").onclick = () => {
                 console.log('testin');
                 elem = document.getElementById("sidenav-bar");
-                if (elem.style.display === "none") {
+                console.log("magic", elem.style.display);
+
+                if (elem.style.display == "none") {
                         elem.style.display = "flex";
                 } else {
                     elem.style.display = "none";
