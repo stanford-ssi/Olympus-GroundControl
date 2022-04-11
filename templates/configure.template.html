@@ -73,7 +73,8 @@
   
     <script>
       function send_command_button()  {
-        var textbox = document.getElementById("command-text")
+
+        textbox = document.getElementById("command-text")
 
         try {
             var json_cmd = JSON.parse(textbox.value);

@@ -107,14 +107,11 @@ class Main:
             print(self.authenticated_ids)
             if data.get("auth") not in self.authenticated_ids:
                 print("not allow to execute")
+                await self.sio.emit("bad-auth")
                 return
 
             print("executing command")
             print(data)
-
-        @self.sio.on("connect")
-        async def connect(sid, environ, auth):
-            print("connected new client")
 
         @self.sio.on("de-auth")
         async def de_auth(sid, data):
@@ -129,7 +126,7 @@ class Main:
         async def try_auth(sid, data):
             print("trying to authenticate", data)
             if data != "MAGIC":
-                print("Bad pass!", data)
+                await self.sio.emit("bad-auth")
                 return 
 
             new_id = secrets.token_urlsafe(32)

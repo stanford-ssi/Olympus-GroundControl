@@ -68,6 +68,12 @@
         if(Cookies.get('auth')){
             document.getElementById("topbar-role").innerHTML = "Role: Commander";
         }
+
+      socket.on("bad-auth", () => {
+          Cookies.remove('auth')
+          alert("Authentication invalid");
+      });
+
 </script>
 
 </body>
