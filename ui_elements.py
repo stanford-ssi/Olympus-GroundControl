@@ -196,15 +196,15 @@ class Dashboard(Page):
         self.top.app.router.add_get('/dashboard', self.get_page)
 
 
-class Messages(Page):
+class Slate(Page):
     def render(self):
-        messages = self.load_template("templates/messages.template.html")
+        messages = self.load_template("templates/slate.template.html")
         template = self.load_template("templates/main.template.html")
 
         return self.format(template, page = messages, meta= json.dumps(self.top.metadata))
 
     def add_routes(self):
-        self.top.app.router.add_get('/messages', self.get_page)
+        self.top.app.router.add_get('/slate', self.get_page)
 
 class Maps(Page):
     def render(self):

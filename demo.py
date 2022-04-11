@@ -10,7 +10,7 @@ import secrets
 import aiofiles
 from aiofiles import os
 
-from ui_elements import Dashboard, Messages, Maps, Graphs, Configure
+from ui_elements import Dashboard, Slate, Maps, Graphs, Configure
 from database import DataBase
 
 class Main:
@@ -93,7 +93,7 @@ class Main:
     def create_pages(self):
         # Don't forget to add your page the the sidebar!
         self.dashboard = Dashboard("Dashboard", self)
-        self.messages = Messages("test", self)
+        self.messages = Slate("test", self)
         self.maps = Maps("test", self)
         self.graphs = Graphs("test", self)
         self.configure = Configure("test", self)
