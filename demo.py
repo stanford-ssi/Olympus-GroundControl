@@ -60,6 +60,12 @@ class Main:
                 return
 
             print("executing command", data)
+            del data["auth"]
+            to_send = {"cmd": self.unflatten_command(data)}
+            print(to_send)
+            self.tcp_quail_writer.write(json.dumps(to_send).encode())
+            await self.tcp_quail_writer.drain()
+
 
         @self.sio.on("get-data")
         async def get_data(sid, data):
@@ -153,6 +159,16 @@ class Main:
             print(node, update)
             assert False
 
+    def unflatten_command(self, flat):
+        out = {}
+        for path in flat.keys():
+            ids = path.split(".")
+            node = out
+            for id in ids[:-1]:
+                node = node.setdefault(id, {})
+            node[ids[-1]] = flat[path]
+        return out
+
     async def push_serial_data(self):
 
         def get_value_only(node, path):
@@ -190,6 +206,10 @@ class Main:
 
 
     async def start_background_tasks(self, app):
+
+        TCP_IP = "192.168.1.100"
+        TCP_PORT = 1002
+        self.tcp_quail_reader, self.tcp_quail_writer = await asyncio.open_connection(TCP_IP, TCP_PORT)
 
         self.udp_socket = await asyncudp.create_socket(local_addr=("0.0.0.0", 2000))
         self.app.serial_pub = asyncio.create_task(self.push_serial_data())
