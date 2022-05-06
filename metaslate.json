@@ -1,0 +1,403 @@
+{
+    "quail": {
+        "sensors": {
+            "PT1": {
+                "raw": {
+                    "value": 0,
+                    "desc": "test",
+                    "Type": "f",
+                    "Quail ID": "PT1",
+                    "Editable":false
+                },
+                "avg": {
+                    "value": 0,
+                    "desc": "test",
+                    "Type": "f",
+                    "Quail ID": "",
+                    "Editable":false
+                },
+                "drv": {
+                    "value": 0,
+                    "desc": "test",
+                    "Type": "f",
+                    "Quail ID": "",
+                    "Editable":false
+                },
+                "ntg": {
+                    "value": 0,
+                    "desc": "test",
+                    "Type": "f",
+                    "Quail ID": "",
+                    "Editable":false
+                }
+            },
+            "PT2": {
+                "raw": {
+                    "value": 0,
+                    "desc": "test",
+                    "Type": "f",
+                    "Quail ID": "PT2",
+                    "Editable":false
+                },
+                "avg": {
+                    "value": 0,
+                    "desc": "test",
+                    "Type": "f",
+                    "Quail ID": "",
+                    "Editable":false
+                },
+                "drv": {
+                    "value": 0,
+                    "desc": "test",
+                    "Type": "f",
+                    "Quail ID": "",
+                    "Editable":false
+                },
+                "ntg": {
+                    "value": 0,
+                    "desc": "test",
+                    "Type": "f",
+                    "Quail ID": "",
+                    "Editable":false
+                }
+            },
+            "PT3": {
+                "raw": {
+                    "value": 0,
+                    "desc": "test",
+                    "Type": "f",
+                    "Quail ID": "PT3",
+                    "Editable":false
+                },
+                "avg": {
+                    "value": 0,
+                    "desc": "test",
+                    "Type": "f",
+                    "Quail ID": "",
+                    "Editable":false
+                },
+                "drv": {
+                    "value": 0,
+                    "desc": "test",
+                    "Type": "f",
+                    "Quail ID": "",
+                    "Editable":false
+                },
+                "ntg": {
+                    "value": 0,
+                    "desc": "test",
+                    "Type": "f",
+                    "Quail ID": "",
+                    "Editable":false
+                }
+            },
+            "PT4": {
+                "raw": {
+                    "value": 0,
+                    "desc": "test",
+                    "Type": "f",
+                    "Quail ID": "PT4",
+                    "Editable":false
+                },
+                "avg": {
+                    "value": 0,
+                    "desc": "test",
+                    "Type": "f",
+                    "Quail ID": "",
+                    "Editable":false
+                },
+                "drv": {
+                    "value": 0,
+                    "desc": "test",
+                    "Type": "f",
+                    "Quail ID": "",
+                    "Editable":false
+                },
+                "ntg": {
+                    "value": 0,
+                    "desc": "test",
+                    "Type": "f",
+                    "Quail ID": "",
+                    "Editable":false
+                }
+            },
+            "PT5": {
+                "raw": {
+                    "value": 0,
+                    "desc": "test",
+                    "Type": "f",
+                    "Quail ID": "PT5",
+                    "Editable":false
+                },
+                "avg": {
+                    "value": 0,
+                    "desc": "test",
+                    "Type": "f",
+                    "Quail ID": "",
+                    "Editable":false
+                },
+                "drv": {
+                    "value": 0,
+                    "desc": "test",
+                    "Type": "f",
+                    "Quail ID": "",
+                    "Editable":false
+                },
+                "ntg": {
+                    "value": 0,
+                    "desc": "test",
+                    "Type": "f",
+                    "Quail ID": "",
+                    "Editable":false
+                }
+            },
+            "PT6": {
+                "raw": {
+                    "value": 0,
+                    "desc": "test",
+                    "Type": "f",
+                    "Quail ID": "PT6",
+                    "Editable":false
+                },
+                "avg": {
+                    "value": 0,
+                    "desc": "test",
+                    "Type": "f",
+                    "Quail ID": "",
+                    "Editable":false
+                },
+                "drv": {
+                    "value": 0,
+                    "desc": "test",
+                    "Type": "f",
+                    "Quail ID": "",
+                    "Editable":false
+                },
+                "ntg": {
+                    "value": 0,
+                    "desc": "test",
+                    "Type": "f",
+                    "Quail ID": "",
+                    "Editable":false
+                }
+            },
+            "PT7": {
+                "raw": {
+                    "value": 0,
+                    "desc": "test",
+                    "Type": "f",
+                    "Quail ID": "PT7",
+                    "Editable":false
+                },
+                "avg": {
+                    "value": 0,
+                    "desc": "test",
+                    "Type": "f",
+                    "Quail ID": "",
+                    "Editable":false
+                },
+                "drv": {
+                    "value": 0,
+                    "desc": "test",
+                    "Type": "f",
+                    "Quail ID": "",
+                    "Editable":false
+                },
+                "ntg": {
+                    "value": 0,
+                    "desc": "test",
+                    "Type": "f",
+                    "Quail ID": "",
+                    "Editable":false
+                }
+            },
+            "LC1": {
+                "raw": {
+                    "value": 0,
+                    "desc": "test",
+                    "Type": "f",
+                    "Quail ID": "LC1",
+                    "Editable":false
+                },
+                "avg": {
+                    "value": 0,
+                    "desc": "test",
+                    "Type": "f",
+                    "Quail ID": "",
+                    "Editable":false
+                },
+                "drv": {
+                    "value": 0,
+                    "desc": "test",
+                    "Type": "f",
+                    "Quail ID": "",
+                    "Editable":false
+                },
+                "ntg": {
+                    "value": 0,
+                    "desc": "test",
+                    "Type": "f",
+                    "Quail ID": "",
+                    "Editable":false
+                }
+            },
+            "LC2": {
+                "raw": {
+                    "value": 0,
+                    "desc": "test",
+                    "Type": "f",
+                    "Quail ID": "LC2",
+                    "Editable":false
+                },
+                "avg": {
+                    "value": 0,
+                    "desc": "test",
+                    "Type": "f",
+                    "Quail ID": "",
+                    "Editable":false
+                },
+                "drv": {
+                    "value": 0,
+                    "desc": "test",
+                    "Type": "f",
+                    "Quail ID": "",
+                    "Editable":false
+                },
+                "ntg": {
+                    "value": 0,
+                    "desc": "test",
+                    "Type": "f",
+                    "Quail ID": "",
+                    "Editable":false
+                }
+            },
+            "TC1": {
+                "raw": {
+                    "value": 0,
+                    "desc": "test",
+                    "Type": "f",
+                    "Quail ID": "TC1",
+                    "Editable":false
+                },
+                "avg": {
+                    "value": 0,
+                    "desc": "test",
+                    "Type": "f",
+                    "Quail ID": "",
+                    "Editable":false
+                },
+                "drv": {
+                    "value": 0,
+                    "desc": "test",
+                    "Type": "f",
+                    "Quail ID": "",
+                    "Editable":false
+                },
+                "ntg": {
+                    "value": 0,
+                    "desc": "test",
+                    "Type": "f",
+                    "Quail ID": "",
+                    "Editable":false
+                }
+            },
+            "TC2": {
+                "raw": {
+                    "value": 0,
+                    "desc": "test",
+                    "Type": "f",
+                    "Quail ID": "TC2",
+                    "Editable":false
+                },
+                "avg": {
+                    "value": 0,
+                    "desc": "test",
+                    "Type": "f",
+                    "Quail ID": "",
+                    "Editable":false
+                },
+                "drv": {
+                    "value": 0,
+                    "desc": "test",
+                    "Type": "f",
+                    "Quail ID": "",
+                    "Editable":false
+                },
+                "ntg": {
+                    "value": 0,
+                    "desc": "test",
+                    "Type": "f",
+                    "Quail ID": "",
+                    "Editable":false
+                }
+            }
+        },
+        "valves": {
+            "S1": {
+                "Normally": {
+                    "value": 1,
+                    "desc": "test",
+                    "Type": "17solenoid_normal_t",
+                    "Quail ID": "S1",
+                    "Editable":false
+                },
+                "PWM": {
+                    "value": 220,
+                    "desc": "test",
+                    "Type": "14solenoid_pwm_t",
+                    "Quail ID": "S1",
+                    "Editable":false
+                },
+                "Pulse Time": {
+                    "value": 1,
+                    "desc": "test",
+                    "Type": "t",
+                    "Quail ID": "S1"
+                }
+            }
+        },
+        "battery": {
+            "Voltage": {
+                "raw": {
+                    "value": 0,
+                    "desc": "test",
+                    "Type": "f",
+                    "Quail ID": "v_bus",
+                    "Editable":false
+                }
+            },
+            "Current": {
+                "raw": {
+                    "value": 0,
+                    "desc": "test",
+                    "Type": "f",
+                    "Quail ID": "i",
+                    "Editable":false
+                }
+            }
+        },
+        "board": {
+            "error": {
+                "value": 0,
+                "desc": "test",
+                "Type": "f",
+                "Quail ID": "",
+                "Editable":false
+            },
+            "tick": {
+                "value": 0,
+                "desc": "test",
+                "Type": "f",
+                "Quail ID": "",
+                "Editable":false
+            }
+        }
+    },
+    "stack": {
+        "value": 0,
+        "desc": "test",
+        "Type": "f",
+        "Quail ID": "",
+        "Editable":false
+    }
+}

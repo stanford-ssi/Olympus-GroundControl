@@ -9,6 +9,8 @@ import secrets
 
 import aiofiles
 from aiofiles import os
+import asyncudp
+import json
 
 from ui_elements import Dashboard, Slate, Maps, Graphs, Configure
 from database import DataBase
@@ -27,66 +29,12 @@ class Main:
 
         self.app.on_startup.append(self.start_background_tasks)
         self.app.on_cleanup.append(self.cleanup_background_tasks)
+         
+        with open("metaslate.json") as f:
+            self.metadata = json.loads(f.read())
 
-        self.metadata = {
-            "press": {
-                "ox_fill": {
-                    "desc": "Oxidiser Fill",
-                    "unit": "psi",
-                    "value": 0,
-                    "editable": False,
-                    "pin": "PT1",
-                },
-                "ox_vent": {
-                    "desc": "Oxidiser Vent",
-                    "unit": "psi",
-                    "value": 0,
-                    "editable": False,
-                    "pin": "PT2",
-                },
-            },
-            "squibs": {
-                "engine": {
-                    "desc": "light this candle",
-                    "unit": "bool",
-                    "value": 0,
-                    "editable": True,
-                    "pin": "EM1",
-                },
-            },
-            "valves": {
-                "ox_fill": {
-                    "desc": "testing",
-                    "unit": "bool",
-                    "value": 0,
-                    "editable": False,
-                    "pin": "SV1",
-                },
-                "ox_vent": {
-                    "desc": "testing",
-                    "unit": "bool",
-                    "value": 0,
-                    "editable": False,
-                    "pin": "SV2",
-                },
-            },
-            "health": {
-                "v_bus": {
-                    "desc": "Quail Voltage Bus",
-                    "unit": "V",
-                    "value": 0,
-                    "editable": False,
-                },
-                "current": {
-                    "desc": "Total quail current consumption",
-                    "unit": "A",
-                    "value": 0,
-                    "editable": False,
-                }
-            }
-        }
-        self.database = DataBase(self.metadata, self)
-        self.history = {key: [] for key in  self.flat_meta( lambda node, path: ".".join(path) ) }
+        # self.database = DataBase(self.metadata, self)
+        # self.history = {key: [] for key in  self.flat_meta( lambda node, path: ".".join(path) ) }
 
     def start(self):
         web.run_app(self.app, host="localhost", port=8080)
@@ -201,19 +149,46 @@ class Main:
         def get_value_only(node, path):
             return node["value"]
 
-        while 1:
-            await asyncio.sleep(0.1)
-            self.metadata = self.transform_meta(update_random_walk)
-            for key, value in self.flat_meta( lambda node, path: (".".join(path), node["value"]) ):
-                self.history[key].append(value)
+        accumulator = []
+        while(True):
+            # await asyncio.sleep(0.1)
+            message, addr = await self.udp_socket.recvfrom()
 
-                while len(self.history[key]) > 10000:
-                    self.history[key].pop()
+            if message[0] != ord('\n'):
+                accumulator.append(message)
+                continue
+            
+            try:
+                json_object = json.loads(b"".join(accumulator))
+            except ValueError:
+                pass # invalid json
+            else:
+                # print("Message from Client: ", json_object)
+                # print()
 
-            await self.sio.emit("new", self.transform_meta(get_value_only))
+                await self.sio.emit("new", json_object)
+
+                # self.metadata = self.transform_meta(update_random_walk)
+                # print(self.transform_meta(get_value_only))
+                # await self.sio.emit("new", self.transform_meta(get_value_only))
+            finally:
+                accumulator = []
+
+
+        # while 1:
+        #     self.metadata = self.transform_meta(update_random_walk)
+        #     for key, value in self.flat_meta( lambda node, path: (".".join(path), node["value"]) ):
+        #         self.history[key].append(value)
+
+        #         while len(self.history[key]) > 10000:
+        #             self.history[key].pop()
+
+        #     await self.sio.emit("new", self.transform_meta(get_value_only))
 
 
     async def start_background_tasks(self, app):
+
+        self.udp_socket = await asyncudp.create_socket(local_addr=("0.0.0.0", 2000))
         self.app.serial_pub = asyncio.create_task(self.push_serial_data())
 
         #TODO move inside Map Page class
