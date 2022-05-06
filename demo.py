@@ -33,8 +33,8 @@ class Main:
         with open("metaslate.json") as f:
             self.metadata = json.loads(f.read())
 
-        # self.database = DataBase(self.metadata, self)
-        # self.history = {key: [] for key in  self.flat_meta( lambda node, path: ".".join(path) ) }
+        self.database = DataBase(self.metadata, self)
+        self.history = {key: [] for key in  self.flat_meta( lambda node, path: ".".join(path) ) }
 
     def start(self):
         web.run_app(self.app, host="localhost", port=8080)
@@ -71,7 +71,6 @@ class Main:
             for id in data["ids"]:
                 out[id] = self.history["slate." + id][-last_n:]
 
-            # print(out)
             await self.sio.emit("deliver-data", out, room=sid)
 
         @self.sio.on("de-auth")
@@ -133,18 +132,28 @@ class Main:
         if "value" in node.keys():
             return function(node, path)
 
-        if type(node) == dict:
+        elif type(node) == dict:
             return {key: self.transform_meta(function, node[key], path + [key] ) for key in node.keys()}
+        else:
+            print(node, update)
+            assert False
     
+    def update_meta(self, update, node=None):
+        if node is None:
+            node = self.metadata
+
+        if "value" in node.keys():
+            # TODO enforce types
+            node["value"] = update
+
+        elif type(node) == dict:
+            for key in node.keys():
+                self.update_meta(update[key], node = node[key])
+        else:
+            print(node, update)
+            assert False
 
     async def push_serial_data(self):
-
-        def update_random_walk(node, path):
-            assert "value" in node
-            assert "desc" in node
-            if node["unit"] != "bool":
-                node["value"] += random.random() - 0.5
-            return node
 
         def get_value_only(node, path):
             return node["value"]
@@ -166,24 +175,18 @@ class Main:
                 # print("Message from Client: ", json_object)
                 # print()
 
-                await self.sio.emit("new", json_object)
+                self.update_meta(json_object)
 
-                # self.metadata = self.transform_meta(update_random_walk)
-                # print(self.transform_meta(get_value_only))
+                for key, value in self.flat_meta( lambda node, path: (".".join(path), node["value"]) ):
+                    self.history[key].append(value)
+
+                while len(self.history[key]) > 10000:
+                    self.history[key].pop()
+
+                await self.sio.emit("new", json_object)
                 # await self.sio.emit("new", self.transform_meta(get_value_only))
             finally:
                 accumulator = []
-
-
-        # while 1:
-        #     self.metadata = self.transform_meta(update_random_walk)
-        #     for key, value in self.flat_meta( lambda node, path: (".".join(path), node["value"]) ):
-        #         self.history[key].append(value)
-
-        #         while len(self.history[key]) > 10000:
-        #             self.history[key].pop()
-
-        #     await self.sio.emit("new", self.transform_meta(get_value_only))
 
 
     async def start_background_tasks(self, app):
