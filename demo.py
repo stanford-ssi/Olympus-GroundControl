@@ -32,6 +32,10 @@ class Main:
          
         with open("metaslate.json") as f:
             self.metadata = json.loads(f.read())
+        def add_valu(node, path):
+            node["valu"] = 0
+            return node
+        self.metadata = self.transform_meta(add_valu)
 
         self.database = DataBase(self.metadata, self)
         self.history = {key: [] for key in  self.flat_meta( lambda node, path: ".".join(path) ) }
@@ -135,12 +139,12 @@ class Main:
             node = self.metadata
             path = ["slate"]
 
-        if "valu" in node.keys():
-            return function(node, path)
-
-        elif type(node) == dict:
+        if type(node) == dict:
+            if "valu" in node.keys() or "desc" in node.keys():
+                return function(node, path)
             return {key: self.transform_meta(function, node[key], path + [key] ) for key in node.keys()}
         else:
+            print(type(node), node, path)
             assert False
     
     def update_meta(self, update, node=None):

@@ -1,403 +1,481 @@
 {
-    "quail": {
-        "sensors": {
-            "PT1": {
-                "raw": {
-                    "valu": 0,
-                    "desc": "test",
-                    "unit": "f",
-                    "qpin": "PT1",
-                    "edit":false
-                },
-                "avg": {
-                    "valu": 0,
-                    "desc": "test",
-                    "unit": "f",
-                    "qpin": "",
-                    "edit":false
-                },
-                "drv": {
-                    "valu": 0,
-                    "desc": "test",
-                    "unit": "f",
-                    "qpin": "",
-                    "edit":false
-                },
-                "ntg": {
-                    "valu": 0,
-                    "desc": "test",
-                    "unit": "f",
-                    "qpin": "",
-                    "edit":false
-                }
-            },
-            "PT2": {
-                "raw": {
-                    "valu": 0,
-                    "desc": "test",
-                    "unit": "f",
-                    "qpin": "PT2",
-                    "edit":false
-                },
-                "avg": {
-                    "valu": 0,
-                    "desc": "test",
-                    "unit": "f",
-                    "qpin": "",
-                    "edit":false
-                },
-                "drv": {
-                    "valu": 0,
-                    "desc": "test",
-                    "unit": "f",
-                    "qpin": "",
-                    "edit":false
-                },
-                "ntg": {
-                    "valu": 0,
-                    "desc": "test",
-                    "unit": "f",
-                    "qpin": "",
-                    "edit":false
-                }
-            },
-            "PT3": {
-                "raw": {
-                    "valu": 0,
-                    "desc": "test",
-                    "unit": "f",
-                    "qpin": "PT3",
-                    "edit":false
-                },
-                "avg": {
-                    "valu": 0,
-                    "desc": "test",
-                    "unit": "f",
-                    "qpin": "",
-                    "edit":false
-                },
-                "drv": {
-                    "valu": 0,
-                    "desc": "test",
-                    "unit": "f",
-                    "qpin": "",
-                    "edit":false
-                },
-                "ntg": {
-                    "valu": 0,
-                    "desc": "test",
-                    "unit": "f",
-                    "qpin": "",
-                    "edit":false
-                }
-            },
-            "PT4": {
-                "raw": {
-                    "valu": 0,
-                    "desc": "test",
-                    "unit": "f",
-                    "qpin": "PT4",
-                    "edit":false
-                },
-                "avg": {
-                    "valu": 0,
-                    "desc": "test",
-                    "unit": "f",
-                    "qpin": "",
-                    "edit":false
-                },
-                "drv": {
-                    "valu": 0,
-                    "desc": "test",
-                    "unit": "f",
-                    "qpin": "",
-                    "edit":false
-                },
-                "ntg": {
-                    "valu": 0,
-                    "desc": "test",
-                    "unit": "f",
-                    "qpin": "",
-                    "edit":false
-                }
-            },
-            "PT5": {
-                "raw": {
-                    "valu": 0,
-                    "desc": "test",
-                    "unit": "f",
-                    "qpin": "PT5",
-                    "edit":false
-                },
-                "avg": {
-                    "valu": 0,
-                    "desc": "test",
-                    "unit": "f",
-                    "qpin": "",
-                    "edit":false
-                },
-                "drv": {
-                    "valu": 0,
-                    "desc": "test",
-                    "unit": "f",
-                    "qpin": "",
-                    "edit":false
-                },
-                "ntg": {
-                    "valu": 0,
-                    "desc": "test",
-                    "unit": "f",
-                    "qpin": "",
-                    "edit":false
-                }
-            },
-            "PT6": {
-                "raw": {
-                    "valu": 0,
-                    "desc": "test",
-                    "unit": "f",
-                    "qpin": "PT6",
-                    "edit":false
-                },
-                "avg": {
-                    "valu": 0,
-                    "desc": "test",
-                    "unit": "f",
-                    "qpin": "",
-                    "edit":false
-                },
-                "drv": {
-                    "valu": 0,
-                    "desc": "test",
-                    "unit": "f",
-                    "qpin": "",
-                    "edit":false
-                },
-                "ntg": {
-                    "valu": 0,
-                    "desc": "test",
-                    "unit": "f",
-                    "qpin": "",
-                    "edit":false
-                }
-            },
-            "PT7": {
-                "raw": {
-                    "valu": 0,
-                    "desc": "test",
-                    "unit": "f",
-                    "qpin": "PT7",
-                    "edit":false
-                },
-                "avg": {
-                    "valu": 0,
-                    "desc": "test",
-                    "unit": "f",
-                    "qpin": "",
-                    "edit":false
-                },
-                "drv": {
-                    "valu": 0,
-                    "desc": "test",
-                    "unit": "f",
-                    "qpin": "",
-                    "edit":false
-                },
-                "ntg": {
-                    "valu": 0,
-                    "desc": "test",
-                    "unit": "f",
-                    "qpin": "",
-                    "edit":false
-                }
-            },
-            "LC1": {
-                "raw": {
-                    "valu": 0,
-                    "desc": "test",
-                    "unit": "f",
-                    "qpin": "LC1",
-                    "edit":false
-                },
-                "avg": {
-                    "valu": 0,
-                    "desc": "test",
-                    "unit": "f",
-                    "qpin": "",
-                    "edit":false
-                },
-                "drv": {
-                    "valu": 0,
-                    "desc": "test",
-                    "unit": "f",
-                    "qpin": "",
-                    "edit":false
-                },
-                "ntg": {
-                    "valu": 0,
-                    "desc": "test",
-                    "unit": "f",
-                    "qpin": "",
-                    "edit":false
-                }
-            },
-            "LC2": {
-                "raw": {
-                    "valu": 0,
-                    "desc": "test",
-                    "unit": "f",
-                    "qpin": "LC2",
-                    "edit":false
-                },
-                "avg": {
-                    "valu": 0,
-                    "desc": "test",
-                    "unit": "f",
-                    "qpin": "",
-                    "edit":false
-                },
-                "drv": {
-                    "valu": 0,
-                    "desc": "test",
-                    "unit": "f",
-                    "qpin": "",
-                    "edit":false
-                },
-                "ntg": {
-                    "valu": 0,
-                    "desc": "test",
-                    "unit": "f",
-                    "qpin": "",
-                    "edit":false
-                }
-            },
-            "TC1": {
-                "raw": {
-                    "valu": 0,
-                    "desc": "test",
-                    "unit": "f",
-                    "qpin": "TC1",
-                    "edit":false
-                },
-                "avg": {
-                    "valu": 0,
-                    "desc": "test",
-                    "unit": "f",
-                    "qpin": "",
-                    "edit":false
-                },
-                "drv": {
-                    "valu": 0,
-                    "desc": "test",
-                    "unit": "f",
-                    "qpin": "",
-                    "edit":false
-                },
-                "ntg": {
-                    "valu": 0,
-                    "desc": "test",
-                    "unit": "f",
-                    "qpin": "",
-                    "edit":false
-                }
-            },
-            "TC2": {
-                "raw": {
-                    "valu": 0,
-                    "desc": "test",
-                    "unit": "f",
-                    "qpin": "TC2",
-                    "edit":false
-                },
-                "avg": {
-                    "valu": 0,
-                    "desc": "test",
-                    "unit": "f",
-                    "qpin": "",
-                    "edit":false
-                },
-                "drv": {
-                    "valu": 0,
-                    "desc": "test",
-                    "unit": "f",
-                    "qpin": "",
-                    "edit":false
-                },
-                "ntg": {
-                    "valu": 0,
-                    "desc": "test",
-                    "unit": "f",
-                    "qpin": "",
-                    "edit":false
-                }
-            }
-        },
-        "valves": {
-            "S1": {
-                "Normally": {
-                    "valu": 1,
-                    "desc": "test",
-                    "unit": "17solenoid_normal_t",
-                    "qpin": "S1",
-                    "edit":false
-                },
-                "PWM": {
-                    "valu": 220,
-                    "desc": "test",
-                    "unit": "14solenoid_pwm_t",
-                    "qpin": "S1",
-                    "edit":false
-                },
-                "Pulse Time": {
-                    "valu": 1,
-                    "desc": "test",
-                    "unit": "t",
-                    "qpin": "S1"
-                }
-            }
-        },
-        "battery": {
-            "Voltage": {
-                "raw": {
-                    "valu": 0,
-                    "desc": "test",
-                    "unit": "f",
-                    "qpin": "v_bus",
-                    "edit":false
-                }
-            },
-            "Current": {
-                "raw": {
-                    "valu": 0,
-                    "desc": "test",
-                    "unit": "f",
-                    "qpin": "i",
-                    "edit":false
-                }
-            }
-        },
-        "board": {
-            "error": {
-                "valu": 0,
-                "desc": "test",
-                "unit": "f",
-                "qpin": "",
-                "edit":false
-            },
-            "tick": {
-                "valu": 0,
-                "desc": "test",
-                "unit": "f",
-                "qpin": "",
-                "edit":false
-            }
+  "quail": {
+    "sensors": {
+      "PT1": {
+        "raw": {
+          "desc": "raw",
+          "qpin": "PT1",
+          "edit": false
         }
+      },
+      "PT2": {
+        "raw": {
+          "desc": "raw",
+          "qpin": "PT2",
+          "edit": false
+        }
+      },
+      "PT3": {
+        "raw": {
+          "desc": "raw",
+          "qpin": "PT3",
+          "edit": false
+        }
+      },
+      "PT4": {
+        "raw": {
+          "desc": "raw",
+          "qpin": "PT4",
+          "edit": false
+        }
+      },
+      "PT5": {
+        "raw": {
+          "desc": "raw",
+          "qpin": "PT5",
+          "edit": false
+        }
+      },
+      "PT6": {
+        "raw": {
+          "desc": "raw",
+          "qpin": "PT6",
+          "edit": false
+        }
+      },
+      "PT7": {
+        "raw": {
+          "desc": "raw",
+          "qpin": "PT7",
+          "edit": false
+        }
+      },
+      "LC1": {
+        "raw": {
+          "desc": "raw",
+          "qpin": "LC1",
+          "edit": false
+        }
+      },
+      "LC2": {
+        "raw": {
+          "desc": "raw",
+          "qpin": "LC2",
+          "edit": false
+        }
+      },
+      "TC1": {
+        "raw": {
+          "desc": "raw",
+          "qpin": "TC1",
+          "edit": false
+        }
+      },
+      "TC2": {
+        "raw": {
+          "desc": "raw",
+          "qpin": "TC2",
+          "edit": false
+        }
+      }
     },
-    "stack": {
-        "valu": 0,
-        "desc": "test",
-        "unit": "f",
+    "valves": {
+      "S1": {
+        "nor": {
+          "desc": "nor",
+          "qpin": "S1",
+          "edit": false
+        },
+        "pwm": {
+          "desc": "pwm",
+          "qpin": "S1",
+          "edit": false
+        },
+        "ptm": {
+          "desc": "ptm",
+          "qpin": "S1",
+          "edit": true
+        },
+        "pls": {
+          "desc": "pls",
+          "qpin": "S1",
+          "edit": true
+        },
+        "stt": {
+          "desc": "stt",
+          "qpin": "S1",
+          "edit": true
+        }
+      },
+      "S2": {
+        "nor": {
+          "desc": "nor",
+          "qpin": "S2",
+          "edit": false
+        },
+        "pwm": {
+          "desc": "pwm",
+          "qpin": "S2",
+          "edit": false
+        },
+        "ptm": {
+          "desc": "ptm",
+          "qpin": "S2",
+          "edit": true
+        },
+        "pls": {
+          "desc": "pls",
+          "qpin": "S2",
+          "edit": true
+        },
+        "stt": {
+          "desc": "stt",
+          "qpin": "S2",
+          "edit": true
+        }
+      },
+      "S3": {
+        "nor": {
+          "desc": "nor",
+          "qpin": "S3",
+          "edit": false
+        },
+        "pwm": {
+          "desc": "pwm",
+          "qpin": "S3",
+          "edit": false
+        },
+        "ptm": {
+          "desc": "ptm",
+          "qpin": "S3",
+          "edit": true
+        },
+        "pls": {
+          "desc": "pls",
+          "qpin": "S3",
+          "edit": true
+        },
+        "stt": {
+          "desc": "stt",
+          "qpin": "S3",
+          "edit": true
+        }
+      },
+      "S4": {
+        "nor": {
+          "desc": "nor",
+          "qpin": "S4",
+          "edit": false
+        },
+        "pwm": {
+          "desc": "pwm",
+          "qpin": "S4",
+          "edit": false
+        },
+        "ptm": {
+          "desc": "ptm",
+          "qpin": "S4",
+          "edit": true
+        },
+        "pls": {
+          "desc": "pls",
+          "qpin": "S4",
+          "edit": true
+        },
+        "stt": {
+          "desc": "stt",
+          "qpin": "S4",
+          "edit": true
+        }
+      },
+      "S5": {
+        "nor": {
+          "desc": "nor",
+          "qpin": "S5",
+          "edit": false
+        },
+        "pwm": {
+          "desc": "pwm",
+          "qpin": "S5",
+          "edit": false
+        },
+        "ptm": {
+          "desc": "ptm",
+          "qpin": "S5",
+          "edit": true
+        },
+        "pls": {
+          "desc": "pls",
+          "qpin": "S5",
+          "edit": true
+        },
+        "stt": {
+          "desc": "stt",
+          "qpin": "S5",
+          "edit": true
+        }
+      },
+      "S6": {
+        "nor": {
+          "desc": "nor",
+          "qpin": "S6",
+          "edit": false
+        },
+        "pwm": {
+          "desc": "pwm",
+          "qpin": "S6",
+          "edit": false
+        },
+        "ptm": {
+          "desc": "ptm",
+          "qpin": "S6",
+          "edit": true
+        },
+        "pls": {
+          "desc": "pls",
+          "qpin": "S6",
+          "edit": true
+        },
+        "stt": {
+          "desc": "stt",
+          "qpin": "S6",
+          "edit": true
+        }
+      },
+      "S7": {
+        "nor": {
+          "desc": "nor",
+          "qpin": "S7",
+          "edit": false
+        },
+        "pwm": {
+          "desc": "pwm",
+          "qpin": "S7",
+          "edit": false
+        },
+        "ptm": {
+          "desc": "ptm",
+          "qpin": "S7",
+          "edit": true
+        },
+        "pls": {
+          "desc": "pls",
+          "qpin": "S7",
+          "edit": true
+        },
+        "stt": {
+          "desc": "stt",
+          "qpin": "S7",
+          "edit": true
+        }
+      },
+      "S8": {
+        "nor": {
+          "desc": "nor",
+          "qpin": "S8",
+          "edit": false
+        },
+        "pwm": {
+          "desc": "pwm",
+          "qpin": "S8",
+          "edit": false
+        },
+        "ptm": {
+          "desc": "ptm",
+          "qpin": "S8",
+          "edit": true
+        },
+        "pls": {
+          "desc": "pls",
+          "qpin": "S8",
+          "edit": true
+        },
+        "stt": {
+          "desc": "stt",
+          "qpin": "S8",
+          "edit": true
+        }
+      }
+    },
+    "squib": {
+      "E1": {
+        "arm": {
+          "desc": "arm",
+          "qpin": "E1",
+          "edit": true
+        },
+        "fir": {
+          "desc": "fir",
+          "qpin": "E1",
+          "edit": true
+        }
+      },
+      "E2": {
+        "arm": {
+          "desc": "arm",
+          "qpin": "E2",
+          "edit": true
+        },
+        "fir": {
+          "desc": "fir",
+          "qpin": "E2",
+          "edit": true
+        }
+      },
+      "E3": {
+        "arm": {
+          "desc": "arm",
+          "qpin": "E3",
+          "edit": true
+        },
+        "fir": {
+          "desc": "fir",
+          "qpin": "E3",
+          "edit": true
+        }
+      },
+      "E4": {
+        "arm": {
+          "desc": "arm",
+          "qpin": "E4",
+          "edit": true
+        },
+        "fir": {
+          "desc": "fir",
+          "qpin": "E4",
+          "edit": true
+        }
+      },
+      "E5": {
+        "arm": {
+          "desc": "arm",
+          "qpin": "E5",
+          "edit": true
+        },
+        "fir": {
+          "desc": "fir",
+          "qpin": "E5",
+          "edit": true
+        }
+      },
+      "E6": {
+        "arm": {
+          "desc": "arm",
+          "qpin": "E6",
+          "edit": true
+        },
+        "fir": {
+          "desc": "fir",
+          "qpin": "E6",
+          "edit": true
+        }
+      },
+      "E7": {
+        "arm": {
+          "desc": "arm",
+          "qpin": "E7",
+          "edit": true
+        },
+        "fir": {
+          "desc": "fir",
+          "qpin": "E7",
+          "edit": true
+        }
+      },
+      "E8": {
+        "arm": {
+          "desc": "arm",
+          "qpin": "E8",
+          "edit": true
+        },
+        "fir": {
+          "desc": "fir",
+          "qpin": "E8",
+          "edit": true
+        }
+      }
+    },
+    "adc_in": {
+      "ADC1": {
+        "desc": "ADC1",
+        "qpin": "ADC1",
+        "edit": false
+      },
+      "ADC2": {
+        "desc": "ADC2",
+        "qpin": "ADC2",
+        "edit": false
+      },
+      "ADC3": {
+        "desc": "ADC3",
+        "qpin": "ADC3",
+        "edit": false
+      },
+      "ADC4": {
+        "desc": "ADC4",
+        "qpin": "ADC4",
+        "edit": false
+      }
+    },
+    "sequence": {
+      "REDLINE": {
+        "desc": "REDLINE",
         "qpin": "",
-        "edit":false
+        "edit": true
+      },
+      "ABORT": {
+        "desc": "ABORT",
+        "qpin": "",
+        "edit": false
+      },
+      "DISCHARGEOX": {
+        "desc": "DISCHARGEOX",
+        "qpin": "",
+        "edit": false
+      },
+      "DISCHARGEFUEL": {
+        "desc": "DISCHARGEFUEL",
+        "qpin": "",
+        "edit": false
+      },
+      "LAUNCH": {
+        "desc": "LAUNCH",
+        "qpin": "",
+        "edit": false
+      }
+    },
+    "battery": {
+      "Voltage": {
+        "raw": {
+          "desc": "raw",
+          "qpin": "PB09",
+          "edit": false
+        }
+      },
+      "Current": {
+        "raw": {
+          "desc": "raw",
+          "qpin": "PB09",
+          "edit": false
+        }
+      }
+    },
+    "board": {
+      "logging": {
+        "desc": "logging",
+        "qpin": "",
+        "edit": false
+      },
+      "error": {
+        "desc": "error",
+        "qpin": "",
+        "edit": true
+      },
+      "tick": {
+        "desc": "tick",
+        "qpin": "",
+        "edit": false
+      }
     }
+  }
 }
