@@ -153,7 +153,10 @@ class Main:
 
         elif type(node) == dict:
             for key in node.keys():
-                self.update_meta(update[key], node = node[key])
+                if key in update:
+                    self.update_meta(update[key], node = node[key])
+                else:
+                    print("missing slate key in update", key)
         else:
             print(node, update)
             assert False
@@ -187,7 +190,7 @@ class Main:
             except ValueError:
                 pass # invalid json
             else:
-                # print("Message from Client: ", json_object)
+                print("Message from Client: ", json_object)
                 # print()
 
                 self.update_meta(json_object)
