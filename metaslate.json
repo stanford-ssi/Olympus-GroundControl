@@ -305,28 +305,28 @@
                 "raw": {
                     "valu": 0,
                     "desc": "test",
-                    "Type": "f",
+                    "unit": "f",
                     "qpin": "TC2",
                     "edit":false
                 },
                 "avg": {
                     "valu": 0,
                     "desc": "test",
-                    "Type": "f",
+                    "unit": "f",
                     "qpin": "",
                     "edit":false
                 },
                 "drv": {
                     "valu": 0,
                     "desc": "test",
-                    "Type": "f",
+                    "unit": "f",
                     "qpin": "",
                     "edit":false
                 },
                 "ntg": {
                     "valu": 0,
                     "desc": "test",
-                    "Type": "f",
+                    "unit": "f",
                     "qpin": "",
                     "edit":false
                 }
@@ -337,22 +337,22 @@
                 "Normally": {
                     "valu": 1,
                     "desc": "test",
-                    "Type": "17solenoid_normal_t",
-                    "Quail ID": "S1",
+                    "unit": "17solenoid_normal_t",
+                    "qpin": "S1",
                     "edit":false
                 },
                 "PWM": {
                     "valu": 220,
                     "desc": "test",
-                    "Type": "14solenoid_pwm_t",
-                    "Quail ID": "S1",
+                    "unit": "14solenoid_pwm_t",
+                    "qpin": "S1",
                     "edit":false
                 },
                 "Pulse Time": {
                     "valu": 1,
                     "desc": "test",
-                    "Type": "t",
-                    "Quail ID": "S1"
+                    "unit": "t",
+                    "qpin": "S1"
                 }
             }
         },
@@ -361,8 +361,8 @@
                 "raw": {
                     "valu": 0,
                     "desc": "test",
-                    "Type": "f",
-                    "Quail ID": "v_bus",
+                    "unit": "f",
+                    "qpin": "v_bus",
                     "edit":false
                 }
             },
@@ -371,7 +371,7 @@
                     "valu": 0,
                     "desc": "test",
                     "unit": "f",
-                    "Quail ID": "i",
+                    "qpin": "i",
                     "edit":false
                 }
             }
@@ -381,14 +381,14 @@
                 "valu": 0,
                 "desc": "test",
                 "unit": "f",
-                "Quail ID": "",
+                "qpin": "",
                 "edit":false
             },
             "tick": {
                 "valu": 0,
                 "desc": "test",
                 "unit": "f",
-                "Quail ID": "",
+                "qpin": "",
                 "edit":false
             }
         }
@@ -397,7 +397,7 @@
         "valu": 0,
         "desc": "test",
         "unit": "f",
-        "Quail ID": "",
+        "qpin": "",
         "edit":false
     }
 }
