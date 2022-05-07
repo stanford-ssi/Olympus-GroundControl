@@ -31,7 +31,7 @@
 
             button.onclick = () => {
               if( document.getElementById("{{item.id}}.check").value ){
-                  send_command({'{{item.id}}.value': 1})
+                  send_command({'{{item.id}}.valu': 1})
                   button.style.background = "red"
                   button.innerHTML = "Fired"
               }

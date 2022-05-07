@@ -121,7 +121,7 @@ class Main:
             node = self.metadata
             path = ["slate"]
 
-        if "value" in node.keys():
+        if "valu" in node.keys():
             return [ function(node, path) ]
 
         if type(node) == dict:
@@ -135,22 +135,21 @@ class Main:
             node = self.metadata
             path = ["slate"]
 
-        if "value" in node.keys():
+        if "valu" in node.keys():
             return function(node, path)
 
         elif type(node) == dict:
             return {key: self.transform_meta(function, node[key], path + [key] ) for key in node.keys()}
         else:
-            print(node, update)
             assert False
     
     def update_meta(self, update, node=None):
         if node is None:
             node = self.metadata
 
-        if "value" in node.keys():
+        if "valu" in node.keys():
             # TODO enforce types
-            node["value"] = update
+            node["valu"] = update
 
         elif type(node) == dict:
             for key in node.keys():
@@ -172,7 +171,7 @@ class Main:
     async def push_serial_data(self):
 
         def get_value_only(node, path):
-            return node["value"]
+            return node["valu"]
 
         accumulator = []
         while(True):
@@ -193,7 +192,7 @@ class Main:
 
                 self.update_meta(json_object)
 
-                for key, value in self.flat_meta( lambda node, path: (".".join(path), node["value"]) ):
+                for key, value in self.flat_meta( lambda node, path: (".".join(path), node["valu"]) ):
                     self.history[key].append(value)
 
                 while len(self.history[key]) > 10000:

@@ -3,353 +3,353 @@
         "sensors": {
             "PT1": {
                 "raw": {
-                    "value": 0,
+                    "valu": 0,
                     "desc": "test",
-                    "Type": "f",
-                    "Quail ID": "PT1",
-                    "Editable":false
+                    "unit": "f",
+                    "qpin": "PT1",
+                    "edit":false
                 },
                 "avg": {
-                    "value": 0,
+                    "valu": 0,
                     "desc": "test",
-                    "Type": "f",
-                    "Quail ID": "",
-                    "Editable":false
+                    "unit": "f",
+                    "qpin": "",
+                    "edit":false
                 },
                 "drv": {
-                    "value": 0,
+                    "valu": 0,
                     "desc": "test",
-                    "Type": "f",
-                    "Quail ID": "",
-                    "Editable":false
+                    "unit": "f",
+                    "qpin": "",
+                    "edit":false
                 },
                 "ntg": {
-                    "value": 0,
+                    "valu": 0,
                     "desc": "test",
-                    "Type": "f",
-                    "Quail ID": "",
-                    "Editable":false
+                    "unit": "f",
+                    "qpin": "",
+                    "edit":false
                 }
             },
             "PT2": {
                 "raw": {
-                    "value": 0,
+                    "valu": 0,
                     "desc": "test",
-                    "Type": "f",
-                    "Quail ID": "PT2",
-                    "Editable":false
+                    "unit": "f",
+                    "qpin": "PT2",
+                    "edit":false
                 },
                 "avg": {
-                    "value": 0,
+                    "valu": 0,
                     "desc": "test",
-                    "Type": "f",
-                    "Quail ID": "",
-                    "Editable":false
+                    "unit": "f",
+                    "qpin": "",
+                    "edit":false
                 },
                 "drv": {
-                    "value": 0,
+                    "valu": 0,
                     "desc": "test",
-                    "Type": "f",
-                    "Quail ID": "",
-                    "Editable":false
+                    "unit": "f",
+                    "qpin": "",
+                    "edit":false
                 },
                 "ntg": {
-                    "value": 0,
+                    "valu": 0,
                     "desc": "test",
-                    "Type": "f",
-                    "Quail ID": "",
-                    "Editable":false
+                    "unit": "f",
+                    "qpin": "",
+                    "edit":false
                 }
             },
             "PT3": {
                 "raw": {
-                    "value": 0,
+                    "valu": 0,
                     "desc": "test",
-                    "Type": "f",
-                    "Quail ID": "PT3",
-                    "Editable":false
+                    "unit": "f",
+                    "qpin": "PT3",
+                    "edit":false
                 },
                 "avg": {
-                    "value": 0,
+                    "valu": 0,
                     "desc": "test",
-                    "Type": "f",
-                    "Quail ID": "",
-                    "Editable":false
+                    "unit": "f",
+                    "qpin": "",
+                    "edit":false
                 },
                 "drv": {
-                    "value": 0,
+                    "valu": 0,
                     "desc": "test",
-                    "Type": "f",
-                    "Quail ID": "",
-                    "Editable":false
+                    "unit": "f",
+                    "qpin": "",
+                    "edit":false
                 },
                 "ntg": {
-                    "value": 0,
+                    "valu": 0,
                     "desc": "test",
-                    "Type": "f",
-                    "Quail ID": "",
-                    "Editable":false
+                    "unit": "f",
+                    "qpin": "",
+                    "edit":false
                 }
             },
             "PT4": {
                 "raw": {
-                    "value": 0,
+                    "valu": 0,
                     "desc": "test",
-                    "Type": "f",
-                    "Quail ID": "PT4",
-                    "Editable":false
+                    "unit": "f",
+                    "qpin": "PT4",
+                    "edit":false
                 },
                 "avg": {
-                    "value": 0,
+                    "valu": 0,
                     "desc": "test",
-                    "Type": "f",
-                    "Quail ID": "",
-                    "Editable":false
+                    "unit": "f",
+                    "qpin": "",
+                    "edit":false
                 },
                 "drv": {
-                    "value": 0,
+                    "valu": 0,
                     "desc": "test",
-                    "Type": "f",
-                    "Quail ID": "",
-                    "Editable":false
+                    "unit": "f",
+                    "qpin": "",
+                    "edit":false
                 },
                 "ntg": {
-                    "value": 0,
+                    "valu": 0,
                     "desc": "test",
-                    "Type": "f",
-                    "Quail ID": "",
-                    "Editable":false
+                    "unit": "f",
+                    "qpin": "",
+                    "edit":false
                 }
             },
             "PT5": {
                 "raw": {
-                    "value": 0,
+                    "valu": 0,
                     "desc": "test",
-                    "Type": "f",
-                    "Quail ID": "PT5",
-                    "Editable":false
+                    "unit": "f",
+                    "qpin": "PT5",
+                    "edit":false
                 },
                 "avg": {
-                    "value": 0,
+                    "valu": 0,
                     "desc": "test",
-                    "Type": "f",
-                    "Quail ID": "",
-                    "Editable":false
+                    "unit": "f",
+                    "qpin": "",
+                    "edit":false
                 },
                 "drv": {
-                    "value": 0,
+                    "valu": 0,
                     "desc": "test",
-                    "Type": "f",
-                    "Quail ID": "",
-                    "Editable":false
+                    "unit": "f",
+                    "qpin": "",
+                    "edit":false
                 },
                 "ntg": {
-                    "value": 0,
+                    "valu": 0,
                     "desc": "test",
-                    "Type": "f",
-                    "Quail ID": "",
-                    "Editable":false
+                    "unit": "f",
+                    "qpin": "",
+                    "edit":false
                 }
             },
             "PT6": {
                 "raw": {
-                    "value": 0,
+                    "valu": 0,
                     "desc": "test",
-                    "Type": "f",
-                    "Quail ID": "PT6",
-                    "Editable":false
+                    "unit": "f",
+                    "qpin": "PT6",
+                    "edit":false
                 },
                 "avg": {
-                    "value": 0,
+                    "valu": 0,
                     "desc": "test",
-                    "Type": "f",
-                    "Quail ID": "",
-                    "Editable":false
+                    "unit": "f",
+                    "qpin": "",
+                    "edit":false
                 },
                 "drv": {
-                    "value": 0,
+                    "valu": 0,
                     "desc": "test",
-                    "Type": "f",
-                    "Quail ID": "",
-                    "Editable":false
+                    "unit": "f",
+                    "qpin": "",
+                    "edit":false
                 },
                 "ntg": {
-                    "value": 0,
+                    "valu": 0,
                     "desc": "test",
-                    "Type": "f",
-                    "Quail ID": "",
-                    "Editable":false
+                    "unit": "f",
+                    "qpin": "",
+                    "edit":false
                 }
             },
             "PT7": {
                 "raw": {
-                    "value": 0,
+                    "valu": 0,
                     "desc": "test",
-                    "Type": "f",
-                    "Quail ID": "PT7",
-                    "Editable":false
+                    "unit": "f",
+                    "qpin": "PT7",
+                    "edit":false
                 },
                 "avg": {
-                    "value": 0,
+                    "valu": 0,
                     "desc": "test",
-                    "Type": "f",
-                    "Quail ID": "",
-                    "Editable":false
+                    "unit": "f",
+                    "qpin": "",
+                    "edit":false
                 },
                 "drv": {
-                    "value": 0,
+                    "valu": 0,
                     "desc": "test",
-                    "Type": "f",
-                    "Quail ID": "",
-                    "Editable":false
+                    "unit": "f",
+                    "qpin": "",
+                    "edit":false
                 },
                 "ntg": {
-                    "value": 0,
+                    "valu": 0,
                     "desc": "test",
-                    "Type": "f",
-                    "Quail ID": "",
-                    "Editable":false
+                    "unit": "f",
+                    "qpin": "",
+                    "edit":false
                 }
             },
             "LC1": {
                 "raw": {
-                    "value": 0,
+                    "valu": 0,
                     "desc": "test",
-                    "Type": "f",
-                    "Quail ID": "LC1",
-                    "Editable":false
+                    "unit": "f",
+                    "qpin": "LC1",
+                    "edit":false
                 },
                 "avg": {
-                    "value": 0,
+                    "valu": 0,
                     "desc": "test",
-                    "Type": "f",
-                    "Quail ID": "",
-                    "Editable":false
+                    "unit": "f",
+                    "qpin": "",
+                    "edit":false
                 },
                 "drv": {
-                    "value": 0,
+                    "valu": 0,
                     "desc": "test",
-                    "Type": "f",
-                    "Quail ID": "",
-                    "Editable":false
+                    "unit": "f",
+                    "qpin": "",
+                    "edit":false
                 },
                 "ntg": {
-                    "value": 0,
+                    "valu": 0,
                     "desc": "test",
-                    "Type": "f",
-                    "Quail ID": "",
-                    "Editable":false
+                    "unit": "f",
+                    "qpin": "",
+                    "edit":false
                 }
             },
             "LC2": {
                 "raw": {
-                    "value": 0,
+                    "valu": 0,
                     "desc": "test",
-                    "Type": "f",
-                    "Quail ID": "LC2",
-                    "Editable":false
+                    "unit": "f",
+                    "qpin": "LC2",
+                    "edit":false
                 },
                 "avg": {
-                    "value": 0,
+                    "valu": 0,
                     "desc": "test",
-                    "Type": "f",
-                    "Quail ID": "",
-                    "Editable":false
+                    "unit": "f",
+                    "qpin": "",
+                    "edit":false
                 },
                 "drv": {
-                    "value": 0,
+                    "valu": 0,
                     "desc": "test",
-                    "Type": "f",
-                    "Quail ID": "",
-                    "Editable":false
+                    "unit": "f",
+                    "qpin": "",
+                    "edit":false
                 },
                 "ntg": {
-                    "value": 0,
+                    "valu": 0,
                     "desc": "test",
-                    "Type": "f",
-                    "Quail ID": "",
-                    "Editable":false
+                    "unit": "f",
+                    "qpin": "",
+                    "edit":false
                 }
             },
             "TC1": {
                 "raw": {
-                    "value": 0,
+                    "valu": 0,
                     "desc": "test",
-                    "Type": "f",
-                    "Quail ID": "TC1",
-                    "Editable":false
+                    "unit": "f",
+                    "qpin": "TC1",
+                    "edit":false
                 },
                 "avg": {
-                    "value": 0,
+                    "valu": 0,
                     "desc": "test",
-                    "Type": "f",
-                    "Quail ID": "",
-                    "Editable":false
+                    "unit": "f",
+                    "qpin": "",
+                    "edit":false
                 },
                 "drv": {
-                    "value": 0,
+                    "valu": 0,
                     "desc": "test",
-                    "Type": "f",
-                    "Quail ID": "",
-                    "Editable":false
+                    "unit": "f",
+                    "qpin": "",
+                    "edit":false
                 },
                 "ntg": {
-                    "value": 0,
+                    "valu": 0,
                     "desc": "test",
-                    "Type": "f",
-                    "Quail ID": "",
-                    "Editable":false
+                    "unit": "f",
+                    "qpin": "",
+                    "edit":false
                 }
             },
             "TC2": {
                 "raw": {
-                    "value": 0,
+                    "valu": 0,
                     "desc": "test",
                     "Type": "f",
-                    "Quail ID": "TC2",
-                    "Editable":false
+                    "qpin": "TC2",
+                    "edit":false
                 },
                 "avg": {
-                    "value": 0,
+                    "valu": 0,
                     "desc": "test",
                     "Type": "f",
-                    "Quail ID": "",
-                    "Editable":false
+                    "qpin": "",
+                    "edit":false
                 },
                 "drv": {
-                    "value": 0,
+                    "valu": 0,
                     "desc": "test",
                     "Type": "f",
-                    "Quail ID": "",
-                    "Editable":false
+                    "qpin": "",
+                    "edit":false
                 },
                 "ntg": {
-                    "value": 0,
+                    "valu": 0,
                     "desc": "test",
                     "Type": "f",
-                    "Quail ID": "",
-                    "Editable":false
+                    "qpin": "",
+                    "edit":false
                 }
             }
         },
         "valves": {
             "S1": {
                 "Normally": {
-                    "value": 1,
+                    "valu": 1,
                     "desc": "test",
                     "Type": "17solenoid_normal_t",
                     "Quail ID": "S1",
-                    "Editable":false
+                    "edit":false
                 },
                 "PWM": {
-                    "value": 220,
+                    "valu": 220,
                     "desc": "test",
                     "Type": "14solenoid_pwm_t",
                     "Quail ID": "S1",
-                    "Editable":false
+                    "edit":false
                 },
                 "Pulse Time": {
-                    "value": 1,
+                    "valu": 1,
                     "desc": "test",
                     "Type": "t",
                     "Quail ID": "S1"
@@ -359,45 +359,45 @@
         "battery": {
             "Voltage": {
                 "raw": {
-                    "value": 0,
+                    "valu": 0,
                     "desc": "test",
                     "Type": "f",
                     "Quail ID": "v_bus",
-                    "Editable":false
+                    "edit":false
                 }
             },
             "Current": {
                 "raw": {
-                    "value": 0,
+                    "valu": 0,
                     "desc": "test",
-                    "Type": "f",
+                    "unit": "f",
                     "Quail ID": "i",
-                    "Editable":false
+                    "edit":false
                 }
             }
         },
         "board": {
             "error": {
-                "value": 0,
+                "valu": 0,
                 "desc": "test",
-                "Type": "f",
+                "unit": "f",
                 "Quail ID": "",
-                "Editable":false
+                "edit":false
             },
             "tick": {
-                "value": 0,
+                "valu": 0,
                 "desc": "test",
-                "Type": "f",
+                "unit": "f",
                 "Quail ID": "",
-                "Editable":false
+                "edit":false
             }
         }
     },
     "stack": {
-        "value": 0,
+        "valu": 0,
         "desc": "test",
-        "Type": "f",
+        "unit": "f",
         "Quail ID": "",
-        "Editable":false
+        "edit":false
     }
 }

@@ -179,6 +179,11 @@ class Dashboard(Page):
             )
         )
 
+        self.add_child(
+            DataTable("Battery", ["slate.quail.board.error", "slate.quail.board.tick", "slate.quail.battery.Voltage.raw",  "slate.quail.battery.Current.raw"]
+            )
+        )
+
         # self.add_child(
         #     Graph("TEST")
         # )

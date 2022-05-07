@@ -74,10 +74,10 @@
 				socket.emit("get-data", {"ids": [right_graph_key, left_graph_key], "last_n": totalPoints})	
 			}
 
-            new_point = get_data("slate." + right_graph_key + ".value")
+            new_point = get_data("slate." + right_graph_key + ".valu")
             right_data.push(new_point);
 
-            left_new_data = get_data("slate." + left_graph_key + ".value")
+            left_new_data = get_data("slate." + left_graph_key + ".valu")
             left_data.push(left_new_data);
 
             while (right_data.length > totalPoints){

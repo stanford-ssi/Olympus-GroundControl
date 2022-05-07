@@ -18,7 +18,12 @@ socket.on("new", (update) => {
     // console.log(update)
     update_slate(update, slate)
     for (func of new_data_callbacks) {
-        func();
+        try {
+            func();
+        } catch (error) {
+            console.error("failed new_data_callback");
+            console.error(error);
+        }
     }
 });
 
@@ -28,8 +33,8 @@ function update_slate(update, meta) {
     // console.log(typeof(meta))
     // console.log(update, meta)
 
-    if ("value" in meta){
-        meta["value"] = update
+    if ("valu" in meta){
+        meta["valu"] = update
         return
     }
 
