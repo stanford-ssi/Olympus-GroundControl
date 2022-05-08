@@ -209,7 +209,7 @@ class Main:
             except ValueError:
                 pass # invalid json
             else:
-                print("Message from Client: ", json_object)
+                # print("Message from Client: ", json_object)
                 # print()
 
                 self.update_meta(json_object)
