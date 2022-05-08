@@ -95,8 +95,8 @@ class ValveTable(Element):
             box = jinja2.Template(file.read())
 
         items = [ {"id":id,
-            "qpin":self.top.get_meta(id, "qpin"),
-            "desc":self.top.get_meta(id, "desc"), } for id in self.line_ids]
+            "qpin":self.top.get_meta(id, "nor.qpin"),
+            "desc":self.top.get_meta(id, "nor.desc"), } for id in self.line_ids]
 
         test = box.render( {"list_ids": items, "title": self.name} )
         return test
@@ -158,25 +158,20 @@ class Dashboard(Page):
 
 
         self.add_child(
-            RawSensorTable("Sensors", ["slate.press.ox_fill",
-                                       "slate.press.ox_vent"]
+            RawSensorTable("Sensors", ["slate.quail.sensors.PT1.raw",
+                                       "slate.quail.sensors.PT2.raw"]
             )
         )
 
         self.add_child(
-            ValveTable("Solenoids", ["slate.valves.ox_fill",
-                                       "slate.valves.ox_vent"]
+            ValveTable("Solenoids", ["slate.quail.valves.S1",
+                                       "slate.quail.valves.S2",
+                                       "slate.quail.valves.S3"]
             )
         )
 
         self.add_child(
             SquibTable("Squibs", ["slate.squibs.engine"]
-            )
-        )
-
-        self.add_child(
-            DataTable("Health", ["slate.health.v_bus",
-                                "slate.health.current"]
             )
         )
 
@@ -189,7 +184,7 @@ class Dashboard(Page):
         )
 
         self.add_child(
-            DataTable("Battery", ["slate.quail.board.error", 
+            DataTable("Health", ["slate.quail.board.error", 
                                 "slate.quail.board.tick",
                                 "slate.quail.battery.Voltage.raw", 
                                 "slate.quail.battery.Current.raw"]

@@ -122,7 +122,7 @@ class Main:
         path.pop(0)
 
         if endpoint:
-            path.append(endpoint)
+            path.extend(endpoint.split("."))
 
         node = self.metadata
         for name in path:
@@ -182,6 +182,8 @@ class Main:
         out = {}
         for path in flat.keys():
             ids = path.split(".")
+            if ids[0] == "slate":
+                ids.pop(0)
             node = out
             for id in ids[:-1]:
                 node = node.setdefault(id, {})
