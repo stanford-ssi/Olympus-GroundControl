@@ -23,7 +23,7 @@
                             {# TODO save value for future#}
                             <td> <input type="number" id="{{item.id}}.pulse" step="10" value="100" style="width: 4em"> </td>
                             <td> <button type="button" class="button"
-                                onclick="send_command({'{{item.id}}.pls':document.getElementById('{{item.id}}.pulse').value})"> Pulse </button> </td>
+                                onclick="send_command({'{{item.id}}.ptm':document.getElementById('{{item.id}}.pulse').value, '{{item.id}}.pls':1})"> Pulse </button> </td>
                             </tr>
 		{% endfor %}
 
@@ -33,7 +33,7 @@
     <script>
     new_data_callbacks.push( () => { 
       {% for item in list_ids %}
-              document.getElementById('{{item.id}}').innerHTML = {{item.id}}.pwm.valu
+              document.getElementById('{{item.id}}').innerHTML = {{item.id}}.stt.valu
       {% endfor %}
     });
     </script>
