@@ -231,6 +231,7 @@ class Main:
         TCP_IP = "192.168.1.100"
         TCP_PORT = 1002
         self.tcp_quail_reader, self.tcp_quail_writer = await asyncio.open_connection(TCP_IP, TCP_PORT)
+        print("connected to quail")
 
         self.udp_socket = await asyncudp.create_socket(local_addr=("0.0.0.0", 8000))
         self.app.serial_pub = asyncio.create_task(self.push_serial_data())
