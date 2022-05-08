@@ -232,7 +232,7 @@ class Main:
         TCP_PORT = 1002
         self.tcp_quail_reader, self.tcp_quail_writer = await asyncio.open_connection(TCP_IP, TCP_PORT)
 
-        self.udp_socket = await asyncudp.create_socket(local_addr=("0.0.0.0", 2000))
+        self.udp_socket = await asyncudp.create_socket(local_addr=("0.0.0.0", 8000))
         self.app.serial_pub = asyncio.create_task(self.push_serial_data())
 
         #TODO move inside Map Page class

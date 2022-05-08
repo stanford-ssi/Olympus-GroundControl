@@ -345,54 +345,6 @@
           "qpin": "E4",
           "edit": true
         }
-      },
-      "E5": {
-        "arm": {
-          "desc": "arm",
-          "qpin": "E5",
-          "edit": true
-        },
-        "fir": {
-          "desc": "fir",
-          "qpin": "E5",
-          "edit": true
-        }
-      },
-      "E6": {
-        "arm": {
-          "desc": "arm",
-          "qpin": "E6",
-          "edit": true
-        },
-        "fir": {
-          "desc": "fir",
-          "qpin": "E6",
-          "edit": true
-        }
-      },
-      "E7": {
-        "arm": {
-          "desc": "arm",
-          "qpin": "E7",
-          "edit": true
-        },
-        "fir": {
-          "desc": "fir",
-          "qpin": "E7",
-          "edit": true
-        }
-      },
-      "E8": {
-        "arm": {
-          "desc": "arm",
-          "qpin": "E8",
-          "edit": true
-        },
-        "fir": {
-          "desc": "fir",
-          "qpin": "E8",
-          "edit": true
-        }
       }
     },
     "adc_in": {
