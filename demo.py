@@ -200,16 +200,16 @@ class Main:
             # await asyncio.sleep(0.1)
             message, addr = await self.udp_socket.recvfrom()
 
-            if message[0] != ord('\n'):
-                accumulator.append(message)
-                continue
+            
+            accumulator.append(message)
+            
             
             try:
                 json_object = json.loads(b"".join(accumulator))
             except ValueError:
                 pass # invalid json
             else:
-                # print("Message from Client: ", json_object)
+                print("Message from Client: ", json_object)
                 # print()
 
                 self.update_meta(json_object)

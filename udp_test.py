@@ -5,7 +5,7 @@ import asyncio
 import asyncudp
  
 localIP     = "192.168.1.1"
-localPort   = 2000
+localPort   = 8000
 
 bufferSize  = 10_000
 
@@ -19,24 +19,18 @@ async def udp_loop():
     # udp_socket.setblocking(False)
     print("UDP server up and listening")
 
-    accumulator = []
     while(True):
         # message, _ = udp_socket.recvfrom(bufferSize)
         message, addr = await udp_socket.recvfrom()
-
-        if message[0] != ord('\n'):
-            accumulator.append(message)
-            continue
         
         try:
-            json_object = json.loads(b"".join(accumulator))
+            json_object = json.loads(message)
         except ValueError:
+            print("Invalid JSON")
             pass # invalid json
         else:
             print("Message from Client: ", json_object)
             print()
-        finally:
-            accumulator = []
 
 async def print_loop():
     i = 0
