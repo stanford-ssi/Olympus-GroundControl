@@ -1,6 +1,7 @@
 
 # where we store the cache map images
 /cache/*
+authenticated_cookies.json
 
 /venv
 

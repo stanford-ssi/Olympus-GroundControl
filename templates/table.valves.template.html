@@ -17,22 +17,24 @@
 		{% for item in list_ids %}
                             <tr>
                             <td>{{item.id}}</td>
-                            <td>{{item.pin}}</td>
+                            <td>{{item.qpin}}</td>
                             <td>{{item.desc}}</td>
                             <td> <p id="{{item.id}}"> None </p> </td>
                             {# TODO save value for future#}
                             <td> <input type="number" id="{{item.id}}.pulse" step="10" value="100" style="width: 4em"> </td>
                             <td> <button type="button" class="button"
-                                onclick="send_command({'{{item.id}}.test':document.getElementById('{{item.id}}.pulse').valu})"> Pulse </button> </td>
+                                onclick="send_command({'{{item.id}}.pls':document.getElementById('{{item.id}}.pulse').valu})"> Pulse </button> </td>
                             </tr>
 		{% endfor %}
 
       </tbody>
     </table>
 
-    <!-- <script>
+    <script>
     new_data_callbacks.push( () => { 
-    {{update_code}}
+      {% for item in list_ids %}
+              document.getElementById('{{item.id}}').innerHTML = {{item.id}}.pwm
+      {% endfor %}
     });
-    </script> -->
+    </script>
 </div>

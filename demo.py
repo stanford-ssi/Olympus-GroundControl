@@ -57,6 +57,11 @@ class Main:
 
         @self.sio.on('cmd')
         async def command(sid, data):
+            # bad bad bad but temp
+            async with aiofiles.open('authenticated_cookies.json', mode='r') as f:
+                contents = await f.read()
+            self.authenticated_ids = json.loads(contents)
+
             print(self.authenticated_ids)
             if data.get("auth") not in self.authenticated_ids:
                 print("not allow to execute")
@@ -86,6 +91,10 @@ class Main:
         @self.sio.on("de-auth")
         async def de_auth(sid, data):
             self.authenticated_ids.remove(data)
+
+            async with aiofiles.open('authenticated_cookies.json', mode='w') as f:
+                await f.write(json.dumps(self.authenticated_ids))
+
             print("deauthenticated", data)
 
         # WARNING: This isn't real security as socketio isn't encrypted
@@ -101,6 +110,10 @@ class Main:
             new_id = secrets.token_urlsafe(32)
             print("authenticated", new_id)
             self.authenticated_ids.append(new_id)
+
+            async with aiofiles.open('authenticated_cookies.json', mode='w') as f:
+                await f.write(json.dumps(self.authenticated_ids))
+
             await self.sio.emit("auth", new_id, room=sid)
 
     def get_meta(self, path, endpoint=None):
@@ -194,7 +207,7 @@ class Main:
             except ValueError:
                 pass # invalid json
             else:
-                print("Message from Client: ", json_object)
+                # print("Message from Client: ", json_object)
                 # print()
 
                 self.update_meta(json_object)
