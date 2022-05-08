@@ -80,7 +80,7 @@ class SquibTable(Element):
             box = jinja2.Template(file.read())
 
         items = [ {"id":id,
-            "pin":self.top.get_meta(id, "pin"),
+            "qpin":self.top.get_meta(id, "qpin"),
             "desc":self.top.get_meta(id, "desc"), } for id in self.line_ids]
 
         return box.render( {"list_ids": items, "title": self.name} )
@@ -95,7 +95,7 @@ class ValveTable(Element):
             box = jinja2.Template(file.read())
 
         items = [ {"id":id,
-            "pin":self.top.get_meta(id, "pin"),
+            "qpin":self.top.get_meta(id, "qpin"),
             "desc":self.top.get_meta(id, "desc"), } for id in self.line_ids]
 
         test = box.render( {"list_ids": items, "title": self.name} )
@@ -111,7 +111,7 @@ class RawSensorTable(Element):
             box = jinja2.Template(file.read())
 
         items = [ {"id":id,
-            "pin":self.top.get_meta(id, "pin"),
+            "qpin":self.top.get_meta(id, "qpin"),
             "unit":self.top.get_meta(id, "unit"),
             "desc":self.top.get_meta(id, "desc"), } for id in self.line_ids]
 
@@ -175,12 +175,24 @@ class Dashboard(Page):
         )
 
         self.add_child(
-            DataTable("Health", ["slate.health.v_bus", "slate.health.current"]
+            DataTable("Health", ["slate.health.v_bus",
+                                "slate.health.current"]
             )
         )
 
         self.add_child(
-            DataTable("Battery", ["slate.quail.board.error", "slate.quail.board.tick", "slate.quail.battery.Voltage.raw",  "slate.quail.battery.Current.raw"]
+            RawSensorTable("ADC", ["slate.quail.adc_in.ADC1",
+                                       "slate.quail.adc_in.ADC2",
+                                       "slate.quail.adc_in.ADC3",
+                                       "slate.quail.adc_in.ADC4"]
+            )
+        )
+
+        self.add_child(
+            DataTable("Battery", ["slate.quail.board.error", 
+                                "slate.quail.board.tick",
+                                "slate.quail.battery.Voltage.raw", 
+                                "slate.quail.battery.Current.raw"]
             )
         )
 
