@@ -158,15 +158,34 @@ class Dashboard(Page):
 
 
         self.add_child(
-            RawSensorTable("Sensors", ["slate.quail.sensors.PT1.raw",
-                                       "slate.quail.sensors.PT2.raw"]
+            RawSensorTable("Sensors", ["slate.quail.sensors.LC1.raw",
+                                       "slate.quail.sensors.LC2.raw",
+                                       "slate.quail.sensors.PT1.raw",
+                                       "slate.quail.sensors.PT2.raw",
+                                       "slate.quail.sensors.PT3.raw",
+                                       "slate.quail.sensors.PT4.raw",
+                                       "slate.quail.sensors.PT6.raw",
+                                       "slate.quail.sensors.PT7.raw",
+                                       "slate.quail.sensors.PT8.raw",
+                                       "slate.quail.sensors.TC1.raw",
+                                       "slate.quail.sensors.TC2.raw"]
             )
         )
 
         self.add_child(
             ValveTable("Solenoids", ["slate.quail.valves.S1",
                                        "slate.quail.valves.S2",
-                                       "slate.quail.valves.S3"]
+                                       "slate.quail.valves.S3",
+                                       "slate.quail.valves.S4",
+                                       "slate.quail.valves.S5",
+                                       "slate.quail.valves.S6",
+                                       "slate.quail.valves.S7",
+                                       "slate.quail.valves.S8",
+                                       "slate.quail.valves.S9",
+                                       "slate.quail.valves.S10",
+                                       "slate.quail.valves.S11",
+                                       "slate.quail.valves.S12"]
+
             )
         )
 
