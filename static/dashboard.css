@@ -4,6 +4,9 @@
 
 height: 100%;
 width: 100%;
+max-width: 100%;
+
+/* overflow-x: hidden; */
 
 /* column-count: 2 */
 columns: 500px;
@@ -15,6 +18,12 @@ columns: 500px;
 /* grid-template-columns: 1fr 1fr; */
 
 }
+
+/* @media only screen and (max-width: 500px) {
+    .dashboard-page {
+        column-count: 1;
+    }
+} */
 
 .box {
     break-inside: avoid;
