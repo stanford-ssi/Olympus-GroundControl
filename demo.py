@@ -53,7 +53,13 @@ class Main:
 
     def create_socketio_handlers(self):
 
-        self.authenticated_ids = []
+        try:
+            with open('authenticated_cookies.json', mode='r') as f:
+                self.authenticated_ids = json.loads(f.read())
+        except FileNotFoundError:
+            self.authenticated_ids = []
+            with open('authenticated_cookies.json', mode='w') as f:
+                f.write(json.dumps(self.authenticated_ids))
 
         @self.sio.on('cmd')
         async def command(sid, data):
@@ -230,6 +236,7 @@ class Main:
 
         TCP_IP = "192.168.1.100"
         TCP_PORT = 1002
+        print("waiting for quail")
         self.tcp_quail_reader, self.tcp_quail_writer = await asyncio.open_connection(TCP_IP, TCP_PORT)
         print("connected to quail")
 
