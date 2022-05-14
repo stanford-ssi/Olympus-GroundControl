@@ -189,39 +189,23 @@ class Main:
 
     async def push_serial_data(self):
 
-        def get_value_only(node, path):
-            return node["valu"]
-
-        accumulator = []
         while(True):
-            # await asyncio.sleep(0.1)
             message, addr = await self.udp_socket.recvfrom()
+            json_object = json.loads(message)
 
-            print(message)
-            print()
+            # print(message)
+            # print()
             
-            accumulator.append(message)
-            
-            try:
-                json_object = json.loads(b"".join(accumulator))
-            except ValueError:
-                pass # invalid json
-            else:
-                # print("Message from Client: ", json_object)
-                # print()
+            self.update_meta(json_object)
 
-                self.update_meta(json_object)
+            for key, value in self.flat_meta( lambda node, path: (".".join(path), node["valu"]) ):
+                self.history[key].append(value)
 
-                for key, value in self.flat_meta( lambda node, path: (".".join(path), node["valu"]) ):
-                    self.history[key].append(value)
+            while len(self.history[key]) > 10000:
+                self.history[key].pop()
 
-                while len(self.history[key]) > 10000:
-                    self.history[key].pop()
+            await self.sio.emit("new", json_object)
 
-                await self.sio.emit("new", json_object)
-                # await self.sio.emit("new", self.transform_meta(get_value_only))
-            finally:
-                accumulator = []
 
     async def get_metaslate_from_quail(self):
 
