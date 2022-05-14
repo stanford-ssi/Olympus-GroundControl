@@ -30,15 +30,6 @@ class Main:
         self.app.on_startup.append(self.start_background_tasks)
         self.app.on_cleanup.append(self.cleanup_background_tasks)
          
-        with open("metaslate.json") as f:
-            self.metadata = json.loads(f.read())
-        def add_valu(node, path):
-            node["valu"] = 0
-            return node
-        self.metadata = self.transform_meta(add_valu)
-
-        self.database = DataBase(self.metadata, self)
-        self.history = {key: [] for key in  self.flat_meta( lambda node, path: ".".join(path) ) }
 
     def start(self):
         web.run_app(self.app, host="localhost", port=8080)
@@ -206,9 +197,10 @@ class Main:
             # await asyncio.sleep(0.1)
             message, addr = await self.udp_socket.recvfrom()
 
+            print(message)
+            print()
             
             accumulator.append(message)
-            
             
             try:
                 json_object = json.loads(b"".join(accumulator))
@@ -231,13 +223,46 @@ class Main:
             finally:
                 accumulator = []
 
+    async def get_metaslate_from_quail(self):
+
+        print("Waiting for metaslate")
+        self.tcp_quail_writer.write(json.dumps({ "meta" : "gimme" }).encode())
+        await self.tcp_quail_writer.drain()
+
+        accumulator = []
+        while 1:
+            accumulator.append( await self.tcp_quail_reader.read(4098) )
+            print(accumulator)
+            try:
+                a = json.loads(b"".join(accumulator))
+            except ValueError:
+                pass
+            else:
+                self.metadata = a
+                break
+
+        def add_valu(node, path):
+            node["valu"] = 0
+            return node
+
+        self.metadata = self.transform_meta(add_valu)
+
+        print(self.metadata)
+        print("Got metaslate!")
+
+        self.database = DataBase(self.metadata, self)
+        self.history = {key: [] for key in  self.flat_meta( lambda node, path: ".".join(path) ) }
+
 
     async def start_background_tasks(self, app):
 
         TCP_IP = "192.168.1.100"
         TCP_PORT = 1002
         print("waiting for quail")
+
         self.tcp_quail_reader, self.tcp_quail_writer = await asyncio.open_connection(TCP_IP, TCP_PORT)
+        await self.get_metaslate_from_quail()
+            
         print("connected to quail")
 
         self.udp_socket = await asyncudp.create_socket(local_addr=("0.0.0.0", 8000))
