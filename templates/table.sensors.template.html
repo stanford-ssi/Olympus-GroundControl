@@ -10,6 +10,7 @@
           <th>Desc</th>
           <th>Value</th>
           <th>Unit</th>
+          <th>Tare</th>
         </tr>
       </thead>
       <tbody>
@@ -20,6 +21,7 @@
                             <td>{{item.desc}}</td>
                             <td> <p id="{{item.id}}"> None </p> </td>
                             <td>{{item.unit}}</td>
+                            <td> <button type="button" class="button" onclick=""> Tare </button> </td>
                             </tr>
 		{% endfor %}
 
