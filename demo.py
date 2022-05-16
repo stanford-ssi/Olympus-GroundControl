@@ -77,8 +77,13 @@ class Main:
             else:
                 raise ValueError("unknown command" + str(data))
 
-            self.tcp_quail_writer.write(json.dumps(to_send).encode())
-            await self.tcp_quail_writer.drain()
+            try:
+                self.tcp_quail_writer.write(json.dumps(to_send).encode())
+                await self.tcp_quail_writer.drain()
+                echo_cmd = await self.tcp_quail_reader.read(4096)
+                print("echoed command", echo_cmd)
+            except ConnectionResetError:
+                await self.connect_quail()
 
 
         @self.sio.on("get-data")
@@ -221,6 +226,24 @@ class Main:
             await self.sio.emit("new", json_object)
 
 
+    async def connect_quail(self):
+        TCP_IP = "192.168.1.100"
+        TCP_PORT = 1002
+
+        while True:
+            try:
+                print("waiting for quail to connect")
+                self.tcp_quail_reader, self.tcp_quail_writer = await asyncio.open_connection(TCP_IP, TCP_PORT)
+                print("connected to quail")
+                await self.get_metaslate_from_quail()
+                print("fetched metaslate")
+            except (ConnectionResetError, ConnectionRefusedError):
+                print("Connection error")
+                await asyncio.sleep(2)
+            else:
+                return
+            
+
     async def get_metaslate_from_quail(self):
 
         print("Waiting for metaslate")
@@ -256,14 +279,8 @@ class Main:
 
     async def start_background_tasks(self, app):
 
-        TCP_IP = "192.168.1.100"
-        TCP_PORT = 1002
-        print("waiting for quail")
-
-        self.tcp_quail_reader, self.tcp_quail_writer = await asyncio.open_connection(TCP_IP, TCP_PORT)
-        await self.get_metaslate_from_quail()
+        await self.connect_quail()
             
-        print("connected to quail")
 
         self.udp_socket = await asyncudp.create_socket(local_addr=("0.0.0.0", 8000))
         self.app.serial_pub = asyncio.create_task(self.push_serial_data())
