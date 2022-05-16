@@ -147,15 +147,18 @@ class MiniGraph(Element):
         super().__init__(name)
         self.line_ids = line_ids
 
+        self.colors = ["#348ABD", "#A60628", "#7A68A6", "#467821", "#CF4457", "#188487", "#E24A33" ]
+
     def render(self):
         with open("templates/mini_graph.template.html") as file:
             box = jinja2.Template(file.read())
 
         items = [ {"id":id,
             "unit":self.top.get_meta(id, "unit"),
-            "desc":self.top.get_meta(id, "desc"), } for id in self.line_ids]
+            "desc":self.top.get_meta(id, "desc"), 
+            "color":self.colors[i] } for i, id in enumerate(self.line_ids)]
 
-        test = box.render( {"list_ids": items, "title": self.name} )
+        test = box.render( {"list_ids": items, "title": self.name, "total_points": 200} )
         return test
 
 class Page(Element):

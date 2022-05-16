@@ -71,6 +71,7 @@
 			totalPoints = graph_time.value
 
 			if( left_data.length < totalPoints || right_data.length < totalPoints ){
+				console.log("requesting more data")
 				socket.emit("get-data", {"ids": ["slate." + right_graph_key, "slate." + left_graph_key], "last_n": totalPoints})	
 			}
 
@@ -87,6 +88,7 @@
             while (left_data.length > totalPoints){
                 left_data.shift();
             }
+			console.log(left_data.length)
 
 			replot();
 

@@ -96,6 +96,8 @@ class Main:
             for id in data["ids"]:
                 out[id] = self.history[id][-last_n:]
 
+            print("getting data")
+            print(out)
             await self.sio.emit("deliver-data", out, room=sid)
 
         @self.sio.on("de-auth")

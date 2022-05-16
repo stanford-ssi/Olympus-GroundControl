@@ -46,32 +46,26 @@
 
 		var right_data = [];
 		var left_data = [];
-        var totalPoints = 200;
+        var totalPoints = {{total_points}};
 
 		socket.on("deliver-data", (inbound_data) => {
 
             {% for item in list_ids %}
                     data["{{item.id}}"] = inbound_data["{{item.id}}"];
             {% endfor %}
-      });
+        });
 
-		var plot = $.plot("#placeholder", [[ [0,1] ]], {
+		var plot = $.plot("#placeholder", [[ [0,1],
+            {% for item in list_ids %}
+             [0,1],
+            {% endfor %}
+            ]], {
 			series: { shadowSize: 0 },
 			yaxis: { autoScale: 'loose', min: 0, },
 			xaxis: { autoScale: 'loose', show: true, }
 		});
 
 		function replot() {
-
-			var res = [];
-			for (var i = 0; i < right_data.length; ++i) {
-				res.push([i, right_data[i]])
-			}
-
-			var L_res = [];
-			for (var i = 0; i < left_data.length; ++i) {
-				L_res.push([i, left_data[i]])
-			}
 
 			//first line is to ensure zero is always shown on screen
             to_set = [{"data":  [[0,0]], "lines": {"lineWidth": 0}  }];
@@ -82,23 +76,18 @@
                         res.push([i, data["{{item.id}}"][i]])
                     }
 
-                    // to_set.push( {"data":  res, "color":"rgb(255, 0, 0)", "lines": {"lineWidth": 2}  } );
-                    to_set.push( {"data":  res, "lines": {"lineWidth": 2}  } );
+                    to_set.push( {"data":  res, "color":"{{item.color}}", "lines": {"lineWidth": 2}  } );
+                    // to_set.push( {"data":  res, "lines": {"lineWidth": 2}  } );
 
             {% endfor %}
 
-			//first line is to ensure zero is always shown on screen
 			plot.resize();
             plot.setData(to_set);
-			// plot.setData([ {"data":  [[0,0]], "lines": {"lineWidth": 0}  },
-			// 			   {"data":  res, "color":"rgb(255, 0, 0)", "lines": {"lineWidth": 2}  },
-			// 			   {"data": L_res, "color":"rgb(0, 0, 255)", "lines": {"lineWidth": 2}  }   ])
             plot.setupGrid(true);
 			plot.draw();
 		}
 
         new_data_callbacks.push( () => {
-			// var right_graph_key = document.getElementById("right-graph-key").value;
 
             missing_data = [];
             {% for item in list_ids %}
@@ -114,23 +103,14 @@
                     }
             {% endfor %}
 
-			socket.emit("get-data", {"ids": missing_data, "last_n": totalPoints})	
-
-			// if( left_data.length < totalPoints || right_data.length < totalPoints ){
-			// 	socket.emit("get-data", {"ids": [right_graph_key, left_graph_key], "last_n": totalPoints})	
-			// }
-
-            // right_new_data = get_data("slate." + right_graph_key + ".valu")
-            // right_data.push(right_new_data);
-
-            // while (right_data.length > totalPoints){
-            //     right_data.shift();
-            // }
-
+            if (missing_data.length > 0){
+                socket.emit("get-data", {"ids": missing_data, "last_n": totalPoints})	
+            }
 
 			replot();
 
         })
+
 
 	});
 
@@ -140,6 +120,10 @@
     <div class="box_header">
       <div class="box_title"> {{title}} </div>
     </div>
+
+    {% for item in list_ids %}
+        <div style="color: {{item.color}};"> {{item.desc}} </div>
+    {% endfor %}
 
 	<div class="demo-container">
 		<div id="placeholder" class="demo-placeholder"></div>
