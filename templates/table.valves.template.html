@@ -2,6 +2,10 @@
     <div class="box_header">
       <div class="box_title"> {{title}} </div>
     </div>
+
+    <button type="button" style="width: 50%; float: left" class="button red" onclick="send_command(safe_valve_cmd)"> (TODO) Safe All Valves </button> 
+    <button type="button" style="width: 50%; float: left" class="button" onclick="pulse_valves()"> Pulse Valves </button> 
+    </tr>
     <table class="dashboard-table">
       <thead>
         <tr>
@@ -22,15 +26,34 @@
                             <td> <p id="{{item.id}}"> None </p> </td>
                             {# TODO save value for future#}
                             <td> <input type="number" id="{{item.id}}.pulse" step="10" value="100" style="width: 4em"> </td>
-                            <td> <button type="button" class="button"
-                                onclick="send_command({'{{item.id}}.ptm':document.getElementById('{{item.id}}.pulse').value, '{{item.id}}.pls':1})"> Pulse </button> </td>
-                            </tr>
+                            <td> <input type="checkbox" id="{{item.id}}.selected"> </td>
 		{% endfor %}
 
       </tbody>
     </table>
 
     <script>
+    checkboxes = []
+    {% for item in list_ids %}
+            checkboxes.push("{{item.id}}");
+    {% endfor %}
+
+    safe_valve_cmd = {}
+    {% for item in list_ids %}
+            safe_valve_cmd["{{item.id}}.ptm"] = 0;
+    {% endfor %}
+
+    function pulse_valves() {
+        //TODO: check if it is editable
+        var cmd = {};
+        for (id of checkboxes) {
+          if (document.getElementById(id + '.selected').checked){
+            cmd[id+'.ptm'] = document.getElementById(id+'.pulse').value;
+          }
+        }
+        send_command(cmd);
+    }
+
     new_data_callbacks.push( () => { 
       {% for item in list_ids %}
               document.getElementById('{{item.id}}').innerHTML = {{item.id}}.stt.valu

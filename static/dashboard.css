@@ -115,6 +115,10 @@ columns: 500px;
     font-size: 16px;
 }
 
+.button.red{
+    background-color: #c54545;
+}
+
 .button:active { 
     background-color: #4c53af;
 }
