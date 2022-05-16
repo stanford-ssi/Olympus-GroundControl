@@ -55,14 +55,11 @@
             {% endfor %}
         });
 
-		var plot = $.plot("#placeholder", [[ [0,1],
-            {% for item in list_ids %}
-             [0,1],
-            {% endfor %}
+		var plot = $.plot("#placeholder", [[ [0,1], 
             ]], {
 			series: { shadowSize: 0 },
 			yaxis: { autoScale: 'loose', min: 0, },
-			xaxis: { autoScale: 'loose', show: true, }
+			xaxis: { autoScale: 'exact', show: true, }
 		});
 
 		function replot() {
@@ -77,7 +74,6 @@
                     }
 
                     to_set.push( {"data":  res, "color":"{{item.color}}", "lines": {"lineWidth": 2}  } );
-                    // to_set.push( {"data":  res, "lines": {"lineWidth": 2}  } );
 
             {% endfor %}
 
@@ -121,9 +117,11 @@
       <div class="box_title"> {{title}} </div>
     </div>
 
-    {% for item in list_ids %}
-        <div style="color: {{item.color}};"> {{item.desc}} </div>
-    {% endfor %}
+    <div style="text-align: center; margin: 10px">
+        {% for item in list_ids %}
+            <span style="color: {{item.color}}; margin: 10px;"> {{item.desc}}/{{item.unit}} </span>
+        {% endfor %}
+    </div>
 
 	<div class="demo-container">
 		<div id="placeholder" class="demo-placeholder"></div>
