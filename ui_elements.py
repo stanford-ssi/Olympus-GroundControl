@@ -164,10 +164,8 @@ class Dashboard(Page):
     def __init__(self, name, parent):
         super().__init__(name, parent)
 
-
         self.add_child(
-            RawSensorTable("Sensors", ["slate.quail.sensors.LC1.raw",
-                                       "slate.quail.sensors.LC2.raw",
+            RawSensorTable("Sensors", [
                                        "slate.quail.sensors.PT1.raw",
                                        "slate.quail.sensors.PT2.raw",
                                        "slate.quail.sensors.PT3.raw",
@@ -175,9 +173,15 @@ class Dashboard(Page):
                                        "slate.quail.sensors.PT5.raw",
                                        "slate.quail.sensors.PT6.raw",
                                        "slate.quail.sensors.PT7.raw",
-                                       "slate.quail.sensors.PT8.raw",
+                                       "slate.quail.sensors.PT8.raw"], units = ["Pa->psi"] * 8
+            )
+        )
+
+        self.add_child(
+            RawSensorTable("Others", ["slate.quail.sensors.LC1.raw",
+                                       "slate.quail.sensors.LC2.raw",
                                        "slate.quail.sensors.TC1.raw",
-                                       "slate.quail.sensors.TC2.raw"], units = [None] * 2 + ["Pa->psi"] * 8 + [None] * 2
+                                       "slate.quail.sensors.TC2.raw"]
             )
         )
 
