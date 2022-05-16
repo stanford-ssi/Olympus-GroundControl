@@ -143,11 +143,12 @@ class DataTable(Element):
         return test
 
 class MiniGraph(Element):
-    def __init__(self, name, line_ids):
+    def __init__(self, name, line_ids, time_seconds = 60):
         super().__init__(name)
         self.line_ids = line_ids
 
         self.colors = ["#348ABD", "#A60628", "#7A68A6", "#467821", "#CF4457", "#188487", "#E24A33" ]
+        self.time_seconds = time_seconds
 
     def render(self):
         with open("templates/mini_graph.template.html") as file:
@@ -158,7 +159,7 @@ class MiniGraph(Element):
             "desc":self.top.get_meta(id, "desc"), 
             "color":self.colors[i] } for i, id in enumerate(self.line_ids)]
 
-        test = box.render( {"list_ids": items, "title": self.name, "total_points": 200} )
+        test = box.render( {"list_ids": items, "title": self.name, "total_points": self.time_seconds * 20 } )
         return test
 
 class Page(Element):
@@ -183,7 +184,7 @@ class Dashboard(Page):
     def __init__(self, name, parent):
         super().__init__(name, parent)
 
-        self.add_child(MiniGraph("Testing", [ "slate.quail.battery.Voltage.raw", "slate.quail.battery.Current.raw"]))
+        self.add_child(MiniGraph("Testing", [ "slate.quail.battery.Voltage.raw", "slate.quail.battery.Current.raw"], time_seconds = 60))
 
         self.add_child(
             RawSensorTable("Sensors", [ "slate.quail.sensors.PT1.raw",
