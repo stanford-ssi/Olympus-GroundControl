@@ -21,12 +21,12 @@
         var totalPoints = 20;
 
 
-		socket.on("deliver-data", (data) => {
+		socket.on("deliver-data", (inbound_data) => {
 			var right_graph_key = document.getElementById("right-graph-key").value;
 			var left_graph_key = document.getElementById("left-graph-key").value;
 
-			right_data = data[right_graph_key];
-			left_data = data[left_graph_key];
+			right_data = inbound_data["slate." + right_graph_key];
+			left_data = inbound_data["slate." + left_graph_key];
       });
 
 		var plot = $.plot("#placeholder", [[ [0,1] ]], {
@@ -71,7 +71,7 @@
 			totalPoints = graph_time.value
 
 			if( left_data.length < totalPoints || right_data.length < totalPoints ){
-				socket.emit("get-data", {"ids": [right_graph_key, left_graph_key], "last_n": totalPoints})	
+				socket.emit("get-data", {"ids": ["slate." + right_graph_key, "slate." + left_graph_key], "last_n": totalPoints})	
 			}
 
             new_point = get_data("slate." + right_graph_key + ".valu")

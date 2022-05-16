@@ -142,6 +142,22 @@ class DataTable(Element):
         test = box.render( {"list_ids": items, "title": self.name} )
         return test
 
+class MiniGraph(Element):
+    def __init__(self, name, line_ids):
+        super().__init__(name)
+        self.line_ids = line_ids
+
+    def render(self):
+        with open("templates/mini_graph.template.html") as file:
+            box = jinja2.Template(file.read())
+
+        items = [ {"id":id,
+            "unit":self.top.get_meta(id, "unit"),
+            "desc":self.top.get_meta(id, "desc"), } for id in self.line_ids]
+
+        test = box.render( {"list_ids": items, "title": self.name} )
+        return test
+
 class Page(Element):
 
     def __init__(self, name, parent):
@@ -164,9 +180,10 @@ class Dashboard(Page):
     def __init__(self, name, parent):
         super().__init__(name, parent)
 
+        self.add_child(MiniGraph("Testing", [ "slate.quail.battery.Voltage.raw", "slate.quail.battery.Current.raw"]))
+
         self.add_child(
-            RawSensorTable("Sensors", [
-                                       "slate.quail.sensors.PT1.raw",
+            RawSensorTable("Sensors", [ "slate.quail.sensors.PT1.raw",
                                        "slate.quail.sensors.PT2.raw",
                                        "slate.quail.sensors.PT3.raw",
                                        "slate.quail.sensors.PT4.raw",

@@ -94,7 +94,7 @@ class Main:
             # print(data)
             out = {}
             for id in data["ids"]:
-                out[id] = self.history["slate." + id][-last_n:]
+                out[id] = self.history[id][-last_n:]
 
             await self.sio.emit("deliver-data", out, room=sid)
 
