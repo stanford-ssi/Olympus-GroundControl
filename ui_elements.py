@@ -9,6 +9,8 @@ import json
 
 import jinja2
 
+from unit_conversions import unit_factor
+
 class Element:
     """ base class for a node in the widget tree """
     def __init__(self, name):
@@ -102,17 +104,23 @@ class ValveTable(Element):
         return test
 
 class RawSensorTable(Element):
-    def __init__(self, name, line_ids):
+    def __init__(self, name, line_ids, units = None):
         super().__init__(name)
         self.line_ids = line_ids
+
+        if units == None:
+            self.units = {id: None for id in line_ids }
+        else:
+            self.units = {id: s for id,s in zip(line_ids, units) }
 
     def render(self):
         with open("templates/table.sensors.template.html") as file:
             box = jinja2.Template(file.read())
 
         items = [ {"id":id,
+            "conv": unit_factor( self.units[id] ),
             "qpin":self.top.get_meta(id, "qpin"),
-            "unit":self.top.get_meta(id, "unit"),
+            "unit": self.top.get_meta(id, "unit") if self.units[id] is None else self.units[id].split("->")[1],
             "desc":self.top.get_meta(id, "desc"), } for id in self.line_ids]
 
         test = box.render( {"list_ids": items, "title": self.name} )
@@ -164,11 +172,12 @@ class Dashboard(Page):
                                        "slate.quail.sensors.PT2.raw",
                                        "slate.quail.sensors.PT3.raw",
                                        "slate.quail.sensors.PT4.raw",
+                                       "slate.quail.sensors.PT5.raw",
                                        "slate.quail.sensors.PT6.raw",
                                        "slate.quail.sensors.PT7.raw",
                                        "slate.quail.sensors.PT8.raw",
                                        "slate.quail.sensors.TC1.raw",
-                                       "slate.quail.sensors.TC2.raw"]
+                                       "slate.quail.sensors.TC2.raw"], units = [None] * 2 + ["Pa->psi"] * 8 + [None] * 2
             )
         )
 
