@@ -1,0 +1,148 @@
+
+<script language="javascript" type="text/javascript" src="static/jquery/jquery.js"></script>
+<script language="javascript" type="text/javascript" src="static/jquery/jquery.canvaswrapper.js"></script>
+<script language="javascript" type="text/javascript" src="static/jquery/jquery.colorhelpers.js"></script>
+<script language="javascript" type="text/javascript" src="static/jquery/jquery.flot.js"></script>
+<script language="javascript" type="text/javascript" src="static/jquery/jquery.flot.saturated.js"></script>
+<script language="javascript" type="text/javascript" src="static/jquery/jquery.flot.browser.js"></script>
+<script language="javascript" type="text/javascript" src="static/jquery/jquery.flot.drawSeries.js"></script>
+<script language="javascript" type="text/javascript" src="static/jquery/jquery.flot.uiConstants.js"></script>
+
+<style>
+
+    .demo-container {
+        box-sizing: border-box;
+
+        width: 90%;
+        height: 450px;
+
+        padding: 20px 15px 15px 15px;
+        margin: 15px auto 30px auto;
+        border: 1px solid #ddd;
+        background: #fff;
+        background: linear-gradient(#f6f6f6 0, #fff 50px);
+        box-shadow: 0 3px 10px rgba(0,0,0,0.15);
+        user-select: none;
+    }
+
+    .demo-placeholder {
+        width: 100%;
+        height: 100%;
+        font-size: 14px;
+    }
+
+</style>
+
+	<script type="text/javascript">
+
+
+	$(function() {
+
+        data = {};
+
+        {% for item in list_ids %}
+                data["{{item.id}}"] = [];
+        {% endfor %}
+
+		var right_data = [];
+		var left_data = [];
+        var totalPoints = 200;
+
+		socket.on("deliver-data", (inbound_data) => {
+
+            {% for item in list_ids %}
+                    data["{{item.id}}"] = inbound_data["{{item.id}}"];
+            {% endfor %}
+      });
+
+		var plot = $.plot("#placeholder", [[ [0,1] ]], {
+			series: { shadowSize: 0 },
+			yaxis: { autoScale: 'loose', min: 0, },
+			xaxis: { autoScale: 'loose', show: true, }
+		});
+
+		function replot() {
+
+			var res = [];
+			for (var i = 0; i < right_data.length; ++i) {
+				res.push([i, right_data[i]])
+			}
+
+			var L_res = [];
+			for (var i = 0; i < left_data.length; ++i) {
+				L_res.push([i, left_data[i]])
+			}
+
+			//first line is to ensure zero is always shown on screen
+            to_set = [{"data":  [[0,0]], "lines": {"lineWidth": 0}  }];
+
+            {% for item in list_ids %}
+                    var res = [];
+                    for (var i = 0; i < data["{{item.id}}"].length; ++i) {
+                        res.push([i, data["{{item.id}}"][i]])
+                    }
+
+                    // to_set.push( {"data":  res, "color":"rgb(255, 0, 0)", "lines": {"lineWidth": 2}  } );
+                    to_set.push( {"data":  res, "lines": {"lineWidth": 2}  } );
+
+            {% endfor %}
+
+			//first line is to ensure zero is always shown on screen
+			plot.resize();
+            plot.setData(to_set);
+			// plot.setData([ {"data":  [[0,0]], "lines": {"lineWidth": 0}  },
+			// 			   {"data":  res, "color":"rgb(255, 0, 0)", "lines": {"lineWidth": 2}  },
+			// 			   {"data": L_res, "color":"rgb(0, 0, 255)", "lines": {"lineWidth": 2}  }   ])
+            plot.setupGrid(true);
+			plot.draw();
+		}
+
+        new_data_callbacks.push( () => {
+			// var right_graph_key = document.getElementById("right-graph-key").value;
+
+            missing_data = [];
+            {% for item in list_ids %}
+                    new_data = get_data("{{item.id}}" + ".valu")
+                    data["{{item.id}}"].push(new_data);
+
+                    while (data["{{item.id}}"].length > totalPoints){
+                        data["{{item.id}}"].shift();
+                    }
+
+                    if( data["{{item.id}}"].length < totalPoints){
+                        missing_data.push("{{item.id}}");
+                    }
+            {% endfor %}
+
+			socket.emit("get-data", {"ids": missing_data, "last_n": totalPoints})	
+
+			// if( left_data.length < totalPoints || right_data.length < totalPoints ){
+			// 	socket.emit("get-data", {"ids": [right_graph_key, left_graph_key], "last_n": totalPoints})	
+			// }
+
+            // right_new_data = get_data("slate." + right_graph_key + ".valu")
+            // right_data.push(right_new_data);
+
+            // while (right_data.length > totalPoints){
+            //     right_data.shift();
+            // }
+
+
+			replot();
+
+        })
+
+	});
+
+	</script>
+
+<div class="box">
+    <div class="box_header">
+      <div class="box_title"> {{title}} </div>
+    </div>
+
+	<div class="demo-container">
+		<div id="placeholder" class="demo-placeholder"></div>
+	</div>
+
+</div>
