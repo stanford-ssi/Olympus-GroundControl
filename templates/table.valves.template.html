@@ -3,7 +3,7 @@
       <div class="box_title"> {{title}} </div>
     </div>
 
-    <button type="button" style="width: 50%; float: left" class="button red" onclick="send_command(safe_valve_cmd)"> (TODO) Safe All Valves </button> 
+    <button type="button" style="width: 50%; float: left" class="button red" onclick="send_command(safe_valve_cmd)">Safe All Valves </button> 
     <button type="button" style="width: 50%; float: left" class="button" onclick="pulse_valves()"> Pulse Valves </button> 
     </tr>
     <table class="dashboard-table">
@@ -40,7 +40,7 @@
 
     safe_valve_cmd = {}
     {% for item in list_ids %}
-            safe_valve_cmd["{{item.id}}.ptm"] = 0;
+            safe_valve_cmd["{{item.id}}.stt"] = 0;
     {% endfor %}
 
     function pulse_valves() {
