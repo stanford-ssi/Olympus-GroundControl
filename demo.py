@@ -12,6 +12,8 @@ from aiofiles import os
 import asyncudp
 import json
 
+from time import time
+
 from ui_elements import Dashboard, Slate, Maps, Graphs, Configure
 from database import DataBase
 
@@ -79,10 +81,10 @@ class Main:
 
             try:
                 self.tcp_quail_writer.write(json.dumps(to_send).encode())
-                await self.tcp_quail_writer.drain()
-                echo_cmd = await self.tcp_quail_reader.read(4096)
+                await asyncio.wait_for(self.tcp_quail_writer.drain(), timeout=2.0)
+                echo_cmd = await asyncio.wait_for(self.tcp_quail_reader.readline(), timeout=2.0)
                 print("echoed command", echo_cmd)
-            except ConnectionResetError:
+            except (ConnectionResetError, asyncio.TimeoutError):
                 await self.connect_quail()
 
 
@@ -248,16 +250,14 @@ class Main:
 
     async def get_metaslate_from_quail(self):
 
-        print("Waiting for metaslate")
-        self.tcp_quail_writer.write(json.dumps({ "meta" : "gimme" }).encode())
-        await self.tcp_quail_writer.drain()
-
-        accumulator = []
         while 1:
-            accumulator.append( await self.tcp_quail_reader.read(4098) )
-            print(accumulator)
+            print("Requested metaslate")
+            self.tcp_quail_writer.write(json.dumps({ "meta" : "gimme" }).encode())
+            await self.tcp_quail_writer.drain()
+
+            message = await self.tcp_quail_reader.readline() 
             try:
-                a = json.loads(b"".join(accumulator))
+                a = json.loads(message)
             except ValueError:
                 pass
             else:
