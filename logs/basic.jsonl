@@ -1,5 +1,0 @@
-{"meta": { "press": { "ox_fill": { "desc": "Oxidiser Fill", "units": "psi", "value": null, "editable": false, "pin": "PT1", }, "ox_vent": { "desc": "Oxidiser Vent", "units": "psi", "value": null, "editable": false, "pin": "PT2", }, }, "health": { "v_bus":{ "desc": "Quail Voltage Bus", "units": "V", "value": null, "editable": false, }, "current":{ "desc": "Total quail current consumption", "units": "A", "value": null, "editable": false, } } }}
-{"update": { "press.ox_fill": 1100, "health.v_bus": 12.1, "health.current": 1.2, }}
-{"update": { "press.ox_fill": 1200, "health.v_bus": 12.0, "health.current": 1.1, }}
-{"update": { "press.ox_fill": 1200, "health.v_bus": 11.0, "health.current": 0.8, }}
-{"update": { "press.ox_fill": 1200, "health.v_bus": 12.2, "health.current": 1.3, }}

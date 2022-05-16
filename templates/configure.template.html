@@ -55,16 +55,13 @@
 
     </script>
 
-
     <div class="config-line">
-      <button type="button">Tare Load Cell 1</button>
-      <button type="button">Tare Load Cell 2</button>
+      <input type="text" id="log-filename-text">
+      <button type="button" id="new-log-button" onclick="new_log()">New log</button>
     </div>
 
-    <div class="config-line">
-      <button type="button" onlick="send_command({'slate.health.ematch_reset: 1'})" >Reset E-match status</button>
-      <button type="button" onlick="send_command({'slate.health.reboot: 1'})">Reboot Quail</button>
-    </div>
+    <button type="button" onclick="send_command({'slate.health.ematch_reset: 1'})" >Reset E-match status</button>
+    <button type="button" onclick="reboot_quail()">Reboot Quail</button>
 
     <div class="config-line">
       <input type="text" id="command-text">
@@ -72,10 +69,13 @@
     </div>
   
     <script>
+      function new_log()  {
+        textbox = document.getElementById("log-filename-text")
+        socket.emit("new_log", textbox.value);
+      };
+
       function send_command_button()  {
-
         textbox = document.getElementById("command-text")
-
         try {
             var json_cmd = JSON.parse(textbox.value);
         } catch (e) {
@@ -84,8 +84,17 @@
         }
 
         send_command(json_cmd)
-
       };
+
+      function reboot_quail() {
+        let confirmAction = confirm("Reboot Quail?");
+
+        if (confirmAction) {
+          send_command(null, target='reboot');
+        }
+      }
+
+
     </script>
   
   </div>

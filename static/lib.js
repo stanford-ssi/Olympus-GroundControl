@@ -44,12 +44,13 @@ function update_slate(update, meta) {
     
 }
 
-function send_command(cmd) {
+function send_command(cmd, target = "cmd") {
     //TODO: check if it is editable
-    cmd['auth'] = Cookies.get('auth')
 
     if(Cookies.get('auth') ){
-      socket.emit("cmd", cmd);
+      out = { "auth": Cookies.get('auth')}
+      out[target] = cmd;
+      socket.emit("cmd", out);
     }else{
       alert("Observers can't send commands");
     }

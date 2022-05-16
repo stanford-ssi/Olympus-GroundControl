@@ -64,11 +64,19 @@ class Main:
                 print("not allow to execute")
                 await self.sio.emit("bad-auth", room=sid)
                 return
-
-            print("executing command", data)
             del data["auth"]
-            to_send = {"cmd": self.unflatten_command(data)}
-            print(to_send)
+
+            await self.database.add_log_line("cmd", data)
+
+            if "cmd" in data:
+                to_send = {"cmd": self.unflatten_command(data['cmd'])}
+                print("executing command", data['cmd'])
+            elif "reboot" in data:
+                to_send = {"reboot": None}
+                print("rebooting quail")
+            else:
+                raise ValueError("unknown command" + str(data))
+
             self.tcp_quail_writer.write(json.dumps(to_send).encode())
             await self.tcp_quail_writer.drain()
 
@@ -112,6 +120,11 @@ class Main:
                 await f.write(json.dumps(self.authenticated_ids))
 
             await self.sio.emit("auth", new_id, room=sid)
+
+        @self.sio.on("new_log")
+        async def new_log(sid, filename):
+            self.database = DataBase(self.metadata, self, filename)
+            await self.database.add_log_line("meta", self.metadata)
 
     def get_meta(self, path, endpoint=None):
         path = path.split(".")
@@ -197,6 +210,7 @@ class Main:
             # print()
             
             self.update_meta(json_object)
+            await self.database.add_log_line("update", json_object)
 
             for key, value in self.flat_meta( lambda node, path: (".".join(path), node["valu"]) ):
                 self.history[key].append(value)
@@ -234,7 +248,9 @@ class Main:
         print(self.metadata)
         print("Got metaslate!")
 
-        self.database = DataBase(self.metadata, self)
+        self.database = DataBase(self.metadata, self, "init")
+        await self.database.add_log_line("meta", self.metadata)
+
         self.history = {key: [] for key in  self.flat_meta( lambda node, path: ".".join(path) ) }
 
 
