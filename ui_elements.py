@@ -119,9 +119,9 @@ class RawSensorTable(Element):
 
         items = [ {"id":id,
             "conv": unit_factor( self.units[id] ),
-            "qpin":self.top.get_meta(id, "qpin"),
-            "unit": self.top.get_meta(id, "unit") if self.units[id] is None else self.units[id].split("->")[1],
-            "desc":self.top.get_meta(id, "desc"), } for id in self.line_ids]
+            "qpin":self.top.get_meta(id, "raw.qpin"),
+            "unit": self.top.get_meta(id, "raw.unit") if self.units[id] is None else self.units[id].split("->")[1],
+            "desc":self.top.get_meta(id, "raw.desc"), } for id in self.line_ids]
 
         test = box.render( {"list_ids": items, "title": self.name} )
         return test
