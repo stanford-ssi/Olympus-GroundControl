@@ -229,7 +229,7 @@ class Dashboard(Page):
         )
 
         self.add_child(
-            RawSensorTable("ADC", ["slate.quail.adc_in.ADC1",
+            DataTable("ADC", ["slate.quail.adc_in.ADC1",
                                        "slate.quail.adc_in.ADC2",
                                        "slate.quail.adc_in.ADC3",
                                        "slate.quail.adc_in.ADC4"]

@@ -149,7 +149,7 @@ class Main:
             try:
                 node = node[name]
             except KeyError:
-                print("Not found key", name)
+                print("Not found key", name, "in", path)
                 return "null"
 
         return node
