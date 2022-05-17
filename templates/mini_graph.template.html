@@ -119,7 +119,10 @@
 
     <div style="text-align: center; margin: 10px">
         {% for item in list_ids %}
-            <span style="color: {{item.color}}; margin: 10px;"> {{item.desc}}/{{item.unit}} </span>
+            <span class="tooltip" style="color: {{item.color}}; margin: 10px;"> 
+                <span class="tooltiptext"> {{item.id}} </span>
+                {{item.desc}}/{{item.unit}} 
+            </span>
         {% endfor %}
     </div>
 
