@@ -21,7 +21,10 @@
                             <td>{{item.desc}}</td>
                             <td> <p id="{{item.id}}"> None </p> </td>
                             <td>{{item.unit}}</td>
-                            <td> <button type="button" class="button" onclick=""> Tare to 0 </button> </td>
+                            <!-- Ideally we'd send quail a message to tare to a value but this is janky quick fix -->
+                            <td> <button type="button" class="button button_halfsize" onclick='send_command( {"{{item.id}}.ofs": -{{item.id}}.raw.valu } )'> Tare </button> 
+                                  <button type="button" class="button button_halfsize" onclick='send_command( {"{{item.id}}.ofs": 0 } )'> Clear </button> 
+                            </td>
                             </tr>
 		{% endfor %}
 
@@ -31,7 +34,7 @@
     <script>
     new_data_callbacks.push( () => { 
       {% for item in list_ids %}
-              document.getElementById('{{item.id}}').innerHTML = {{item.id}}.valu * {{item.conv}}
+              document.getElementById('{{item.id}}').innerHTML = {{item.id}}.cal.valu * {{item.conv}}
       {% endfor %}
     });
     </script>

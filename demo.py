@@ -85,6 +85,7 @@ class Main:
                 echo_cmd = await asyncio.wait_for(self.tcp_quail_reader.readline(), timeout=2.0)
                 print("echoed command", echo_cmd)
             except (ConnectionResetError, asyncio.TimeoutError):
+                print("command timed out reconnecting")
                 await self.connect_quail()
 
 

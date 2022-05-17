@@ -184,25 +184,25 @@ class Dashboard(Page):
     def __init__(self, name, parent):
         super().__init__(name, parent)
 
-        self.add_child(MiniGraph("Testing", [ "slate.quail.battery.Voltage.raw", "slate.quail.battery.Current.raw"], time_seconds = 60))
+        self.add_child(MiniGraph("Testing", [ "slate.quail.battery.Voltage.cal", "slate.quail.battery.Current.cal"], time_seconds = 60))
 
         self.add_child(
-            RawSensorTable("Pressure Sensors", [ "slate.quail.sensors.PT1.raw",
-                                       "slate.quail.sensors.PT2.raw",
-                                       "slate.quail.sensors.PT3.raw",
-                                       "slate.quail.sensors.PT4.raw",
-                                       "slate.quail.sensors.PT5.raw",
-                                       "slate.quail.sensors.PT6.raw",
-                                       "slate.quail.sensors.PT7.raw",
-                                       "slate.quail.sensors.PT8.raw"], units = ["Pa->psi"] * 8
+            RawSensorTable("Pressure Sensors", [ "slate.quail.sensors.PT1",
+                                       "slate.quail.sensors.PT2",
+                                       "slate.quail.sensors.PT3",
+                                       "slate.quail.sensors.PT4",
+                                       "slate.quail.sensors.PT5",
+                                       "slate.quail.sensors.PT6",
+                                       "slate.quail.sensors.PT7",
+                                       "slate.quail.sensors.PT8"], units = ["Pa->psi"] * 8
             )
         )
 
         self.add_child(
-            RawSensorTable("Other Sensors", ["slate.quail.sensors.LC1.raw",
-                                       "slate.quail.sensors.LC2.raw",
-                                       "slate.quail.sensors.TC1.raw",
-                                       "slate.quail.sensors.TC2.raw"]
+            RawSensorTable("Other Sensors", ["slate.quail.sensors.LC1",
+                                       "slate.quail.sensors.LC2",
+                                       "slate.quail.sensors.TC1",
+                                       "slate.quail.sensors.TC2"]
             )
         )
 
@@ -237,10 +237,16 @@ class Dashboard(Page):
         )
 
         self.add_child(
+            RawSensorTable("MAGIC", ["slate.quail.battery.Voltage",
+                                       "slate.quail.battery.Current"]
+            )
+        )
+
+        self.add_child(
             DataTable("Health", ["slate.quail.board.error", 
                                 "slate.quail.board.tick",
-                                "slate.quail.battery.Voltage.raw", 
-                                "slate.quail.battery.Current.raw"]
+                                "slate.quail.battery.Voltage.cal", 
+                                "slate.quail.battery.Current.cal"]
             )
         )
 

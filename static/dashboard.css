@@ -121,6 +121,11 @@ column-fill: balance;
     font-size: 16px;
 }
 
+.button_halfsize {
+    width: 50%;
+    float: left;
+}
+
 .button.red{
     background-color: #c54545;
 }
