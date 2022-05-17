@@ -55,16 +55,16 @@
 
     </script>
 
-    <div class="config-line">
+    <!-- <div class="config-line">
       <input type="text" id="log-filename-text">
       <button type="button" id="new-log-button" onclick="new_log()">New log</button>
-    </div>
+    </div> -->
 
     <button type="button" onclick="send_command({'slate.health.ematch_reset: 1'})" >Reset E-match status</button>
     <button type="button" onclick="reboot_quail()">Reboot Quail</button>
 
     <div class="config-line">
-      <input type="text" id="command-text">
+      <input type="text" style="width: 30em;" id="command-text">
       <button type="button" id="button-command" onclick="send_command_button()">Send Command</button>
     </div>
   
