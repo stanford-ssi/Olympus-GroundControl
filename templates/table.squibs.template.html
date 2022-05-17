@@ -23,17 +23,18 @@
           </tr>
           <script>
             check = document.getElementById("{{item.id}}.check")
-            button = document.getElementById("{{item.id}}.button")
 
             check.onchange = ()  => {
+              button = document.getElementById("{{item.id}}.button")
+              check = document.getElementById("{{item.id}}.check")
               button.disabled = !check.checked;
             }
 
+            button = document.getElementById("{{item.id}}.button")
             button.onclick = () => {
               if( document.getElementById("{{item.id}}.check").value ){
-                  send_command({'{{item.id}}.valu': 1})
-                  button.style.background = "red"
-                  button.innerHTML = "Fired"
+                  send_command({'{{item.id}}.arm': 1, '{{item.id}}.fir': 1})
+                  console.log("sedning things")
               }
             }
           </script>
@@ -42,9 +43,23 @@
       </tbody>
     </table>
 
-    <!-- <script>
+    <script>
+
     new_data_callbacks.push( () => { 
-    {{update_code}}
+      {% for item in list_ids %}
+              button = document.getElementById("{{item.id}}.button")
+
+              if( {{item.id}}.fir.valu ){
+                  button.style.background = "red"
+                  button.innerHTML = "Fired"
+                  button.disabled = true;
+
+                  check = document.getElementById("{{item.id}}.check")
+                  check.disabled = true;
+              }
+
+      {% endfor %}
     });
-    </script> -->
+
+    </script>
 </div>

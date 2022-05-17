@@ -82,8 +82,8 @@ class SquibTable(Element):
             box = jinja2.Template(file.read())
 
         items = [ {"id":id,
-            "qpin":self.top.get_meta(id, "qpin"),
-            "desc":self.top.get_meta(id, "desc"), } for id in self.line_ids]
+            "qpin":self.top.get_meta(id, "fir.qpin"),
+            "desc":self.top.get_meta(id, "fir.desc"), } for id in self.line_ids]
 
         return box.render( {"list_ids": items, "title": self.name} )
 
@@ -97,8 +97,8 @@ class ValveTable(Element):
             box = jinja2.Template(file.read())
 
         items = [ {"id":id,
-            "qpin":self.top.get_meta(id, "nor.qpin"),
-            "desc":self.top.get_meta(id, "nor.desc"), } for id in self.line_ids]
+            "qpin":self.top.get_meta(id, "stt.qpin"),
+            "desc":self.top.get_meta(id, "stt.desc"), } for id in self.line_ids]
 
         test = box.render( {"list_ids": items, "title": self.name} )
         return test
@@ -187,7 +187,7 @@ class Dashboard(Page):
         self.add_child(MiniGraph("Testing", [ "slate.quail.battery.Voltage.raw", "slate.quail.battery.Current.raw"], time_seconds = 60))
 
         self.add_child(
-            RawSensorTable("Sensors", [ "slate.quail.sensors.PT1.raw",
+            RawSensorTable("Pressure Sensors", [ "slate.quail.sensors.PT1.raw",
                                        "slate.quail.sensors.PT2.raw",
                                        "slate.quail.sensors.PT3.raw",
                                        "slate.quail.sensors.PT4.raw",
@@ -199,7 +199,7 @@ class Dashboard(Page):
         )
 
         self.add_child(
-            RawSensorTable("Others", ["slate.quail.sensors.LC1.raw",
+            RawSensorTable("Other Sensors", ["slate.quail.sensors.LC1.raw",
                                        "slate.quail.sensors.LC2.raw",
                                        "slate.quail.sensors.TC1.raw",
                                        "slate.quail.sensors.TC2.raw"]
@@ -224,7 +224,7 @@ class Dashboard(Page):
         )
 
         self.add_child(
-            SquibTable("Squibs", ["slate.squibs.engine"]
+            SquibTable("Squibs", ["slate.quail.squib.E1", "slate.quail.squib.E2"]
             )
         )
 
