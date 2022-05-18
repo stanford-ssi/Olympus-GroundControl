@@ -38,49 +38,48 @@
 
 	$(function() {
 
-        data = {};
+        {{uuid}}_data = {};
 
         {% for item in list_ids %}
-                data["{{item.id}}"] = [];
+                {{uuid}}_data["{{item.id}}"] = [];
         {% endfor %}
 
-		var right_data = [];
-		var left_data = [];
         var totalPoints = {{total_points}};
 
 		socket.on("deliver-data", (inbound_data) => {
 
             {% for item in list_ids %}
-                    data["{{item.id}}"] = inbound_data["{{item.id}}"];
+                    {{uuid}}_data["{{item.id}}"] = inbound_data["{{item.id}}"];
             {% endfor %}
         });
 
-		var plot = $.plot("#placeholder", [[ [0,1], 
+		var {{uuid}}_plot = $.plot("#{{uuid}}_placeholder", [[ [0,1], 
             ]], {
 			series: { shadowSize: 0 },
 			yaxis: { autoScale: 'loose', min: 0, },
 			xaxis: { autoScale: 'exact', show: true, }
 		});
 
-		function replot() {
+		function {{uuid}}_replot() {
 
 			//first line is to ensure zero is always shown on screen
             to_set = [{"data":  [[0,0]], "lines": {"lineWidth": 0}  }];
 
             {% for item in list_ids %}
                     var res = [];
-                    for (var i = 0; i < data["{{item.id}}"].length; ++i) {
-                        res.push([i, data["{{item.id}}"][i]])
+                    for (var i = 0; i < {{uuid}}_data["{{item.id}}"].length; ++i) {
+                        res.push([i, {{uuid}}_data["{{item.id}}"][i]])
                     }
 
                     to_set.push( {"data":  res, "color":"{{item.color}}", "lines": {"lineWidth": 2}  } );
 
             {% endfor %}
 
-			plot.resize();
-            plot.setData(to_set);
-            plot.setupGrid(true);
-			plot.draw();
+			{{uuid}}_plot.resize();
+            {{uuid}}_plot.setData(to_set);
+            {{uuid}}_plot.setupGrid(true);
+			{{uuid}}_plot.draw();
+
 		}
 
         new_data_callbacks.push( () => {
@@ -88,22 +87,22 @@
             missing_data = [];
             {% for item in list_ids %}
                     new_data = get_data("{{item.id}}" + ".valu")
-                    data["{{item.id}}"].push(new_data);
+                    {{uuid}}_data["{{item.id}}"].push(new_data);
 
-                    while (data["{{item.id}}"].length > totalPoints){
-                        data["{{item.id}}"].shift();
+                    while ({{uuid}}_data["{{item.id}}"].length > totalPoints){
+                        {{uuid}}_data["{{item.id}}"].shift();
                     }
 
-                    if( data["{{item.id}}"].length < totalPoints){
+                    if( {{uuid}}_data["{{item.id}}"].length < totalPoints){
                         missing_data.push("{{item.id}}");
                     }
             {% endfor %}
 
-            if (missing_data.length > 0){
-                socket.emit("get-data", {"ids": missing_data, "last_n": totalPoints})	
-            }
+            // if (missing_data.length > 0){
+            //     socket.emit("get-data", {"ids": missing_data, "last_n": totalPoints})	
+            // }
 
-			replot();
+			{{uuid}}_replot();
 
         })
 
@@ -127,7 +126,7 @@
     </div>
 
 	<div class="demo-container">
-		<div id="placeholder" class="demo-placeholder"></div>
+		<div id="{{uuid}}_placeholder" class="demo-placeholder"></div>
 	</div>
 
 </div>

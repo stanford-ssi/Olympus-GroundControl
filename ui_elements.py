@@ -11,6 +11,12 @@ import jinja2
 
 from unit_conversions import unit_factor
 
+def get_uuid(magic = [0]):
+    # very ugy hack but we need something unique
+    # idealy should be seperate counter for each request etc
+    magic[0] += 1
+    return "UUDI_" + str(magic[0])
+
 class Element:
     """ base class for a node in the widget tree """
     def __init__(self, name):
@@ -159,7 +165,7 @@ class MiniGraph(Element):
             "desc":self.top.get_meta(id, "desc"), 
             "color":self.colors[i] } for i, id in enumerate(self.line_ids)]
 
-        test = box.render( {"list_ids": items, "title": self.name, "total_points": self.time_seconds * 20 } )
+        test = box.render( {"list_ids": items, "title": self.name, "total_points": self.time_seconds * 20, "uuid": get_uuid()  } )
         return test
 
 class Page(Element):
@@ -184,7 +190,9 @@ class Dashboard(Page):
     def __init__(self, name, parent):
         super().__init__(name, parent)
 
-        self.add_child(MiniGraph("Testing", [ "slate.quail.battery.Voltage.cal", "slate.quail.battery.Current.cal"], time_seconds = 60))
+        self.add_child(MiniGraph("Testing", [ "slate.quail.battery.Voltage.cal",
+                                            "slate.quail.battery.Current.cal"], 
+                                            time_seconds = 60))
 
         self.add_child(MiniGraph("Ox Fill", [
             "slate.quail.sensors.PT3.cal", 
@@ -253,8 +261,7 @@ class Dashboard(Page):
             DataTable("Health", ["slate.quail.board.error", 
                                 "slate.quail.board.tick",
                                 "slate.quail.battery.Voltage.cal", 
-                                "slate.quail.battery.Current.cal",
-                                "slate.quail.sensors.LCSum"]
+                                "slate.quail.battery.Current.cal"]
             )
         )
 
