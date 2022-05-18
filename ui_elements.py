@@ -149,19 +149,26 @@ class DataTable(Element):
         return test
 
 class MiniGraph(Element):
-    def __init__(self, name, line_ids, time_seconds = 60):
+    def __init__(self, name, line_ids, time_seconds = 60, units = None):
         super().__init__(name)
         self.line_ids = line_ids
 
         self.colors = ["#348ABD", "#A60628", "#7A68A6", "#467821", "#CF4457", "#188487", "#E24A33" ]
         self.time_seconds = time_seconds
 
+        if units == None:
+            self.units = {id: None for id in line_ids }
+        else:
+            self.units = {id: s for id,s in zip(line_ids, units) }
+
     def render(self):
         with open("templates/mini_graph.template.html") as file:
             box = jinja2.Template(file.read())
 
         items = [ {"id":id,
-            "unit":self.top.get_meta(id, "unit"),
+            "conv": unit_factor( self.units[id] ),
+            # "unit":self.top.get_meta(id, "unit"),
+            "unit": self.top.get_meta(id, "unit") if self.units[id] is None else self.units[id].split("->")[1],
             "desc":self.top.get_meta(id, "desc"), 
             "color":self.colors[i] } for i, id in enumerate(self.line_ids)]
 
@@ -190,19 +197,19 @@ class Dashboard(Page):
     def __init__(self, name, parent):
         super().__init__(name, parent)
 
-        self.add_child(MiniGraph("Testing", [ "slate.quail.battery.Voltage.cal",
-                                            "slate.quail.battery.Current.cal"], 
-                                            time_seconds = 60))
+        # self.add_child(MiniGraph("Testing", [ "slate.quail.battery.Voltage.cal",
+        #                                     "slate.quail.battery.Current.cal"], 
+        #                                     time_seconds = 60))
 
         self.add_child(MiniGraph("Ox Fill", [
             "slate.quail.sensors.PT3.cal", 
             "slate.quail.sensors.PT4.cal"], 
-                time_seconds = 60))
+                time_seconds = 60, units = ["Pa->psi"] * 2))
 
         self.add_child(MiniGraph("Fuel Fill", [
             "slate.quail.sensors.PT1.cal", 
             "slate.quail.sensors.PT2.cal"], 
-                time_seconds = 60))
+                time_seconds = 60, units = ["Pa->psi"] * 2))
 
         self.add_child(MiniGraph("Mass", [
             "slate.quail.sensors.LCSum.cal"], 
