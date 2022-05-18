@@ -186,6 +186,20 @@ class Dashboard(Page):
 
         self.add_child(MiniGraph("Testing", [ "slate.quail.battery.Voltage.cal", "slate.quail.battery.Current.cal"], time_seconds = 60))
 
+        self.add_child(MiniGraph("Ox Fill", [
+            "slate.quail.sensors.PT3.cal", 
+            "slate.quail.sensors.PT4.cal"], 
+                time_seconds = 60))
+
+        self.add_child(MiniGraph("Fuel Fill", [
+            "slate.quail.sensors.PT1.cal", 
+            "slate.quail.sensors.PT2.cal"], 
+                time_seconds = 60))
+
+        self.add_child(MiniGraph("Mass", [
+            "slate.quail.sensors.LCSum.cal"], 
+                time_seconds = 60))
+
         self.add_child(
             RawSensorTable("Pressure Sensors", [ "slate.quail.sensors.PT1",
                                        "slate.quail.sensors.PT2",
@@ -199,7 +213,8 @@ class Dashboard(Page):
         )
 
         self.add_child(
-            RawSensorTable("Other Sensors", ["slate.quail.sensors.LC1",
+            RawSensorTable("Other Sensors", ["slate.quail.sensors.LCSum",
+                                        "slate.quail.sensors.LC1",
                                        "slate.quail.sensors.LC2",
                                        "slate.quail.sensors.TC1",
                                        "slate.quail.sensors.TC2"]
@@ -229,14 +244,6 @@ class Dashboard(Page):
         )
 
         self.add_child(
-            DataTable("ADC", ["slate.quail.adc_in.ADC1",
-                                       "slate.quail.adc_in.ADC2",
-                                       "slate.quail.adc_in.ADC3",
-                                       "slate.quail.adc_in.ADC4"]
-            )
-        )
-
-        self.add_child(
             RawSensorTable("MAGIC", ["slate.quail.battery.Voltage",
                                        "slate.quail.battery.Current"]
             )
@@ -246,7 +253,8 @@ class Dashboard(Page):
             DataTable("Health", ["slate.quail.board.error", 
                                 "slate.quail.board.tick",
                                 "slate.quail.battery.Voltage.cal", 
-                                "slate.quail.battery.Current.cal"]
+                                "slate.quail.battery.Current.cal",
+                                "slate.quail.sensors.LCSum"]
             )
         )
 
