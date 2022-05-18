@@ -213,7 +213,7 @@ class Dashboard(Page):
 
         self.add_child(MiniGraph("Mass", [
             "slate.quail.sensors.LCSum.cal"], 
-                time_seconds = 60))
+                time_seconds = 60, units = ["N->kg"] ))
 
         self.add_child(
             RawSensorTable("Pressure Sensors", [ "slate.quail.sensors.PT1",
@@ -232,7 +232,7 @@ class Dashboard(Page):
                                         "slate.quail.sensors.LC1",
                                        "slate.quail.sensors.LC2",
                                        "slate.quail.sensors.TC1",
-                                       "slate.quail.sensors.TC2"]
+                                       "slate.quail.sensors.TC2"], units = ["N->kg"] * 3 + [None] * 2
             )
         )
 
