@@ -213,6 +213,10 @@ class Dashboard(Page):
                                             "slate.quail.battery.Current.cal"], 
                                             time_seconds = 60))
 
+        self.add_child(MiniGraph("Testing", [ "slate.quail.battery.Voltage.cal",
+                                            "slate.quail.battery.Current.cal"], 
+                                            time_seconds = 60))
+
         self.add_child(MiniGraph("Ox Fill", [
             "slate.quail.sensors.PT3.cal", 
             "slate.quail.sensors.PT4.cal"], 

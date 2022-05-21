@@ -49,7 +49,9 @@
 		socket.on("deliver-data", (inbound_data) => {
 
             {% for item in list_ids %}
-                    {{uuid}}_data["{{item.id}}"] = inbound_data["{{item.id}}"];
+                    if ("{{item.id}}" in inbound_data){
+                        {{uuid}}_data["{{item.id}}"] = inbound_data["{{item.id}}"];
+                    }
             {% endfor %}
         });
 
@@ -98,9 +100,9 @@
                     }
             {% endfor %}
 
-            // if (missing_data.length > 0){
-            //     socket.emit("get-data", {"ids": missing_data, "last_n": totalPoints})	
-            // }
+            if (missing_data.length > 0){
+                socket.emit("get-data", {"ids": missing_data, "last_n": totalPoints})	
+            }
 
 			{{uuid}}_replot();
 
