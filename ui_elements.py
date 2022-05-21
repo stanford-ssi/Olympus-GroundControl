@@ -209,13 +209,9 @@ class Dashboard(Page):
 
         # Note the keys that are added to the tables need to be unique
 
-        self.add_child(MiniGraph("Testing", [ "slate.quail.battery.Voltage.cal",
-                                            "slate.quail.battery.Current.cal"], 
-                                            time_seconds = 60))
-
-        self.add_child(MiniGraph("Testing", [ "slate.quail.battery.Voltage.cal",
-                                            "slate.quail.battery.Current.cal"], 
-                                            time_seconds = 60))
+        # self.add_child(MiniGraph("Testing", [ "slate.quail.battery.Voltage.cal",
+        #                                     "slate.quail.battery.Current.cal"], 
+        #                                     time_seconds = 60))
 
         self.add_child(MiniGraph("Ox Fill", [
             "slate.quail.sensors.PT3.cal", 
