@@ -123,11 +123,21 @@ class RawSensorTable(Element):
         with open("templates/table.sensors.template.html") as file:
             box = jinja2.Template(file.read())
 
-        items = [ {"id":id,
-            "conv": unit_factor( self.units[id] ),
-            "qpin":self.top.get_meta(id, "raw.qpin"),
-            "unit": self.top.get_meta(id, "raw.unit") if self.units[id] is None else self.units[id].split("->")[1],
-            "desc":self.top.get_meta(id, "raw.desc"), } for id in self.line_ids]
+        items = []
+        for id in self.line_ids:
+
+            if self.units[id] is None:
+                unit = self.top.get_meta(id, "raw.unit")
+            else:
+                source, target = self.units[id].split("->")
+                assert source == self.top.get_meta(id, "raw.unit")
+                unit = target
+
+            items.append( {"id":id,
+                            "conv": unit_factor( self.units[id] ),
+                            "qpin":self.top.get_meta(id, "raw.qpin"),
+                            "unit": unit,
+                            "desc":self.top.get_meta(id, "raw.desc"), })
 
         test = box.render( {"list_ids": items, "title": self.name} )
         return test
@@ -197,9 +207,11 @@ class Dashboard(Page):
     def __init__(self, name, parent):
         super().__init__(name, parent)
 
-        # self.add_child(MiniGraph("Testing", [ "slate.quail.battery.Voltage.cal",
-        #                                     "slate.quail.battery.Current.cal"], 
-        #                                     time_seconds = 60))
+        # Note the keys that are added to the tables need to be unique
+
+        self.add_child(MiniGraph("Testing", [ "slate.quail.battery.Voltage.cal",
+                                            "slate.quail.battery.Current.cal"], 
+                                            time_seconds = 60))
 
         self.add_child(MiniGraph("Ox Fill", [
             "slate.quail.sensors.PT3.cal", 
