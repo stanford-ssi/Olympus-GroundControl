@@ -272,10 +272,6 @@ class Dashboard(Page):
             )
         )
 
-        # self.add_child(
-        #     Graph("TEST")
-        # )
-
     def render(self):
         dashboard = self.load_template("templates/dashboard.template.html")
         template = self.load_template("templates/main.template.html")
