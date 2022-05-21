@@ -4,7 +4,7 @@
     </div>
 
     <button type="button" class="button red button_halfsize" onclick="send_command(safe_valve_cmd)">Depower All Valves </button> 
-    <button type="button" class="button button_halfsize" onclick="pulse_valves()"> Pulse Valves </button> 
+    <button type="button" class="button button_halfsize" onclick="pulse_valves()"> Pulse Linked </button> 
     </tr>
     <table class="dashboard-table">
       <thead>
@@ -14,7 +14,8 @@
           <th>Desc</th>
           <th>Open</th>
           <th>Time</th>
-          <th>Pulse</th>
+          <th>Linked</th>
+          <th>Button</th>
         </tr>
       </thead>
       <tbody>
@@ -27,6 +28,8 @@
                             {# TODO save value for future#}
                             <td> <input type="number" id="{{item.id}}.pulse" step="10" value="100" style="width: 4em"> </td>
                             <td> <input type="checkbox" id="{{item.id}}.selected"> </td>
+                            <td> <button type="button" class="button" 
+                              onclick='send_command({"{{item.id}}.ptm": document.getElementById("{{item.id}}.pulse").value  })'>  Pulse </button> </td>
 		{% endfor %}
 
       </tbody>
