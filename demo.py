@@ -95,12 +95,14 @@ class Main:
         async def get_data(sid, data):
             last_n = int(data["last_n"])
 
-            # print(self.history)
-            # print(data)
             out = {}
             for id in data["ids"]:
-                out[id] = self.history[id][-last_n:]
+                line = self.history[id][-last_n:]
 
+                if len(line) < last_n:
+                    line = [None] * ( last_n - len(line)) + line
+
+                out[id] = line
             # print("getting data")
             # print(out)
             await self.sio.emit("deliver-data", out, room=sid)
