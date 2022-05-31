@@ -4,8 +4,8 @@ import re
 import aiofiles
 from aiofiles import os
 
-from aiohttp import web
 import json
+import aiohttp
 
 import jinja2
 
@@ -199,7 +199,7 @@ class Page(Element):
         pass
 
     async def get_page(self, request):
-        return web.Response(text=self.render(), content_type='text/html')
+        return aiohttp.web.Response(text=self.render(), content_type='text/html')
 
 
 class Dashboard(Page):
@@ -308,6 +308,11 @@ class Slate(Page):
         self.top.app.router.add_get('/slate', self.get_page)
 
 class Maps(Page):
+
+    def __init__(self, name, parent):
+        super().__init__(name, parent)
+        self.mapdata_session = aiohttp.ClientSession()
+
     def render(self):
         map = self.load_template("templates/map.template.html")
         template = self.load_template("templates/main.template.html")
@@ -328,13 +333,14 @@ class Maps(Page):
             async with aiofiles.open(filename, 'br') as file:
                 data = await file.read()
         else:
-            async with self.top.mapdata_session.get(mapbox_api.format(url = url)) as resp: 
+            await os.makedirs('cache/', exist_ok=True)
+            async with self.mapdata_session.get(mapbox_api.format(url = url)) as resp: 
                 data = await resp.read() 
             async with aiofiles.open(filename, 'bw') as file:
                 await file.write(data)
 
         #TODO support jpegs also
-        return web.Response(body=data, content_type='image/png')
+        return aiohttp.web.Response(body=data, content_type='image/png')
 
 
 class Graphs(Page):

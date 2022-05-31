@@ -306,17 +306,11 @@ class Main:
 
 
     async def start_background_tasks(self, app):
-
         await self.connect_quail()
-            
 
         self.udp_socket = await asyncudp.create_socket(local_addr=("0.0.0.0", 8000))
         self.app.serial_pub = asyncio.create_task(self.push_serial_data())
         self.app.heartbeat_task = asyncio.create_task(self.send_heartbeat())
-
-        #TODO move inside Map Page class
-        self.mapdata_session = aiohttp.ClientSession()
-        await os.makedirs('cache/', exist_ok=True)
 
     async def cleanup_background_tasks(self, app):
         self.app.serial_pub.cancel()
