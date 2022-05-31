@@ -84,6 +84,9 @@ class Main:
             try:
                 self.tcp_quail_writer.write(json.dumps(to_send).encode())
                 await asyncio.wait_for(self.tcp_quail_writer.drain(), timeout=2.0)
+
+                # not this could possibly be a race contidion with the other recv but the other we read
+                # them doesn't actually matter - they just get printed but be careful
                 echo_cmd = await asyncio.wait_for(self.tcp_quail_reader.readline(), timeout=2.0)
                 print("echoed command", echo_cmd)
             except (ConnectionResetError, asyncio.TimeoutError):
@@ -220,7 +223,6 @@ class Main:
         while(True):
             message, addr = await self.udp_socket.recvfrom()
             json_object = json.loads(message)
-
             # print(message)
             # print()
             
@@ -234,6 +236,24 @@ class Main:
                 self.history[key].pop()
 
             await self.sio.emit("new", json_object)
+
+    async def send_heartbeat(self):
+        while(True):
+
+            asyncio.sleep(60)
+            to_send = {"cmd": "heart"}
+
+            try:
+                self.tcp_quail_writer.write(json.dumps(to_send).encode())
+                await asyncio.wait_for(self.tcp_quail_writer.drain(), timeout=2.0)
+
+                # not this could possibly be a race contidion with the other recv but the other we read
+                # them doesn't actually matter - they just get printed but be careful
+                echo_cmd = await asyncio.wait_for(self.tcp_quail_reader.readline(), timeout=2.0)
+                print("echoed heartbeat", echo_cmd)
+            except (ConnectionResetError, asyncio.TimeoutError):
+                print("command timed out reconnecting")
+                await self.connect_quail()
 
 
     async def connect_quail(self):
@@ -292,6 +312,7 @@ class Main:
 
         self.udp_socket = await asyncudp.create_socket(local_addr=("0.0.0.0", 8000))
         self.app.serial_pub = asyncio.create_task(self.push_serial_data())
+        self.app.heartbeat_task = asyncio.create_task(self.send_heartbeat())
 
         #TODO move inside Map Page class
         self.mapdata_session = aiohttp.ClientSession()
@@ -299,8 +320,9 @@ class Main:
 
     async def cleanup_background_tasks(self, app):
         self.app.serial_pub.cancel()
+        self.app.heartbeat_task.cancel()
         await self.app.serial_pub
-
+        await self.app.heartbeat_task
 
 
 def get_app():
