@@ -31,26 +31,56 @@
                             <td>{{item.id}}</td>
                             <td>{{item.desc}}</td>
 
-                            <td> <p id="{{item.id}}"> None </p> </td>
+                            <td> <p id="{{item.id}}.num"> None </p> </td>
 
                             <td> 
                                 <div class="radioswitch">
                                 {% for state in item.unit %}
-                                    <input type="radio" name="{{item.id}}.{{state}}" id="{{item.id}}.{{state}}" >
+                                    <input type="radio" disabled name="{{item.id}}.{{state}}" id="{{item.id}}.{{state}}" >
                                     <label for="{{item.id}}.{{state}}">{{state}}</label>
                                 {% endfor %}
                                 </div>
                             </td>
 
                             <td> <button type="button" class="button" onclick='send_command({ })'> Next </button> </td>
-                            <td> <button type="button" class="button red" onclick='send_command({ "{{item.id}}": 0  })'> Abort </button> </td>
+                            <td> <button type="button" class="button red" onclick='send_command({ "{{item.id}}": 0  })'> Abort </button>
+
+                            </td>
         {% endfor %}
+
+        {% for item in writable_values %}
+
+                            <tr>
+                            <td>{{item.id}}</td>
+                            <td>{{item.desc}}</td>
+
+                            <td> <p id="{{item.id}}.setpoint"> None </p> </td>
+
+                            <td> <input type="number" id="{{item.id}}.new" step="100" value="0" > </td>
+
+                            <td> <button type="button" class="button" 
+                              onclick='send_command({"{{item.id}}": document.getElementById("{{item.id}}.new").value  })'> Update </button>
+
+                            </td>
+        {% endfor %}
+
+
 
         </tbody>
     </table>
 
     <script>
         new_data_callbacks.push( () => { 
+
+            {% for item in writable_values %}
+                document.getElementById('{{item.id}}.setpoint').innerHTML = {{item.id}}.valu
+            {% endfor %}
+
+            {% for item in state_machines %}
+                document.getElementById('{{item.id}}.num').innerHTML = {{item.id}}.valu
+            {% endfor %}
+
+
         });
     </script>
 </div>
