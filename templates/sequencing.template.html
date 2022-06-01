@@ -1,0 +1,56 @@
+
+<link rel="stylesheet" href="static/radio.css">
+
+<style>
+
+    .dashboard-page {
+        columns: 1000px;
+    }
+</style>
+
+<div class="box">
+    <div class="box_header">
+        <div class="box_title"> Sequencing </div>
+    </div>
+
+    </tr>
+    <table class="dashboard-table">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Desc</th>
+            <th>State #</th>
+            <th>State Name</th>
+            <th>Next</th>
+            <th>Abort</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for item in state_machines %}
+                            <tr>
+                            <td>{{item.id}}</td>
+                            <td>{{item.desc}}</td>
+
+                            <td> <p id="{{item.id}}"> None </p> </td>
+
+                            <td> 
+                                <div class="radioswitch">
+                                {% for state in item.unit %}
+                                    <input type="radio" name="{{item.id}}.{{state}}" id="{{item.id}}.{{state}}" >
+                                    <label for="{{item.id}}.{{state}}">{{state}}</label>
+                                {% endfor %}
+                                </div>
+                            </td>
+
+                            <td> <button type="button" class="button" onclick='send_command({ })'> Next </button> </td>
+                            <td> <button type="button" class="button red" onclick='send_command({ "{{item.id}}": 0  })'> Abort </button> </td>
+        {% endfor %}
+
+        </tbody>
+    </table>
+
+    <script>
+        new_data_callbacks.push( () => { 
+        });
+    </script>
+</div>

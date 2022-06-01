@@ -1,0 +1,30 @@
+
+.radioswitch {
+	float: right;
+	display: flex;
+}
+
+.radioswitch input { display: none;}
+
+.radioswitch input + label {
+  display: inline-block;
+  /* border: 1px solid #999; */
+  border-width: 1px 0px 1px 1px;
+  border-style: solid;
+  border-color: #999;
+  background: #EEE;
+  padding: 4px 12px;
+
+}
+.radioswitch input + label:first-of-type {
+      border-radius: 6px 0 0 6px;
+    }
+    
+.radioswitch input + label:last-of-type {
+      border-radius: 0 6px 6px 0;
+      border-width: 1px;
+    }
+
+.radioswitch input:checked + label {
+  background: #74b9ff;
+}

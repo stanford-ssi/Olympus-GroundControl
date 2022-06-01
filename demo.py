@@ -14,7 +14,7 @@ import json
 
 from time import time
 
-from ui_elements import Dashboard, Slate, Maps, Graphs, Configure
+from ui_elements import Dashboard, Slate, Maps, Graphs, Configure, Sequencing
 from database import DataBase
 
 class Main:
@@ -41,6 +41,7 @@ class Main:
         # in templates/main.template.html
 
         self.dashboard = Dashboard("Dashboard", self)
+        self.sequencing = Sequencing("Sequencing", self)
         self.messages = Slate("test", self)
         self.maps = Maps("test", self)
         self.graphs = Graphs("test", self)
@@ -310,7 +311,7 @@ class Main:
 
         self.udp_socket = await asyncudp.create_socket(local_addr=("0.0.0.0", 8000))
         self.app.serial_pub = asyncio.create_task(self.push_serial_data())
-        self.app.heartbeat_task = asyncio.create_task(self.send_heartbeat())
+        # self.app.heartbeat_task = asyncio.create_task(self.send_heartbeat())
 
     async def cleanup_background_tasks(self, app):
         self.app.serial_pub.cancel()

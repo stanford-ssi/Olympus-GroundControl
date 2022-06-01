@@ -185,6 +185,30 @@ class MiniGraph(Element):
         test = box.render( {"list_ids": items, "title": self.name, "total_points": self.time_seconds * 20, "uuid": get_uuid()  } )
         return test
 
+class Sequence(Element):
+    def __init__(self, name, line_ids):
+        super().__init__(name)
+        self.line_ids = line_ids
+
+    def render(self):
+        with open("templates/sequencing.template.html") as file:
+            box = jinja2.Template(file.read())
+
+
+        state_machines = []
+        writable_values = []
+        for id, unit in self.line_ids.items():   
+            if type(unit) == type([]):
+                state_machines.append( {"id":id, "unit": unit, "desc": self.top.get_meta(id, "desc"), } )
+            else:
+                writable_values.append( {"id":id, "unit": unit, "desc": self.top.get_meta(id, "desc"), } )
+
+        test = box.render( {"state_machines": state_machines,
+                            "writable_values": writable_values,
+                            "title": self.name} )
+        return test
+
+
 class Page(Element):
 
     def __init__(self, name, parent):
@@ -296,6 +320,34 @@ class Dashboard(Page):
         self.top.app.router.add_get('/', self.get_page)
         self.top.app.router.add_get('/dashboard', self.get_page)
 
+class Sequencing(Dashboard):
+
+    def __init__(self, name, parent):
+        Page.__init__(self,name, parent)
+
+        self.add_child(MiniGraph("Ox Fill", [
+            "slate.quail.sensors.PT3.cal", 
+            "slate.quail.sensors.PT4.cal"], 
+                time_seconds = 60, units = ["Pa->psi"] * 2))
+
+        self.add_child(Sequence("My Sequencing", {
+            "slate.quail.sequence.engine_state" : ["ENGINE_ABORT", "ENGINE_IDLE", "ENGINE_FILL", "ENGINE_FULL", "ENGINE_FIRE", "MAIN_ACTUATION"],
+            "slate.quail.sequence.ox_tank_state" : ["TANK_IDLE_EMPTY", "TANK_IDLE_PRESS", "TANK_EMPTY", "TANK_DRAIN", "TANK_FILL", "TANK_FULL", "TANK_BLEED", "TANK_READY"],
+            "slate.quail.sequence.fuel_tank_state" : ["TANK_IDLE_EMPTY", "TANK_IDLE_PRESS", "TANK_EMPTY", "TANK_DRAIN", "TANK_FILL", "TANK_FULL", "TANK_BLEED", "TANK_READY"],
+            "slate.quail.sequence.ox_op_mass" : "N",
+            "slate.quail.sequence.fuel_op_press" : "Pa",
+        }
+        ))
+    
+
+    # def render(self):
+    #     page = self.load_template("templates/sequencing.template.html")
+    #     template = self.load_template("templates/main.template.html")
+
+    #     return self.format(template, page = page, meta= json.dumps(self.top.metadata))
+
+    def add_routes(self):
+        self.top.app.router.add_get('/sequencing', self.get_page)
 
 class Slate(Page):
     def render(self):
