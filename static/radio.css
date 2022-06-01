@@ -4,7 +4,7 @@
 	display: flex;
 }
 
-.radioswitch input { display: none;}
+.radioswitch input { display: none; }
 
 .radioswitch input + label {
   display: inline-block;
@@ -26,5 +26,6 @@
     }
 
 .radioswitch input:checked + label {
-  background: #74b9ff;
+  background: rgb(174, 48, 51);
+  color: rgb(255,255,255);
 }

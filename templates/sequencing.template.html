@@ -42,7 +42,8 @@
                                 </div>
                             </td>
 
-                            <td> <button type="button" class="button" onclick='send_command({ })'> Next </button> </td>
+                            <td> <button type="button" class="button"
+                                onclick='send_command({ "{{item.id}}": ({{item.id}}.valu + 1) % {{item.len}}  })'> Next </button> </td>
                             <td> <button type="button" class="button red" onclick='send_command({ "{{item.id}}": 0  })'> Abort </button>
 
                             </td>
@@ -61,6 +62,7 @@
                             <td> <button type="button" class="button" 
                               onclick='send_command({"{{item.id}}": document.getElementById("{{item.id}}.new").value  })'> Update </button>
 
+                            <td> {{item.unit}} </td>
                             </td>
         {% endfor %}
 
@@ -78,8 +80,10 @@
 
             {% for item in state_machines %}
                 document.getElementById('{{item.id}}.num').innerHTML = {{item.id}}.valu
-            {% endfor %}
 
+                state_name =  {{item.unit}}[ {{item.id}}.valu ] 
+                document.getElementById("{{item.id}}." + state_name).checked = true;
+            {% endfor %}
 
         });
     </script>

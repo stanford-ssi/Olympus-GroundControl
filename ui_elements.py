@@ -199,7 +199,7 @@ class Sequence(Element):
         writable_values = []
         for id, unit in self.line_ids.items():   
             if type(unit) == type([]):
-                state_machines.append( {"id":id, "unit": unit, "desc": self.top.get_meta(id, "desc"), } )
+                state_machines.append( {"id":id, "unit": unit, "desc": self.top.get_meta(id, "desc"), "len": len(unit) } )
             else:
                 writable_values.append( {"id":id, "unit": unit, "desc": self.top.get_meta(id, "desc"), } )
 
