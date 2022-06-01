@@ -36,7 +36,7 @@
                             <td> 
                                 <div class="radioswitch">
                                 {% for state in item.unit %}
-                                    <input type="radio" disabled name="{{item.id}}.{{state}}" id="{{item.id}}.{{state}}" >
+                                    <input type="radio" disabled name="{{item.id}}" id="{{item.id}}.{{state}}" >
                                     <label for="{{item.id}}.{{state}}">{{state}}</label>
                                 {% endfor %}
                                 </div>
