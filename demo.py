@@ -31,6 +31,8 @@ class Main:
 
         self.app.on_startup.append(self.start_background_tasks)
         self.app.on_cleanup.append(self.cleanup_background_tasks)
+
+        self.TCP_TIMEOUT = 2.0
          
 
     def start(self):
@@ -84,11 +86,11 @@ class Main:
 
             try:
                 self.tcp_quail_writer.write(json.dumps(to_send).encode())
-                await asyncio.wait_for(self.tcp_quail_writer.drain(), timeout=2.0)
+                await asyncio.wait_for(self.tcp_quail_writer.drain(), timeout=self.TCP_TIMEOUT)
 
                 # not this could possibly be a race contidion with the other recv but the other we read
                 # them doesn't actually matter - they just get printed but be careful
-                echo_cmd = await asyncio.wait_for(self.tcp_quail_reader.readline(), timeout=2.0)
+                echo_cmd = await asyncio.wait_for(self.tcp_quail_reader.readline(), timeout=self.TCP_TIMEOUT)
                 print("echoed command", echo_cmd)
             except (ConnectionResetError, asyncio.TimeoutError):
                 print("command timed out reconnecting")
@@ -246,11 +248,11 @@ class Main:
 
             try:
                 self.tcp_quail_writer.write(json.dumps(to_send).encode())
-                await asyncio.wait_for(self.tcp_quail_writer.drain(), timeout=2.0)
+                await asyncio.wait_for(self.tcp_quail_writer.drain(), timeout=self.TCP_TIMEOUT)
 
                 # not this could possibly be a race contidion with the other recv but the other we read
                 # them doesn't actually matter - they just get printed but be careful
-                echo_cmd = await asyncio.wait_for(self.tcp_quail_reader.readline(), timeout=2.0)
+                echo_cmd = await asyncio.wait_for(self.tcp_quail_reader.readline(), timeout=self.TCP_TIMEOUT)
                 print("echoed heartbeat", echo_cmd)
             except (ConnectionResetError, asyncio.TimeoutError):
                 print("command timed out reconnecting")
