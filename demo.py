@@ -14,7 +14,7 @@ import json
 
 from time import time
 
-from ui_elements import Dashboard, Slate, Maps, Graphs, Configure, Sequencing, FillPage, LaunchPage
+from pages import Dashboard, Slate, Maps, Graphs, Configure, Sequencing, FillPage, LaunchPage
 from database import DataBase
 
 class Main:
