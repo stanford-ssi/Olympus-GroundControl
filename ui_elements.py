@@ -77,7 +77,6 @@ class Graph(Element):
 
         return graphs.render( list_ids =  self.top.flat_meta(get_id_and_desc), title = self.name )
 
-
 class SquibTable(Element):
     def __init__(self, name, line_ids):
         super().__init__(name)
@@ -207,7 +206,6 @@ class Sequence(Element):
                             "writable_values": writable_values,
                             "title": self.name} )
         return test
-
 
 class Page(Element):
 
@@ -392,6 +390,63 @@ class FillPage(Page):
         self.top.app.router.add_get('/fillpage', self.get_page)
 
 
+class LaunchPage(Page):
+
+    def __init__(self, name, parent):
+        super().__init__(name, parent)
+
+        self.add_child(MiniGraph("Ox Fill", [
+            "slate.quail.sensors.PT3.cal", 
+            "slate.quail.sensors.PT4.cal"], 
+                time_seconds = 60, units = ["Pa->psi"] * 2))
+
+        self.add_child(MiniGraph("Mass", [
+            "slate.quail.sensors.LCSum.cal"], 
+                time_seconds = 60, units = ["N->kg"] ))
+
+        self.add_child(MiniGraph("Fuel Fill", [
+            "slate.quail.sensors.PT1.cal", 
+            "slate.quail.sensors.PT2.cal"], 
+                time_seconds = 60, units = ["Pa->psi"] * 2))
+
+
+        self.add_child(
+            RawSensorTable("Sensors", [
+                                       "slate.quail.sensors.LCSum",
+                                       "slate.quail.sensors.PT2",
+                                       "slate.quail.sensors.PT4",
+                                       ], units = ["N->kg"] + ["Pa->psi"] * 2
+            )
+        )
+
+        self.add_child(
+            ValveTable("Valves", [ "slate.quail.valves.S4",
+                                    "slate.quail.valves.S6"]
+            )
+        )
+
+        self.add_child(
+            SquibTable("Squibs", ["slate.quail.squib.E1", "slate.quail.squib.E2"]
+            )
+        )
+
+        self.add_child(
+            ValveTable("Launch Valves", [ "slate.quail.valves.S1", 
+                                        "slate.quail.valves.S2"]
+            )
+        )
+
+
+    def render(self):
+        dashboard = self.load_template("templates/dashboard.template.html")
+        template = self.load_template("templates/main.template.html")
+
+        dashboard_done = self.format(dashboard, content = "\n\n".join(child.render() for child in self.nodes))
+        return self.format(template, page = dashboard_done, meta= json.dumps(self.top.metadata))
+
+
+    def add_routes(self):
+        self.top.app.router.add_get('/launchpage', self.get_page)
 
 class Sequencing(Dashboard):
 

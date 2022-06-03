@@ -14,7 +14,7 @@ import json
 
 from time import time
 
-from ui_elements import Dashboard, Slate, Maps, Graphs, Configure, Sequencing, FillPage
+from ui_elements import Dashboard, Slate, Maps, Graphs, Configure, Sequencing, FillPage, LaunchPage
 from database import DataBase
 
 class Main:
@@ -45,6 +45,7 @@ class Main:
         self.dashboard = Dashboard("Dashboard", self)
         self.sequencing = Sequencing("Sequencing", self)
         self.fillpage = FillPage("FillPage", self)
+        self.launchpage = LaunchPage("LaunchPage", self)
         self.messages = Slate("test", self)
         self.maps = Maps("test", self)
         self.graphs = Graphs("test", self)
