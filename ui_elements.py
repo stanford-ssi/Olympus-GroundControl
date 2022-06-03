@@ -106,7 +106,7 @@ class ValveTable(Element):
             "qpin":self.top.get_meta(id, "stt.qpin"),
             "desc":self.top.get_meta(id, "stt.desc"), } for id in self.line_ids]
 
-        test = box.render( {"list_ids": items, "title": self.name} )
+        test = box.render( {"list_ids": items, "title": self.name, "uuid": get_uuid() } )
         return test
 
 class RawSensorTable(Element):
@@ -319,6 +319,79 @@ class Dashboard(Page):
     def add_routes(self):
         self.top.app.router.add_get('/', self.get_page)
         self.top.app.router.add_get('/dashboard', self.get_page)
+
+
+class FillPage(Page):
+
+    def __init__(self, name, parent):
+        super().__init__(name, parent)
+
+        self.add_child(MiniGraph("Ox Fill", [
+            "slate.quail.sensors.PT3.cal", 
+            "slate.quail.sensors.PT4.cal"], 
+                time_seconds = 60, units = ["Pa->psi"] * 2))
+
+        self.add_child(MiniGraph("Mass", [
+            "slate.quail.sensors.LCSum.cal"], 
+                time_seconds = 60, units = ["N->kg"] ))
+
+        self.add_child(MiniGraph("Fuel Fill", [
+            "slate.quail.sensors.PT1.cal", 
+            "slate.quail.sensors.PT2.cal"], 
+                time_seconds = 60, units = ["Pa->psi"] * 2))
+
+
+        self.add_child(
+            RawSensorTable("Ox Sensors", [
+                                       "slate.quail.sensors.PT3",
+                                       "slate.quail.sensors.PT4",
+                                       ], units = ["Pa->psi"] * 2
+            )
+        )
+
+        self.add_child(
+            ValveTable("Ox Valves", [ "slate.quail.valves.S5",
+                                       "slate.quail.valves.S6",
+                                       "slate.quail.valves.S8"]
+            )
+        )
+
+        self.add_child(
+            RawSensorTable("Other Sensors", ["slate.quail.sensors.LCSum",
+                                       "slate.quail.sensors.TC1",
+                                       "slate.quail.sensors.TC2"], units = ["N->kg"] * 1 + [None] * 2
+            )
+        )
+
+
+        self.add_child(
+            RawSensorTable("Fuel Sensors", [
+                                       "slate.quail.sensors.PT1",
+                                       "slate.quail.sensors.PT2",
+                                       ], units = ["Pa->psi"] * 2
+            )
+        )
+
+        self.add_child(
+            ValveTable("Fuel Valves", [ "slate.quail.valves.S3", 
+                                        "slate.quail.valves.S4"]
+            )
+        )
+
+
+
+    def render(self):
+        dashboard = self.load_template("templates/dashboard.template.html")
+        template = self.load_template("templates/main.template.html")
+
+        dashboard_done = self.format(dashboard, content = "\n\n".join(child.render() for child in self.nodes))
+        return self.format(template, page = dashboard_done, meta= json.dumps(self.top.metadata))
+
+
+    def add_routes(self):
+        self.top.app.router.add_get('/fillpage', self.get_page)
+
+
 
 class Sequencing(Dashboard):
 
