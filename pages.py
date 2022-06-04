@@ -11,201 +11,7 @@ import jinja2
 
 from unit_conversions import unit_factor
 
-def get_uuid(magic = [0]):
-    # very ugy hack but we need something unique
-    # idealy should be seperate counter for each request etc
-    magic[0] += 1
-    return "UUDI_" + str(magic[0])
-
-class Element:
-    """ base class for a node in the widget tree """
-    def __init__(self, name):
-        self.name = name
-        self.nodes = []
-        self.parent = None
-
-    def render(self):
-        """ returns a str of the html that encodes this element (and child elements).
-            Put the elements javascript inline with the html
-        """
-        pass
-
-    def add_child(self, child):
-        """ adds a child element in the element tree """
-        self.nodes.append(child)
-        child.parent = self
-
-    @property
-    def top(self):
-        node = self
-
-        while True:
-            try:
-                node = node.parent
-            except AttributeError:
-                break
-
-        return node
-
-    @staticmethod
-    def load_template(filename):
-        with open(filename, 'r') as file:
-            return file.read()
-
-    @staticmethod
-    def format(pre_format, **kwargs):
-        """ poor mans html template system. {{var}} in the template can be over written with kwargs[var]"""
-
-        # swaps double and single curly braces allowing us to use python str.format() method
-        curly = { "{{":"{", "}}":"}", "{":"{{", "}":"}}" }
-        substrings = sorted(curly, key=len, reverse=True)
-        regex = re.compile('|'.join(map(re.escape, substrings)))
-        to_formant = regex.sub(lambda match: curly[match.group(0)], pre_format)
-
-        return to_formant.format(**kwargs) 
-
-
-class Graph(Element):
-    pass
-
-    def render(self):
-        with open("templates/graphs.template.html") as file:
-            graphs = jinja2.Template(file.read())
-
-        def get_id_and_desc(node, path):
-            return {"id": ".".join(path[1:]), "desc": node["desc"] }
-
-        return graphs.render( list_ids =  self.top.flat_meta(get_id_and_desc), title = self.name )
-
-class SquibTable(Element):
-    def __init__(self, name, line_ids):
-        super().__init__(name)
-        self.line_ids = line_ids
-
-    def render(self):
-        with open("templates/table.squibs.template.html") as file:
-            box = jinja2.Template(file.read())
-
-        items = [ {"id":id,
-            "qpin":self.top.get_meta(id, "fir.qpin"),
-            "desc":self.top.get_meta(id, "fir.desc"), } for id in self.line_ids]
-
-        return box.render( {"list_ids": items, "title": self.name} )
-
-class ValveTable(Element):
-    def __init__(self, name, line_ids):
-        super().__init__(name)
-        self.line_ids = line_ids
-
-    def render(self):
-        with open("templates/table.valves.template.html") as file:
-            box = jinja2.Template(file.read())
-
-        items = [ {"id":id,
-            "qpin":self.top.get_meta(id, "stt.qpin"),
-            "desc":self.top.get_meta(id, "stt.desc"), } for id in self.line_ids]
-
-        test = box.render( {"list_ids": items, "title": self.name, "uuid": get_uuid() } )
-        return test
-
-class RawSensorTable(Element):
-    def __init__(self, name, line_ids, units = None):
-        super().__init__(name)
-        self.line_ids = line_ids
-
-        if units == None:
-            self.units = {id: None for id in line_ids }
-        else:
-            self.units = {id: s for id,s in zip(line_ids, units) }
-
-    def render(self):
-        with open("templates/table.sensors.template.html") as file:
-            box = jinja2.Template(file.read())
-
-        items = []
-        for id in self.line_ids:
-
-            if self.units[id] is None:
-                unit = self.top.get_meta(id, "raw.unit")
-            else:
-                source, target = self.units[id].split("->")
-                assert source == self.top.get_meta(id, "raw.unit")
-                unit = target
-
-            items.append( {"id":id,
-                            "conv": unit_factor( self.units[id] ),
-                            "qpin":self.top.get_meta(id, "raw.qpin"),
-                            "unit": unit,
-                            "desc":self.top.get_meta(id, "raw.desc"), })
-
-        test = box.render( {"list_ids": items, "title": self.name} )
-        return test
-
-class DataTable(Element):
-    def __init__(self, name, line_ids):
-        super().__init__(name)
-        self.line_ids = line_ids
-
-    def render(self):
-        with open("templates/table.data.template.html") as file:
-            box = jinja2.Template(file.read())
-
-        items = [ {"id":id,
-            "unit":self.top.get_meta(id, "unit"),
-            "desc":self.top.get_meta(id, "desc"), } for id in self.line_ids]
-
-        test = box.render( {"list_ids": items, "title": self.name} )
-        return test
-
-class MiniGraph(Element):
-    def __init__(self, name, line_ids, time_seconds = 60, units = None):
-        super().__init__(name)
-        self.line_ids = line_ids
-
-        self.colors = ["#348ABD", "#A60628", "#7A68A6", "#467821", "#CF4457", "#188487", "#E24A33" ]
-        self.time_seconds = time_seconds
-
-        if units == None:
-            self.units = {id: None for id in line_ids }
-        else:
-            self.units = {id: s for id,s in zip(line_ids, units) }
-
-    def render(self):
-        with open("templates/mini_graph.template.html") as file:
-            box = jinja2.Template(file.read())
-
-        items = [ {"id":id,
-            "conv": unit_factor( self.units[id] ),
-            # "unit":self.top.get_meta(id, "unit"),
-            "unit": self.top.get_meta(id, "unit") if self.units[id] is None else self.units[id].split("->")[1],
-            "desc":self.top.get_meta(id, "desc"), 
-            "color":self.colors[i] } for i, id in enumerate(self.line_ids)]
-
-        test = box.render( {"list_ids": items, "title": self.name, "total_points": self.time_seconds * 20, "uuid": get_uuid()  } )
-        return test
-
-class Sequence(Element):
-    def __init__(self, name, line_ids):
-        super().__init__(name)
-        self.line_ids = line_ids
-
-    def render(self):
-        with open("templates/sequencing.template.html") as file:
-            box = jinja2.Template(file.read())
-
-
-        state_machines = []
-        writable_values = []
-        for id, unit in self.line_ids.items():   
-            if type(unit) == type([]):
-                state_machines.append( {"id":id, "unit": unit, "desc": self.top.get_meta(id, "desc"), "len": len(unit) } )
-            else:
-                writable_values.append( {"id":id, "unit": unit, "desc": self.top.get_meta(id, "desc"), } )
-
-        test = box.render( {"state_machines": state_machines,
-                            "writable_values": writable_values,
-                            "title": self.name} )
-        return test
+from ui_elements import Element, Graph, SquibTable, ValveTable, RawSensorTable, DataTable, MiniGraph, Sequence
 
 
 class Page(Element):
@@ -223,7 +29,6 @@ class Page(Element):
 
     async def get_page(self, request):
         return aiohttp.web.Response(text=self.render(), content_type='text/html')
-
 
 class Dashboard(Page):
 
@@ -319,6 +124,134 @@ class Dashboard(Page):
         self.top.app.router.add_get('/', self.get_page)
         self.top.app.router.add_get('/dashboard', self.get_page)
 
+class FillPage(Page):
+
+    def __init__(self, name, parent):
+        super().__init__(name, parent)
+
+        self.add_child(MiniGraph("Ox Fill", [
+            "slate.quail.sensors.PT3.cal", 
+            "slate.quail.sensors.PT4.cal"], 
+                time_seconds = 60, units = ["Pa->psi"] * 2))
+
+        self.add_child(MiniGraph("Mass", [
+            "slate.quail.sensors.LCSum.cal"], 
+                time_seconds = 60, units = ["N->kg"] ))
+
+        self.add_child(MiniGraph("Fuel Fill", [
+            "slate.quail.sensors.PT1.cal", 
+            "slate.quail.sensors.PT2.cal"], 
+                time_seconds = 60, units = ["Pa->psi"] * 2))
+
+
+        self.add_child(
+            RawSensorTable("Ox Sensors", [
+                                       "slate.quail.sensors.PT3",
+                                       "slate.quail.sensors.PT4",
+                                       ], units = ["Pa->psi"] * 2
+            )
+        )
+
+        self.add_child(
+            ValveTable("Ox Valves", [ "slate.quail.valves.S5",
+                                       "slate.quail.valves.S6",
+                                       "slate.quail.valves.S8"]
+            )
+        )
+
+        self.add_child(
+            RawSensorTable("Other Sensors", ["slate.quail.sensors.LCSum",
+                                       "slate.quail.sensors.TC1",
+                                       "slate.quail.sensors.TC2"], units = ["N->kg"] * 1 + [None] * 2
+            )
+        )
+
+
+        self.add_child(
+            RawSensorTable("Fuel Sensors", [
+                                       "slate.quail.sensors.PT1",
+                                       "slate.quail.sensors.PT2",
+                                       ], units = ["Pa->psi"] * 2
+            )
+        )
+
+        self.add_child(
+            ValveTable("Fuel Valves", [ "slate.quail.valves.S3", 
+                                        "slate.quail.valves.S4"]
+            )
+        )
+
+
+
+    def render(self):
+        dashboard = self.load_template("templates/dashboard.template.html")
+        template = self.load_template("templates/main.template.html")
+
+        dashboard_done = self.format(dashboard, content = "\n\n".join(child.render() for child in self.nodes))
+        return self.format(template, page = dashboard_done, meta= json.dumps(self.top.metadata))
+
+
+    def add_routes(self):
+        self.top.app.router.add_get('/fillpage', self.get_page)
+
+class LaunchPage(Page):
+
+    def __init__(self, name, parent):
+        super().__init__(name, parent)
+
+        self.add_child(MiniGraph("Ox Fill", [
+            "slate.quail.sensors.PT3.cal", 
+            "slate.quail.sensors.PT4.cal"], 
+                time_seconds = 60, units = ["Pa->psi"] * 2))
+
+        self.add_child(MiniGraph("Mass", [
+            "slate.quail.sensors.LCSum.cal"], 
+                time_seconds = 60, units = ["N->kg"] ))
+
+        self.add_child(MiniGraph("Fuel Fill", [
+            "slate.quail.sensors.PT1.cal", 
+            "slate.quail.sensors.PT2.cal"], 
+                time_seconds = 60, units = ["Pa->psi"] * 2))
+
+
+        self.add_child(
+            RawSensorTable("Sensors", [
+                                       "slate.quail.sensors.LCSum",
+                                       "slate.quail.sensors.PT2",
+                                       "slate.quail.sensors.PT4",
+                                       ], units = ["N->kg"] + ["Pa->psi"] * 2
+            )
+        )
+
+        self.add_child(
+            ValveTable("Valves", [ "slate.quail.valves.S4",
+                                    "slate.quail.valves.S6"]
+            )
+        )
+
+        self.add_child(
+            SquibTable("Squibs", ["slate.quail.squib.E1", "slate.quail.squib.E2"]
+            )
+        )
+
+        self.add_child(
+            ValveTable("Launch Valves", [ "slate.quail.valves.S1", 
+                                        "slate.quail.valves.S2"]
+            )
+        )
+
+
+    def render(self):
+        dashboard = self.load_template("templates/dashboard.template.html")
+        template = self.load_template("templates/main.template.html")
+
+        dashboard_done = self.format(dashboard, content = "\n\n".join(child.render() for child in self.nodes))
+        return self.format(template, page = dashboard_done, meta= json.dumps(self.top.metadata))
+
+
+    def add_routes(self):
+        self.top.app.router.add_get('/launchpage', self.get_page)
+
 class Sequencing(Dashboard):
 
     def __init__(self, name, parent):
@@ -330,7 +263,7 @@ class Sequencing(Dashboard):
                 time_seconds = 60, units = ["Pa->psi"] * 2))
 
         self.add_child(Sequence("My Sequencing", {
-            "slate.quail.sequence.engine_state" : ["ENGINE_ABORT", "ENGINE_IDLE", "ENGINE_PREPOX", "ENGINE_OXPREPPED", "ENGINE_PREPFUEL", "ENGINE_PREPPED", "ENGINE_FIRE", "MAIN_ACTUATION"],
+            "slate.quail.sequence.engine_state" : ["ENGINE_ABORT", "ENGINE_IDLE", "ENGINE_FILL", "ENGINE_FULL", "ENGINE_FIRE", "MAIN_ACTUATION"],
             "slate.quail.sequence.ox_tank_state" : ["TANK_IDLE_EMPTY", "TANK_IDLE_PRESS", "TANK_EMPTY", "TANK_DRAIN", "TANK_FILL", "TANK_FULL", "TANK_BLEED", "TANK_READY"],
             "slate.quail.sequence.fuel_tank_state" : ["TANK_IDLE_EMPTY", "TANK_IDLE_PRESS", "TANK_EMPTY", "TANK_DRAIN", "TANK_FILL", "TANK_FULL", "TANK_BLEED", "TANK_READY"],
             "slate.quail.sequence.ox_op_mass" : "N",
@@ -392,7 +325,6 @@ class Maps(Page):
 
         #TODO support jpegs also
         return aiohttp.web.Response(body=data, content_type='image/png')
-
 
 class Graphs(Page):
 

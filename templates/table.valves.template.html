@@ -3,8 +3,8 @@
       <div class="box_title"> {{title}} </div>
     </div>
 
-    <button type="button" class="button red button_halfsize" onclick="send_command(safe_valve_cmd)">Depower All Valves </button> 
-    <button type="button" class="button button_halfsize" onclick="pulse_valves()"> Pulse Linked </button> 
+    <button type="button" class="button red button_halfsize" onclick="send_command({{uuid}}_safe_valve_cmd)">Depower All Valves </button> 
+    <button type="button" class="button button_halfsize" onclick="{{uuid}}_pulse_valves()"> Pulse Linked </button> 
     </tr>
     <table class="dashboard-table">
       <thead>
@@ -36,20 +36,20 @@
     </table>
 
     <script>
-    checkboxes = []
+    {{uuid}}_checkboxes = []
     {% for item in list_ids %}
-            checkboxes.push("{{item.id}}");
+            {{uuid}}_checkboxes.push("{{item.id}}");
     {% endfor %}
 
-    safe_valve_cmd = {}
+    {{uuid}}_safe_valve_cmd = {}
     {% for item in list_ids %}
-            safe_valve_cmd["{{item.id}}.stt"] = 0;
+            {{uuid}}_safe_valve_cmd["{{item.id}}.stt"] = 0;
     {% endfor %}
 
-    function pulse_valves() {
+    function {{uuid}}_pulse_valves() {
         //TODO: check if it is editable
         var cmd = {};
-        for (id of checkboxes) {
+        for (id of {{uuid}}_checkboxes) {
           if (document.getElementById(id + '.selected').checked){
             cmd[id+'.ptm'] = document.getElementById(id+'.pulse').value;
           }
