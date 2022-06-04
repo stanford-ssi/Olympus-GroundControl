@@ -4,7 +4,6 @@ import json
 import asyncio 
 import asyncudp
  
-localIP     = "192.168.1.1"
 localPort   = 8000
 
 bufferSize  = 10_000
@@ -13,7 +12,7 @@ bufferSize  = 10_000
 async def udp_loop():
     # udp_socket = socket.socket(family=socket.AF_INET, type=socket.SOCK_DGRAM)
 
-    udp_socket = await asyncudp.create_socket(local_addr=(localIP, localPort))
+    udp_socket = await asyncudp.create_socket(local_addr=("0.0.0.0", localPort))
 
     # udp_socket.bind((localIP, localPort))
     # udp_socket.setblocking(False)

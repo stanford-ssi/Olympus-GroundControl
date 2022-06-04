@@ -262,7 +262,7 @@ class Main:
 
 
     async def connect_quail(self):
-        TCP_IP = "192.168.1.100"
+        TCP_IP = "192.168.1.2"
         TCP_PORT = 1002
 
         while True:
