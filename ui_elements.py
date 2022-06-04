@@ -331,7 +331,7 @@ class Sequencing(Dashboard):
                 time_seconds = 60, units = ["Pa->psi"] * 2))
 
         self.add_child(Sequence("My Sequencing", {
-            "slate.quail.sequence.engine_state" : ["ENGINE_ABORT", "ENGINE_IDLE", "ENGINE_FILL", "ENGINE_FULL", "ENGINE_FIRE", "MAIN_ACTUATION"],
+            "slate.quail.sequence.engine_state" : ["ENGINE_ABORT", "ENGINE_IDLE", "ENGINE_PREPOX", "ENGINE_OXPREPPED", "ENGINE_PREPFUEL", "ENGINE_PREPPED", "ENGINE_FIRE", "MAIN_ACTUATION"],
             "slate.quail.sequence.ox_tank_state" : ["TANK_IDLE_EMPTY", "TANK_IDLE_PRESS", "TANK_EMPTY", "TANK_DRAIN", "TANK_FILL", "TANK_FULL", "TANK_BLEED", "TANK_READY"],
             "slate.quail.sequence.fuel_tank_state" : ["TANK_IDLE_EMPTY", "TANK_IDLE_PRESS", "TANK_EMPTY", "TANK_DRAIN", "TANK_FILL", "TANK_FULL", "TANK_BLEED", "TANK_READY"],
             "slate.quail.sequence.ox_op_mass" : "N",
