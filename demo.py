@@ -14,7 +14,7 @@ import json
 
 from time import time
 
-from pages import Dashboard, Slate, Maps, Graphs, Configure, Sequencing, FillPage, LaunchPage
+from pages import Dashboard, Slate, Maps, Graphs, Configure, Sequencing, FillPage, LaunchPage, Mass_Graph, Ox_Graph, Fuel_Graph
 from database import DataBase
 
 class Main:
@@ -50,6 +50,10 @@ class Main:
         self.maps = Maps("test", self)
         self.graphs = Graphs("test", self)
         self.configure = Configure("test", self)
+
+        self.mass_graph = Mass_Graph("test", self)
+        self.ox_graph = Ox_Graph("test", self)
+        self.fuel_graph = Fuel_Graph("test", self)
 
     def create_socketio_handlers(self):
 

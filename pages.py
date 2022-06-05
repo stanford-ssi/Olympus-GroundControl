@@ -353,3 +353,54 @@ class Configure(Page):
 
     def add_routes(self):
         self.top.app.router.add_get('/configure', self.get_page)
+
+
+class Fuel_Graph(Page):
+    def __init__(self, name, parent):
+        super().__init__(name, parent)
+
+        self.add_child(MiniGraph("Fuel Fill", [
+            "slate.quail.sensors.PT1.cal", 
+            "slate.quail.sensors.PT2.cal"], 
+                time_seconds = 60, units = ["Pa->psi"] * 2))
+
+    def render(self):
+        template = self.load_template("templates/embedable.template.html")
+        return self.format(template, content = "\n\n".join(child.render() for child in self.nodes), meta= json.dumps(self.top.metadata))
+
+    def add_routes(self):
+        self.top.app.router.add_get('/fuel_graph', self.get_page)
+
+class Ox_Graph(Page):
+    def __init__(self, name, parent):
+        super().__init__(name, parent)
+
+        self.add_child(MiniGraph("Ox Fill", [
+            "slate.quail.sensors.PT3.cal", 
+            "slate.quail.sensors.PT4.cal"], 
+                time_seconds = 60, units = ["Pa->psi"] * 2))
+
+    def render(self):
+        template = self.load_template("templates/embedable.template.html")
+        return self.format(template, content = "\n\n".join(child.render() for child in self.nodes), meta= json.dumps(self.top.metadata))
+
+    def add_routes(self):
+        self.top.app.router.add_get('/ox_graph', self.get_page)
+
+class Mass_Graph(Page):
+    def __init__(self, name, parent):
+        super().__init__(name, parent)
+
+        self.add_child(MiniGraph("Mass", [
+            "slate.quail.sensors.LCSum.cal"], 
+                time_seconds = 60, units = ["N->kg"] ))
+
+    def render(self):
+        template = self.load_template("templates/embedable.template.html")
+        return self.format(template, content = "\n\n".join(child.render() for child in self.nodes), meta= json.dumps(self.top.metadata))
+
+    def add_routes(self):
+        self.top.app.router.add_get('/mass_graph', self.get_page)
+
+
+
