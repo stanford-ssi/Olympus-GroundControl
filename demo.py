@@ -36,7 +36,7 @@ class Main:
          
 
     def start(self):
-        web.run_app(self.app, host="localhost", port=8080)
+        web.run_app(self.app, port=8080)
 
     def create_pages(self):
         # Don't forget to add your page the the sidebar
