@@ -14,7 +14,7 @@ import json
 
 from time import time
 
-from pages import Dashboard, Slate, Maps, Graphs, Configure, Sequencing, FillPage, LaunchPage
+from pages import Dashboard, Slate, Maps, Graphs, Configure, Sequencing, FillPage, LaunchPage, Mass_Graph, Ox_Graph, Fuel_Graph
 from database import DataBase
 
 class Main:
@@ -36,7 +36,7 @@ class Main:
          
 
     def start(self):
-        web.run_app(self.app, host="localhost", port=8080)
+        web.run_app(self.app, port=8080)
 
     def create_pages(self):
         # Don't forget to add your page the the sidebar
@@ -50,6 +50,10 @@ class Main:
         self.maps = Maps("test", self)
         self.graphs = Graphs("test", self)
         self.configure = Configure("test", self)
+
+        self.mass_graph = Mass_Graph("test", self)
+        self.ox_graph = Ox_Graph("test", self)
+        self.fuel_graph = Fuel_Graph("test", self)
 
     def create_socketio_handlers(self):
 
@@ -262,7 +266,7 @@ class Main:
 
 
     async def connect_quail(self):
-        TCP_IP = "192.168.1.100"
+        TCP_IP = "192.168.1.2"
         TCP_PORT = 1002
 
         while True:
