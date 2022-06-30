@@ -293,9 +293,12 @@ class Slate(Page):
 
 class Maps(Page):
 
-    def __init__(self, name, parent):
-        super().__init__(name, parent)
-        self.mapdata_session = aiohttp.ClientSession()
+    # def __init__(self, name, parent):
+    #     super().__init__(name, parent)
+    #     self.mapdata_session = aiohttp.ClientSession()
+
+    # def __del__(self):
+    #     await self.mapdata_session.close()
 
     def render(self):
         map = self.load_template("templates/map.template.html")
@@ -318,8 +321,11 @@ class Maps(Page):
                 data = await file.read()
         else:
             await os.makedirs('cache/', exist_ok=True)
-            async with self.mapdata_session.get(mapbox_api.format(url = url)) as resp: 
-                data = await resp.read() 
+
+            async with aiohttp.ClientSession(timeout=15) as session:
+                async with session.get(mapbox_api.format(url = url)) as resp: 
+                    data = await resp.read() 
+
             async with aiofiles.open(filename, 'bw') as file:
                 await file.write(data)
 
