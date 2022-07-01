@@ -33,6 +33,10 @@ class Main:
         self.app.on_cleanup.append(self.cleanup_background_tasks)
 
         self.TCP_TIMEOUT = 2.0
+        self.tx_queue = asyncio.Queue()
+
+        self.tcp_quail_reader = None
+        self.tcp_quail_writer = None
          
 
     def start(self):
@@ -90,18 +94,7 @@ class Main:
             else:
                 raise ValueError("unknown command" + str(data))
 
-            try:
-                self.tcp_quail_writer.write(json.dumps(to_send).encode())
-                await asyncio.wait_for(self.tcp_quail_writer.drain(), timeout=self.TCP_TIMEOUT)
-
-                # not this could possibly be a race contidion with the other recv but the other we read
-                # them doesn't actually matter - they just get printed but be careful
-                echo_cmd = await asyncio.wait_for(self.tcp_quail_reader.readline(), timeout=self.TCP_TIMEOUT)
-                print("echoed command", echo_cmd)
-            except (ConnectionResetError, asyncio.TimeoutError):
-                print("command timed out reconnecting")
-                await self.connect_quail()
-
+            self.tx_queue.put_nowait(to_send)
 
         @self.sio.on("get-data")
         async def get_data(sid, data):
@@ -227,7 +220,7 @@ class Main:
             node[ids[-1]] = flat[path]
         return out
 
-    async def push_serial_data(self):
+    async def UDP_rx(self):
 
         while(True):
             message, addr = await self.udp_socket.recvfrom()
@@ -248,21 +241,26 @@ class Main:
 
     async def send_heartbeat(self):
         while(True):
-
-            asyncio.sleep(60)
+            await asyncio.sleep(60)
             to_send = {"cmd": "heart"}
+            self.tx_queue.put_nowait(to_send)
 
+    async def TCP_tx(self):
+        while(True):
+            to_send = await self.tx_queue.get()
+            print("sending", to_send)
             try:
                 self.tcp_quail_writer.write(json.dumps(to_send).encode())
                 await asyncio.wait_for(self.tcp_quail_writer.drain(), timeout=self.TCP_TIMEOUT)
 
-                # not this could possibly be a race contidion with the other recv but the other we read
-                # them doesn't actually matter - they just get printed but be careful
-                echo_cmd = await asyncio.wait_for(self.tcp_quail_reader.readline(), timeout=self.TCP_TIMEOUT)
-                print("echoed heartbeat", echo_cmd)
+                echo = await asyncio.wait_for(self.tcp_quail_reader.readline(), timeout=self.TCP_TIMEOUT)
+                print("got responce", echo)
+
             except (ConnectionResetError, asyncio.TimeoutError):
                 print("command timed out reconnecting")
                 await self.connect_quail()
+            finally:
+                self.tx_queue.task_done()
 
 
     async def connect_quail(self):
@@ -272,11 +270,11 @@ class Main:
         while True:
             try:
                 print("waiting for quail to connect")
-                self.tcp_quail_reader, self.tcp_quail_writer = await asyncio.open_connection(TCP_IP, TCP_PORT)
+                self.tcp_quail_reader, self.tcp_quail_writer = await asyncio.wait_for( asyncio.open_connection(TCP_IP, TCP_PORT), timeout=5)
                 print("connected to quail")
-                await self.get_metaslate_from_quail()
+                await asyncio.wait_for(self.get_metaslate_from_quail(), timeout=10)
                 print("fetched metaslate")
-            except (ConnectionResetError, ConnectionRefusedError):
+            except (ConnectionResetError, ConnectionRefusedError, asyncio.TimeoutError):
                 print("Connection error")
                 await asyncio.sleep(2)
             else:
@@ -286,16 +284,17 @@ class Main:
     async def get_metaslate_from_quail(self):
 
         while 1:
-            print("Requested metaslate")
+            print("Requesting metaslate")
             self.tcp_quail_writer.write(json.dumps({ "meta" : "gimme" }).encode())
             await self.tcp_quail_writer.drain()
-
+            print("Requested metaslate")
             message = await self.tcp_quail_reader.readline() 
             try:
                 a = json.loads(message)
             except ValueError:
                 pass
             else:
+                print("Recived metaslate")
                 self.metadata = a
                 break
 
@@ -318,14 +317,17 @@ class Main:
         await self.connect_quail()
 
         self.udp_socket = await asyncudp.create_socket(local_addr=("0.0.0.0", 8000))
-        self.app.serial_pub = asyncio.create_task(self.push_serial_data())
-        # self.app.heartbeat_task = asyncio.create_task(self.send_heartbeat())
+        self.app.udp_task = asyncio.create_task(self.UDP_rx())
+        self.app.heartbeat_task = asyncio.create_task(self.send_heartbeat())
+        self.app.tcp_sender_task = asyncio.create_task(self.TCP_tx())
 
     async def cleanup_background_tasks(self, app):
-        self.app.serial_pub.cancel()
+        self.app.udp_task.cancel()
         self.app.heartbeat_task.cancel()
-        await self.app.serial_pub
+        self.app.tcp_sender_task.cancel()
+        await self.app.udp_task
         await self.app.heartbeat_task
+        await self.app.tcp_sender_task
 
 
 def get_app():
