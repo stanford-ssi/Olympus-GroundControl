@@ -270,11 +270,11 @@ class Main:
         while True:
             try:
                 print("waiting for quail to connect")
-                self.tcp_quail_reader, self.tcp_quail_writer = await asyncio.open_connection(TCP_IP, TCP_PORT)
+                self.tcp_quail_reader, self.tcp_quail_writer = await asyncio.wait_for( asyncio.open_connection(TCP_IP, TCP_PORT), timeout=5)
                 print("connected to quail")
-                await self.get_metaslate_from_quail()
+                await asyncio.wait_for(self.get_metaslate_from_quail(), timeout=10)
                 print("fetched metaslate")
-            except (ConnectionResetError, ConnectionRefusedError):
+            except (ConnectionResetError, ConnectionRefusedError, asyncio.TimeoutError):
                 print("Connection error")
                 await asyncio.sleep(2)
             else:
@@ -284,18 +284,17 @@ class Main:
     async def get_metaslate_from_quail(self):
 
         while 1:
-            print("Requested metaslate")
+            print("Requesting metaslate")
             self.tcp_quail_writer.write(json.dumps({ "meta" : "gimme" }).encode())
             await self.tcp_quail_writer.drain()
-
-            print("here")
+            print("Requested metaslate")
             message = await self.tcp_quail_reader.readline() 
-            print("here")
             try:
                 a = json.loads(message)
             except ValueError:
                 pass
             else:
+                print("Recived metaslate")
                 self.metadata = a
                 break
 
