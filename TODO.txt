@@ -1,7 +1,0 @@
-
-- Fix heartbeats/imporove reliablity
-- Bug in graph rescaling on cahgnes units
-- Make units changing safer
-- Write readme
-- Enabled logging
-- Make UDP on quail magic targeting
