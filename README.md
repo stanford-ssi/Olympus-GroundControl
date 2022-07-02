@@ -12,9 +12,13 @@ Run `pip install -r requirements.txt` to install the dependancies
 
 ### Usage
 
+Ensure you're on the same network (and have a ip address in the right range) as quail.
+
 To launch dev server `adev runserver demo.py --port 8080 --livereload`
 
 To launch "deployment" server `python demo.py`
+
+Go to `localhost:8080` to see the page (only after it connects to quail). That access from a differnt computer on the same network go to `{server ip}:8080` on that computers browser
 
 ## Feature rundown
 
@@ -48,7 +52,7 @@ The repo functions basically as a http server that serves the webui to any brows
 
 ### Dataflow
 ![Network Diagram](imgs/network.drawio.svg)
-(Note those diagrams can be opened and edited using the drawio VS code extension. Please update them as stuff changes :D)
+(Note those diagrams can be opened and edited using the drawio VS code extension. Please update them as stuff changes :D). The server IP is the defualt IP but if a server with a different IP connects to quail (with new firmware) it should update the location it sends the udp stream
 
 
 ### Physical Conenctions
@@ -65,4 +69,4 @@ The repo functions basically as a http server that serves the webui to any brows
 - Bug in graph rescaling on changed units: Autorescaling doesn't work poperly on graphs with converted units
 - Make units changing safer: Currently we don't assert at all what unit we are converting from etc. Once quail reports all units we should turn this on
 - Write readme: In progress
-- Enabled logging: Since quail *should* log stuff to SD this isn't a top prority but it should happen
+- Enabled logging: Since quail *should* log stuff to SD this isn't a top prority but it should happen. Note that in development mode the server will reload on any file changes in this repository so the logs should be placed elsewere to avoid a reload loop
