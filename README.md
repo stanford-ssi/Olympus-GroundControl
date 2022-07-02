@@ -34,6 +34,11 @@ This page allows you to authenticate you browser using the password `MAGIC` to s
 
 In addition to the pages listed in the sidebar the server also exposes the `/mass_graph` `ox_graph` and `fuel_graph` pages that are useful for embedding into a live stream
 
+### Map
+
+Currently not used for anything but could be used for stuff like rocket tracking down the line. It should be realativly easy to plot a location on it from gps coordinates in the slate. Any area that you've alreadys looked at is cached so that you don't need an internet connection to look at it again.
+
+
 ## Architecture
 
 ### Description
@@ -43,14 +48,17 @@ The repo functions basically as a http server that serves the webui to any brows
 
 ### Dataflow
 ![Network Diagram](imgs/network.drawio.svg)
+(Note those diagrams can be opened and edited using the drawio VS code extension. Please update them as stuff changes :D)
 
 
 ### Physical Conenctions
 ![Physical Connections](imgs/physical.drawio.svg)
 
-
 ### Code Structure
 
+## HTML Generation
+## Client side code
+## Authentication
 
 ### TODOs
 
