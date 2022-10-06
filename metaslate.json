@@ -1,0 +1,165 @@
+{"quail": {"sensors": {"PT1": {"raw": {"valu": 0, "desc": "GN2 Source", "unit": "Pa", "qpin": "PT1", "edit": false
+                }, "avg": {"valu": 0, "desc": "derived", "unit": "Pa", "qpin": "", "edit": false
+                }, "cal": {"valu": 0, "desc": "GN2 Source Calibrated", "unit": "Pa", "qpin": "PT1", "edit": false
+                }, "ofs": {"valu": 0, "desc": "ofset", "unit": "Pa", "qpin": "", "edit": true
+                }
+            }, "PT2": {"raw": {"valu": 0, "desc": "GN2 Postfill", "unit": "Pa", "qpin": "PT2", "edit": false
+                }, "avg": {"valu": 0, "desc": "derived", "unit": "Pa", "qpin": "", "edit": false
+                }, "cal": {"valu": 0, "desc": "GN2 Postfill Calibrated", "unit": "Pa", "qpin": "PT2", "edit": false
+                }, "ofs": {"valu": 0, "desc": "ofset", "unit": "Pa", "qpin": "", "edit": true
+                }
+            }, "PT3": {"raw": {"valu": 0, "desc": "Ox Source", "unit": "Pa", "qpin": "PT3", "edit": false
+                }, "avg": {"valu": 0, "desc": "derived", "unit": "Pa", "qpin": "", "edit": false
+                }, "cal": {"valu": 0, "desc": "Ox Source Calibrated", "unit": "Pa", "qpin": "PT3", "edit": false
+                }, "ofs": {"valu": 0, "desc": "ofset", "unit": "Pa", "qpin": "", "edit": true
+                }
+            }, "PT4": {"raw": {"valu": 0, "desc": "Ox Postfill", "unit": "Pa", "qpin": "PT4", "edit": false
+                }, "avg": {"valu": 0, "desc": "derived", "unit": "Pa", "qpin": "", "edit": false
+                }, "cal": {"valu": 0, "desc": "Ox Postfill Calibrated", "unit": "Pa", "qpin": "PT4", "edit": false
+                }, "ofs": {"valu": 0, "desc": "ofset", "unit": "Pa", "qpin": "", "edit": true
+                }
+            }, "PT5": {"raw": {"valu": 0, "desc": "", "unit": "Pa", "qpin": "PT5", "edit": false
+                }, "avg": {"valu": 0, "desc": "derived", "unit": "Pa", "qpin": "", "edit": false
+                }, "cal": {"valu": 0, "desc": " Calibrated", "unit": "Pa", "qpin": "PT5", "edit": false
+                }, "ofs": {"valu": 0, "desc": "ofset", "unit": "Pa", "qpin": "", "edit": true
+                }
+            }, "PT6": {"raw": {"valu": 0, "desc": "", "unit": "Pa", "qpin": "PT6", "edit": false
+                }, "avg": {"valu": 0, "desc": "derived", "unit": "Pa", "qpin": "", "edit": false
+                }, "cal": {"valu": 0, "desc": " Calibrated", "unit": "Pa", "qpin": "PT6", "edit": false
+                }, "ofs": {"valu": 0, "desc": "ofset", "unit": "Pa", "qpin": "", "edit": true
+                }
+            }, "PT7": {"raw": {"valu": 0, "desc": "", "unit": "Pa", "qpin": "PT7", "edit": false
+                }, "avg": {"valu": 0, "desc": "derived", "unit": "Pa", "qpin": "", "edit": false
+                }, "cal": {"valu": 0, "desc": " Calibrated", "unit": "Pa", "qpin": "PT7", "edit": false
+                }, "ofs": {"valu": 0, "desc": "ofset", "unit": "Pa", "qpin": "", "edit": true
+                }
+            }, "PT8": {"raw": {"valu": 0, "desc": "", "unit": "Pa", "qpin": "PT8", "edit": false
+                }, "avg": {"valu": 0, "desc": "derived", "unit": "Pa", "qpin": "", "edit": false
+                }, "cal": {"valu": 0, "desc": " Calibrated", "unit": "Pa", "qpin": "PT8", "edit": false
+                }, "ofs": {"valu": 0, "desc": "ofset", "unit": "Pa", "qpin": "", "edit": true
+                }
+            }, "LC1": {"raw": {"valu": 0, "desc": "left LC", "unit": "N", "qpin": "LC1", "edit": false
+                }, "avg": {"valu": 0, "desc": "derived", "unit": "N", "qpin": "", "edit": false
+                }, "cal": {"valu": 0, "desc": "left LC Calibrated", "unit": "N", "qpin": "LC1", "edit": false
+                }, "ofs": {"valu": 0, "desc": "ofset", "unit": "N", "qpin": "", "edit": true
+                }
+            }, "LC2": {"raw": {"valu": 0, "desc": "right LC", "unit": "N", "qpin": "LC2", "edit": false
+                }, "avg": {"valu": 0, "desc": "derived", "unit": "N", "qpin": "", "edit": false
+                }, "cal": {"valu": 0, "desc": "right LC Calibrated", "unit": "N", "qpin": "LC2", "edit": false
+                }, "ofs": {"valu": 0, "desc": "ofset", "unit": "N", "qpin": "", "edit": true
+                }
+            }, "LCSum": {"raw": {"valu": 0, "desc": "Thrust+Weight", "unit": "N", "qpin": "", "edit": false
+                }, "avg": {"valu": 0, "desc": "derived", "unit": "N", "qpin": "", "edit": false
+                }, "cal": {"valu": 0, "desc": "Thrust+Weight Calibrated", "unit": "N", "qpin": "", "edit": false
+                }, "ofs": {"valu": 0, "desc": "ofset", "unit": "N", "qpin": "", "edit": true
+                }
+            }, "TC1": {"raw": {"valu": 0, "desc": "Ox Bottle", "unit": "C", "qpin": "TC1", "edit": false
+                }, "avg": {"valu": 0, "desc": "derived", "unit": "C", "qpin": "", "edit": false
+                }, "cal": {"valu": 0, "desc": "Ox Bottle Calibrated", "unit": "C", "qpin": "TC1", "edit": false
+                }, "ofs": {"valu": 0, "desc": "ofset", "unit": "C", "qpin": "", "edit": true
+                }
+            }, "TC2": {"raw": {"valu": 0, "desc": "Ox Tank", "unit": "C", "qpin": "TC2", "edit": false
+                }, "avg": {"valu": 0, "desc": "derived", "unit": "C", "qpin": "", "edit": false
+                }, "cal": {"valu": 0, "desc": "Ox Tank Calibrated", "unit": "C", "qpin": "TC2", "edit": false
+                }, "ofs": {"valu": 0, "desc": "ofset", "unit": "C", "qpin": "", "edit": true
+                }
+            }
+        }, "valves": {"S1": {"nor": {"valu": 0, "desc": "none", "unit": "17solenoid_normal_t", "qpin": "S1", "edit": false
+                }, "pwm": {"valu": 0, "desc": "none", "unit": "14solenoid_pwm_t", "qpin": "S1", "edit": false
+                }, "ptm": {"valu": 0, "desc": "Fuel Main", "unit": "ms", "qpin": "S1", "edit": true
+                }, "stt": {"valu": 0, "desc": "Fuel Main", "unit": "16solenoid_state_t", "qpin": "S1", "edit": true
+                }
+            }, "S2": {"nor": {"valu": 0, "desc": "none", "unit": "17solenoid_normal_t", "qpin": "S2", "edit": false
+                }, "pwm": {"valu": 0, "desc": "none", "unit": "14solenoid_pwm_t", "qpin": "S2", "edit": false
+                }, "ptm": {"valu": 0, "desc": "Ox Main", "unit": "ms", "qpin": "S2", "edit": true
+                }, "stt": {"valu": 0, "desc": "Ox Main", "unit": "16solenoid_state_t", "qpin": "S2", "edit": true
+                }
+            }, "S3": {"nor": {"valu": 0, "desc": "none", "unit": "17solenoid_normal_t", "qpin": "S3", "edit": false
+                }, "pwm": {"valu": 0, "desc": "none", "unit": "14solenoid_pwm_t", "qpin": "S3", "edit": false
+                }, "ptm": {"valu": 0, "desc": "Fuel Fill", "unit": "ms", "qpin": "S3", "edit": true
+                }, "stt": {"valu": 0, "desc": "Fuel Fill", "unit": "16solenoid_state_t", "qpin": "S3", "edit": true
+                }
+            }, "S4": {"nor": {"valu": 0, "desc": "none", "unit": "17solenoid_normal_t", "qpin": "S4", "edit": false
+                }, "pwm": {"valu": 0, "desc": "none", "unit": "14solenoid_pwm_t", "qpin": "S4", "edit": false
+                }, "ptm": {"valu": 0, "desc": "Fuel Bleed", "unit": "ms", "qpin": "S4", "edit": true
+                }, "stt": {"valu": 0, "desc": "Fuel Bleed", "unit": "16solenoid_state_t", "qpin": "S4", "edit": true
+                }
+            }, "S5": {"nor": {"valu": 0, "desc": "none", "unit": "17solenoid_normal_t", "qpin": "S5", "edit": false
+                }, "pwm": {"valu": 0, "desc": "none", "unit": "14solenoid_pwm_t", "qpin": "S5", "edit": false
+                }, "ptm": {"valu": 0, "desc": "Ox Fill", "unit": "ms", "qpin": "S5", "edit": true
+                }, "stt": {"valu": 0, "desc": "Ox Fill", "unit": "16solenoid_state_t", "qpin": "S5", "edit": true
+                }
+            }, "S6": {"nor": {"valu": 0, "desc": "none", "unit": "17solenoid_normal_t", "qpin": "S6", "edit": false
+                }, "pwm": {"valu": 0, "desc": "none", "unit": "14solenoid_pwm_t", "qpin": "S6", "edit": false
+                }, "ptm": {"valu": 0, "desc": "Ox Bleed", "unit": "ms", "qpin": "S6", "edit": true
+                }, "stt": {"valu": 0, "desc": "Ox Bleed", "unit": "16solenoid_state_t", "qpin": "S6", "edit": true
+                }
+            }, "S7": {"nor": {"valu": 0, "desc": "none", "unit": "17solenoid_normal_t", "qpin": "S7", "edit": false
+                }, "pwm": {"valu": 0, "desc": "none", "unit": "14solenoid_pwm_t", "qpin": "S7", "edit": false
+                }, "ptm": {"valu": 0, "desc": "none", "unit": "ms", "qpin": "S7", "edit": true
+                }, "stt": {"valu": 0, "desc": "none", "unit": "16solenoid_state_t", "qpin": "S7", "edit": true
+                }
+            }, "S8": {"nor": {"valu": 0, "desc": "none", "unit": "17solenoid_normal_t", "qpin": "S8", "edit": false
+                }, "pwm": {"valu": 0, "desc": "none", "unit": "14solenoid_pwm_t", "qpin": "S8", "edit": false
+                }, "ptm": {"valu": 0, "desc": "OX Vent", "unit": "ms", "qpin": "S8", "edit": true
+                }, "stt": {"valu": 0, "desc": "OX Vent", "unit": "16solenoid_state_t", "qpin": "S8", "edit": true
+                }
+            }, "S9": {"nor": {"valu": 0, "desc": "none", "unit": "17solenoid_normal_t", "qpin": "S9", "edit": false
+                }, "pwm": {"valu": 0, "desc": "none", "unit": "14solenoid_pwm_t", "qpin": "S9", "edit": false
+                }, "ptm": {"valu": 0, "desc": "Safe To Approach", "unit": "ms", "qpin": "S9", "edit": true
+                }, "stt": {"valu": 0, "desc": "Safe To Approach", "unit": "16solenoid_state_t", "qpin": "S9", "edit": true
+                }
+            }, "S10": {"nor": {"valu": 0, "desc": "none", "unit": "17solenoid_normal_t", "qpin": "S10", "edit": false
+                }, "pwm": {"valu": 0, "desc": "none", "unit": "14solenoid_pwm_t", "qpin": "S10", "edit": false
+                }, "ptm": {"valu": 0, "desc": "none", "unit": "ms", "qpin": "S10", "edit": true
+                }, "stt": {"valu": 0, "desc": "none", "unit": "16solenoid_state_t", "qpin": "S10", "edit": true
+                }
+            }, "S11": {"nor": {"valu": 0, "desc": "none", "unit": "17solenoid_normal_t", "qpin": "S11", "edit": false
+                }, "pwm": {"valu": 0, "desc": "none", "unit": "14solenoid_pwm_t", "qpin": "S11", "edit": false
+                }, "ptm": {"valu": 0, "desc": "none", "unit": "ms", "qpin": "S11", "edit": true
+                }, "stt": {"valu": 0, "desc": "none", "unit": "16solenoid_state_t", "qpin": "S11", "edit": true
+                }
+            }, "S12": {"nor": {"valu": 0, "desc": "none", "unit": "17solenoid_normal_t", "qpin": "S12", "edit": false
+                }, "pwm": {"valu": 0, "desc": "none", "unit": "14solenoid_pwm_t", "qpin": "S12", "edit": false
+                }, "ptm": {"valu": 0, "desc": "Igniter", "unit": "ms", "qpin": "S12", "edit": true
+                }, "stt": {"valu": 0, "desc": "Igniter", "unit": "16solenoid_state_t", "qpin": "S12", "edit": true
+                }
+            }
+        }, "squib": {"E1": {"arm": {"valu": 0, "desc": "none", "unit": "18ematch_arm_state_t", "qpin": "E1", "edit": true
+                }, "fir": {"valu": 0, "desc": "The one the goes boom", "unit": "19ematch_fire_state_t", "qpin": "E1", "edit": true
+                }
+            }, "E2": {"arm": {"valu": 0, "desc": "none", "unit": "18ematch_arm_state_t", "qpin": "E2", "edit": true
+                }, "fir": {"valu": 0, "desc": "The other one", "unit": "19ematch_fire_state_t", "qpin": "E2", "edit": true
+                }
+            }, "E3": {"arm": {"valu": 0, "desc": "none", "unit": "18ematch_arm_state_t", "qpin": "E3", "edit": true
+                }, "fir": {"valu": 0, "desc": "none", "unit": "19ematch_fire_state_t", "qpin": "E3", "edit": true
+                }
+            }, "E4": {"arm": {"valu": 0, "desc": "none", "unit": "18ematch_arm_state_t", "qpin": "E4", "edit": true
+                }, "fir": {"valu": 0, "desc": "none", "unit": "19ematch_fire_state_t", "qpin": "E4", "edit": true
+                }
+            }
+        }, "sequence": {"engine_state": {"valu": 0, "desc": "Engine State", "unit": "11EngineState", "qpin": "", "edit": true
+            }, "ox_tank_state": {"valu": 0, "desc": "Ox Tank State", "unit": "9TankState", "qpin": "", "edit": true
+            }, "ox_op_mass": {"valu": 0, "desc": "Ox Operating Weight", "unit": "f", "qpin": "", "edit": true
+            }, "fuel_tank_state": {"valu": 0, "desc": "Fuel Tank State", "unit": "9TankState", "qpin": "", "edit": true
+            }, "fuel_op_press": {"valu": 0, "desc": "Fuel Operating Pressure", "unit": "f", "qpin": "", "edit": true
+            }
+        }, "battery": {"Voltage": {"raw": {"valu": 0, "desc": "Main Bus Voltage", "unit": "V", "qpin": "PB09", "edit": false
+                }, "avg": {"valu": 0, "desc": "derived", "unit": "f", "qpin": "", "edit": false
+                }, "cal": {"valu": 0, "desc": "Main Bus Voltage Calibrated", "unit": "f", "qpin": "PB09", "edit": false
+                }, "ofs": {"valu": 0, "desc": "ofset", "unit": "f", "qpin": "", "edit": true
+                }
+            }, "Current": {"raw": {"valu": 0, "desc": "Total Current", "unit": "A", "qpin": "PB09", "edit": false
+                }, "avg": {"valu": 0, "desc": "derived", "unit": "f", "qpin": "", "edit": false
+                }, "cal": {"valu": 0, "desc": "Total Current Calibrated", "unit": "f", "qpin": "PB09", "edit": false
+                }, "ofs": {"valu": 0, "desc": "ofset", "unit": "f", "qpin": "", "edit": true
+                }
+            }
+        }, "board": {"logging": {"valu": 0, "desc": "none", "unit": "b", "qpin": "", "edit": false
+            }, "error": {"valu": 0, "desc": "none", "unit": "j", "qpin": "", "edit": false
+            }, "tick": {"valu": 0, "desc": "none", "unit": "j", "qpin": "", "edit": false
+            }, "comms": {"valu": 0, "desc": "none", "unit": "b", "qpin": "", "edit": true
+            }
+        }
+    }
+}

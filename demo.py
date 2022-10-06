@@ -314,12 +314,19 @@ class Main:
 
 
     async def start_background_tasks(self, app):
+        # UNCOMMENT FOR QUAIL CONNECTION
         await self.connect_quail()
+
+        # UNCOMMENT FOR MANUAL METASLATE LOADING
+        # async with aiofiles.open('metaslate.json', mode='r') as f:
+        #     contents = await f.read()
+        # self.metadata = json.loads(contents)
 
         self.udp_socket = await asyncudp.create_socket(local_addr=("0.0.0.0", 8000))
         self.app.udp_task = asyncio.create_task(self.UDP_rx())
         self.app.heartbeat_task = asyncio.create_task(self.send_heartbeat())
         self.app.tcp_sender_task = asyncio.create_task(self.TCP_tx())
+
 
     async def cleanup_background_tasks(self, app):
         self.app.udp_task.cancel()
