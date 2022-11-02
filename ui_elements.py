@@ -129,7 +129,7 @@ class RawSensorTable(Element):
                 unit = self.top.get_meta(id, "raw.unit")
             else:
                 source, target = self.units[id].split("->")
-                assert source == self.top.get_meta(id, "raw.unit")
+                # assert source == self.top.get_meta(id, "raw.unit")
                 unit = target
 
             items.append( {"id":id,

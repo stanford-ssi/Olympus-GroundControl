@@ -117,7 +117,7 @@ class Dashboard(Page):
         template = self.load_template("templates/main.template.html")
 
         dashboard_done = self.format(dashboard, content = "\n\n".join(child.render() for child in self.nodes))
-        return self.format(template, page = dashboard_done, meta= json.dumps(self.top.metadata))
+        return self.format(template, page = dashboard_done, meta= json.dumps({"test":"hi"}))
 
 
     def add_routes(self):
@@ -286,7 +286,7 @@ class Slate(Page):
         messages = self.load_template("templates/slate.template.html")
         template = self.load_template("templates/main.template.html")
 
-        return self.format(template, page = messages, meta= json.dumps(self.top.metadata))
+        return self.format(template, page = messages, meta= json.dumps({"hi":"ho"}))
 
     def add_routes(self):
         self.top.app.router.add_get('/slate', self.get_page)

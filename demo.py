@@ -12,6 +12,8 @@ from aiofiles import os
 import asyncudp
 import json
 
+from SnorkelClient import SnorkelClient
+
 from time import time
 
 from pages import Dashboard, Slate, Maps, Graphs, Configure, Sequencing, FillPage, LaunchPage, Mass_Graph, Ox_Graph, Fuel_Graph
@@ -146,22 +148,29 @@ class Main:
             await self.database.add_log_line("meta", self.metadata)
 
     def get_meta(self, path, endpoint=None):
+        print(path)
+        print(endpoint)
         path = path.split(".")
-        assert path[0] == "slate"
+        if path[0] == "slate":
+            return 69
+
+        
         path.pop(0)
 
         if endpoint:
             path.extend(endpoint.split("."))
 
-        node = self.metadata
-        for name in path:
-            try:
-                node = node[name]
-            except KeyError:
-                print("Not found key", name, "in", path)
-                return "null"
+        # node = self.metadata
+        # for name in path:
+        #     try:
+        #         node = node[name]
+        #     except KeyError:
+        #         print("Not found key", name, "in", path)
+        #         return "null"
 
-        return node
+        return 1
+
+        #return node
 
     def flat_meta(self, function, node=None, path=None):
         if node is None:
@@ -220,24 +229,19 @@ class Main:
             node[ids[-1]] = flat[path]
         return out
 
-    async def UDP_rx(self):
+    async def rx_task(self):
 
         while(True):
-            message, addr = await self.udp_socket.recvfrom()
-            json_object = json.loads(message)
-            # print(message)
-            # print()
+            slate = await self.quail.slates['telemetry'].recv_slate()
             
-            self.update_meta(json_object)
-            await self.database.add_log_line("update", json_object)
-
-            for key, value in self.flat_meta( lambda node, path: (".".join(path), node["valu"]) ):
+            await self.database.add_log_line("update", slate)
+            
+            for key, value in slate.items():
                 self.history[key].append(value)
+                while len(self.history[key]) > 10000:
+                    self.history[key].pop()
 
-            while len(self.history[key]) > 10000:
-                self.history[key].pop()
-
-            await self.sio.emit("new", json_object)
+            await self.sio.emit("new", slate)
 
     async def send_heartbeat(self):
         while(True):
@@ -245,7 +249,7 @@ class Main:
             to_send = {"cmd": "heart"}
             self.tx_queue.put_nowait(to_send)
 
-    async def TCP_tx(self):
+    async def tx_task(self):
         while(True):
             to_send = await self.tx_queue.get()
             print("sending", to_send)
@@ -262,79 +266,39 @@ class Main:
             finally:
                 self.tx_queue.task_done()
 
-
-    async def connect_quail(self):
-        TCP_IP = "192.168.1.2"
-        TCP_PORT = 1002
-
-        while True:
-            try:
-                print("waiting for quail to connect")
-                self.tcp_quail_reader, self.tcp_quail_writer = await asyncio.wait_for( asyncio.open_connection(TCP_IP, TCP_PORT), timeout=5)
-                print("connected to quail")
-                await asyncio.wait_for(self.get_metaslate_from_quail(), timeout=10)
-                print("fetched metaslate")
-            except (ConnectionResetError, ConnectionRefusedError, asyncio.TimeoutError):
-                print("Connection error")
-                await asyncio.sleep(2)
-            else:
-                return
-            
-
     async def get_metaslate_from_quail(self):
 
-        while 1:
-            print("Requesting metaslate")
-            self.tcp_quail_writer.write(json.dumps({ "meta" : "gimme" }).encode())
-            await self.tcp_quail_writer.drain()
-            print("Requested metaslate")
-            message = await self.tcp_quail_reader.readline() 
-            try:
-                a = json.loads(message)
-            except ValueError:
-                pass
-            else:
-                print("Recived metaslate")
-                self.metadata = a
-                break
-
-        def add_valu(node, path):
-            node["valu"] = 0
-            return node
-
-        self.metadata = self.transform_meta(add_valu)
-
-        print(self.metadata)
-        print("Got metaslate!")
+        self.metadata = self.quail.slates['telemetry'].metaslate['channels']
 
         self.database = DataBase(self.metadata, self, "init")
         await self.database.add_log_line("meta", self.metadata)
 
-        self.history = {key: [] for key in  self.flat_meta( lambda node, path: ".".join(path) ) }
+        self.history = {key: [] for key,_ in  self.metadata.items() }
 
 
     async def start_background_tasks(self, app):
-        # UNCOMMENT FOR QUAIL CONNECTION
-        await self.connect_quail()
+        self.quail = SnorkelClient('192.168.2.2',1002)
+        self.quail.connect()
 
-        # UNCOMMENT FOR MANUAL METASLATE LOADING
-        # async with aiofiles.open('metaslate.json', mode='r') as f:
-        #     contents = await f.read()
-        # self.metadata = json.loads(contents)
+        await self.quail.slates['telemetry'].connect()
 
-        self.udp_socket = await asyncudp.create_socket(local_addr=("0.0.0.0", 8000))
-        self.app.udp_task = asyncio.create_task(self.UDP_rx())
-        self.app.heartbeat_task = asyncio.create_task(self.send_heartbeat())
-        self.app.tcp_sender_task = asyncio.create_task(self.TCP_tx())
+        await self.get_metaslate_from_quail()
+
+        self.app.rx_task = asyncio.create_task(self.rx_task())
+        # self.app.heartbeat_task = asyncio.create_task(self.send_heartbeat())
+        # self.app.tx_task = asyncio.create_task(self.tx_task())
 
 
     async def cleanup_background_tasks(self, app):
-        self.app.udp_task.cancel()
-        self.app.heartbeat_task.cancel()
-        self.app.tcp_sender_task.cancel()
-        await self.app.udp_task
-        await self.app.heartbeat_task
-        await self.app.tcp_sender_task
+        self.app.rx_task.cancel()
+        await self.app.rx_task
+        # self.app.udp_task.cancel()
+        # self.app.heartbeat_task.cancel()
+        # self.app.tcp_sender_task.cancel()
+        # await self.app.udp_task
+        # await self.app.heartbeat_task
+        # await self.app.tcp_sender_task
+        pass
 
 
 def get_app():

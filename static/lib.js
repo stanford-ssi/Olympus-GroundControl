@@ -33,14 +33,15 @@ function update_slate(update, meta) {
     // console.log(typeof(meta))
     // console.log(update, meta)
 
-    if ("valu" in meta){
-        meta["valu"] = update
-        return
-    }
+    // if ("valu" in meta){
+    //     meta["valu"] = update
+    //     return
+    // }
 
-    for (key in meta) {
-        update_slate(update[key], meta[key])
-    }
+    // for (key in meta) {
+    //     update_slate(update[key], meta[key])
+    // }
+    slate = update
     
 }
 
