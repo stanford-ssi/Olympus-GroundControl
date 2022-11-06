@@ -187,7 +187,7 @@ class FillPage(Page):
 
         dashboard_done = self.format(dashboard, content="\n\n".join(
             child.render() for child in self.nodes))
-        return self.format(template, page=dashboard_done, meta=json.dumps(self.top.metadata))
+        return self.format(template, page=dashboard_done, meta=json.dumps(self.top.metaslate))
 
     def add_routes(self):
         self.top.app.router.add_get('/fillpage', self.get_page)
@@ -244,7 +244,7 @@ class LaunchPage(Page):
 
         dashboard_done = self.format(dashboard, content="\n\n".join(
             child.render() for child in self.nodes))
-        return self.format(template, page=dashboard_done, meta=json.dumps(self.top.metadata))
+        return self.format(template, page=dashboard_done, meta=json.dumps(self.top.metaslate))
 
     def add_routes(self):
         self.top.app.router.add_get('/launchpage', self.get_page)
@@ -273,7 +273,7 @@ class Sequencing(Dashboard):
     #     page = self.load_template("templates/sequencing.template.html")
     #     template = self.load_template("templates/main.template.html")
 
-    #     return self.format(template, page = page, meta= json.dumps(self.top.metadata))
+    #     return self.format(template, page = page, meta= json.dumps(self.top.metaslate))
 
     def add_routes(self):
         self.top.app.router.add_get('/sequencing', self.get_page)
@@ -296,7 +296,7 @@ class Maps(Page):
         map = self.load_template("templates/map.template.html")
         template = self.load_template("templates/main.template.html")
 
-        return self.format(template, page=map, meta=json.dumps(self.top.metadata))
+        return self.format(template, page=map, meta=json.dumps(self.top.metaslate))
 
     def add_routes(self):
         self.top.app.router.add_get('/maps', self.get_page)
@@ -335,10 +335,11 @@ class Graphs(Page):
         with open("templates/graphs.template.html") as file:
             graphs = jinja2.Template(file.read())
 
-        def get_id_and_desc(node, path):
-            return {"id": ".".join(path[1:]), "desc": node["desc"]}
+        flat_key_list = [[{"id": f"quail.{slate_key}.{key}", "desc": f"{meta['desc']}"} for key,
+                          meta in slate["channels"].items()] for slate_key, slate in self.top.metaslate["quail"].items()]
+        flat_key_list = sum(flat_key_list, [])
 
-        return self.format(template, page=graphs.render(list_ids=self.top.flat_meta(get_id_and_desc), title=self.name), meta=json.dumps(self.top.metadata))
+        return self.format(template, page=graphs.render(list_ids=flat_key_list, title=self.name), meta=json.dumps(self.top.metaslate))
 
     def add_routes(self):
         self.top.app.router.add_get('/graphs', self.get_page)
@@ -350,7 +351,7 @@ class Configure(Page):
         configure = self.load_template("templates/configure.template.html")
         template = self.load_template("templates/main.template.html")
 
-        return self.format(template, page=configure, meta=self.top.metadata)
+        return self.format(template, page=configure, meta=self.top.metaslate)
 
     def add_routes(self):
         self.top.app.router.add_get('/configure', self.get_page)
@@ -367,7 +368,7 @@ class Fuel_Graph(Page):
 
     def render(self):
         template = self.load_template("templates/embedable.template.html")
-        return self.format(template, content="\n\n".join(child.render() for child in self.nodes), meta=json.dumps(self.top.metadata))
+        return self.format(template, content="\n\n".join(child.render() for child in self.nodes), meta=json.dumps(self.top.metaslate))
 
     def add_routes(self):
         self.top.app.router.add_get('/fuel_graph', self.get_page)
@@ -384,7 +385,7 @@ class Ox_Graph(Page):
 
     def render(self):
         template = self.load_template("templates/embedable.template.html")
-        return self.format(template, content="\n\n".join(child.render() for child in self.nodes), meta=json.dumps(self.top.metadata))
+        return self.format(template, content="\n\n".join(child.render() for child in self.nodes), meta=json.dumps(self.top.metaslate))
 
     def add_routes(self):
         self.top.app.router.add_get('/ox_graph', self.get_page)
@@ -400,7 +401,7 @@ class Mass_Graph(Page):
 
     def render(self):
         template = self.load_template("templates/embedable.template.html")
-        return self.format(template, content="\n\n".join(child.render() for child in self.nodes), meta=json.dumps(self.top.metadata))
+        return self.format(template, content="\n\n".join(child.render() for child in self.nodes), meta=json.dumps(self.top.metaslate))
 
     def add_routes(self):
         self.top.app.router.add_get('/mass_graph', self.get_page)

@@ -25,8 +25,8 @@
 			var right_graph_key = document.getElementById("right-graph-key").value;
 			var left_graph_key = document.getElementById("left-graph-key").value;
 
-			right_data = inbound_data["slate." + right_graph_key];
-			left_data = inbound_data["slate." + left_graph_key];
+			right_data = inbound_data[right_graph_key];
+			left_data = inbound_data[left_graph_key];
       });
 
 		var plot = $.plot("#placeholder", [[ [0,1] ]], {
@@ -72,13 +72,12 @@
 
 			if( left_data.length < totalPoints || right_data.length < totalPoints ){
 				console.log("requesting more data")
-				socket.emit("get-data", {"ids": ["slate." + right_graph_key, "slate." + left_graph_key], "last_n": totalPoints})	
+				socket.emit("get-data", {"ids": [right_graph_key, left_graph_key], "last_n": totalPoints})	
 			}
-
-            new_point = get_data("slate." + right_graph_key + ".valu")
+            new_point = get_data(right_graph_key)
             right_data.push(new_point);
 
-            left_new_data = get_data("slate." + left_graph_key + ".valu")
+            left_new_data = get_data(left_graph_key)
             left_data.push(left_new_data);
 
             while (right_data.length > totalPoints){
@@ -88,7 +87,6 @@
             while (left_data.length > totalPoints){
                 left_data.shift();
             }
-			console.log(left_data.length)
 
 			replot();
 

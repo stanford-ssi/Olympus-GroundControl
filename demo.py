@@ -42,6 +42,7 @@ class Main:
         self.tcp_quail_writer = None
 
         self.history = {}
+        self.metaslate = {}
 
     def start(self):
         web.run_app(self.app, port=8080)
@@ -103,7 +104,6 @@ class Main:
         @self.sio.on("get-data")
         async def get_data(sid, data):
             last_n = int(data["last_n"])
-
             out = {}
             for id in data["ids"]:
                 try:
@@ -115,17 +115,13 @@ class Main:
                     line = [None] * (last_n - len(line)) + line
 
                 out[id] = line
-            # print("getting data")
-            # print(out)
             await self.sio.emit("deliver-data", out, room=sid)
 
         @self.sio.on("de-auth")
         async def de_auth(sid, data):
             self.authenticated_ids.remove(data)
-
             async with aiofiles.open('authenticated_cookies.json', mode='w') as f:
                 await f.write(json.dumps(self.authenticated_ids))
-
             print("deauthenticated", data)
 
         # Requests an update of the metaslate
@@ -155,20 +151,19 @@ class Main:
 
         @self.sio.on("new_log")
         async def new_log(sid, filename):
-            self.database = DataBase(self.metadata, self, filename)
-            await self.database.add_log_line("meta", self.metadata)
+            self.start_database()
 
-    async def deliver_metadata(self):
-        metaslate = {}
+    async def deliver_metaslate(self):
+        self.metaslate = {}
         nodes = {"quail": self.quail}  # this is a bodge
 
         for node_key, node in nodes.items():
-            metaslate[node_key] = {}
+            self.metaslate[node_key] = {}
             for slate_key, slate in node.slates.items():
-                metaslate[node_key][slate_key] = slate.metaslate
+                self.metaslate[node_key][slate_key] = slate.metaslate
 
         # actually delivers to all clients
-        await self.sio.emit("deliver-metaslate", metaslate)
+        await self.sio.emit("deliver-metaslate", self.metaslate)
 
     def get_meta(self, path, endpoint=None):
         return 1
@@ -176,6 +171,7 @@ class Main:
     def flat_meta(self, function, node=None, path=None):
         return []
 
+    # TODO overhaul this
     async def start_database(self):
         metadata = self.quail.slates['telemetry'].metaslate['channels']
         self.database = DataBase(metadata, self, "init")
@@ -185,10 +181,13 @@ class Main:
         # This is hacky but it works for now
         while (True):
             slate = await self.quail.slates['telemetry'].recv_slate()
+            node = 'quail'
+            slate_key = 'telemetry'
 
             await self.database.add_log_line("update", slate)
 
             for key, value in slate.items():
+                key = f"{node}.{slate_key}.{key}"
                 if key not in self.history:
                     self.history[key] = []
                 self.history[key].append(value)
@@ -211,7 +210,7 @@ class Main:
         await self.quail.slates['telemetry'].connect()
 
         await self.start_database()
-        await self.deliver_metadata()
+        await self.deliver_metaslate()
 
         self.app.rx_task = asyncio.create_task(self.rx_task())
         # self.app.heartbeat_task = asyncio.create_task(self.send_heartbeat())
