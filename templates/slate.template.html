@@ -1,5 +1,3 @@
-
-
 <link rel="stylesheet" href="static/slate.css">
 
 <script>
@@ -8,17 +6,29 @@
       var div = document.getElementById("raw_slate");
       div.innerHTML = JSON.stringify(slate, null, "\t");
 
-  });
+    });
+
+  new_metaslate_callbacks.push(
+    () => {
+      var div = document.getElementById("raw_metaslate");
+      div.innerHTML = JSON.stringify(metaslate, null, "\t");
+    });
 
 </script>
 
 
 <h1 class="page-title">Slate</h1>
 <div class="message-page">
-    <pre>
+  <pre>
       <code id="raw_slate" class="verbatim">
       </code>
     </pre>
+</div>
 
-
+<h1 class="page-title">Metaslate</h1>
+<div class="message-page">
+  <pre>
+      <code id="raw_metaslate" class="verbatim">
+      </code>
+    </pre>
 </div>

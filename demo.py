@@ -126,7 +126,7 @@ class Main:
 
         # Requests an update of the metaslate
         @self.sio.on("get-meta")
-        async def request_meta(sid, data):
+        async def request_meta(sid):
             await self.deliver_metaslate()
 
         # WARNING: This isn't real security as socketio isn't encrypted

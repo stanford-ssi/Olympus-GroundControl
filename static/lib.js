@@ -8,6 +8,7 @@ new_data_callbacks = [];
 slate = {};
 
 metaslate = {};
+new_metaslate_callbacks = [];
 
 socket.on("new", (update) => {
     slate = update
@@ -22,8 +23,19 @@ socket.on("new", (update) => {
 });
 
 socket.on("deliver-metaslate", (update) => {
+    console.log("ok")
     metaslate = update
+    for (func of new_metaslate_callbacks) {
+        try {
+            func();
+        } catch (error) {
+            console.error("failed new_data_callback");
+            console.error(error);
+        }
+    }
 });
+
+socket.emit("get-meta")
 
 function send_command(cmd, target = "cmd") {
     //TODO: check if it is editable
