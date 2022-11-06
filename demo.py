@@ -19,6 +19,7 @@ from time import time
 from pages import Dashboard, Slate, Maps, Graphs, Configure, Sequencing, FillPage, LaunchPage, Mass_Graph, Ox_Graph, Fuel_Graph
 from database import DataBase
 
+
 class Main:
 
     def __init__(self):
@@ -39,7 +40,8 @@ class Main:
 
         self.tcp_quail_reader = None
         self.tcp_quail_writer = None
-         
+
+        self.history = {}
 
     def start(self):
         web.run_app(self.app, port=8080)
@@ -104,10 +106,13 @@ class Main:
 
             out = {}
             for id in data["ids"]:
-                line = self.history[id][-last_n:]
+                try:
+                    line = self.history[id][-last_n:]
+                except Exception:
+                    line = []
 
                 if len(line) < last_n:
-                    line = [None] * ( last_n - len(line)) + line
+                    line = [None] * (last_n - len(line)) + line
 
                 out[id] = line
             # print("getting data")
@@ -123,15 +128,21 @@ class Main:
 
             print("deauthenticated", data)
 
+        # Requests an update of the metaslate
+        @self.sio.on("get-meta")
+        async def request_meta(sid, data):
+            await self.deliver_metaslate()
+
         # WARNING: This isn't real security as socketio isn't encrypted
         # anyone snooping the connection can find out the super secret passcode
-        # this more more to prevent someone accidentaly sending a stupid command 
-        # in general the entire network is trusted and not internet conencted 
+        # this more more to prevent someone accidentaly sending a stupid command
+        # in general the entire network is trusted and not internet conencted
+
         @self.sio.on("try-auth")
         async def try_auth(sid, data):
             if data != "MAGIC":
                 await self.sio.emit("bad-auth", room=sid)
-                return 
+                return
 
             new_id = secrets.token_urlsafe(32)
             print("authenticated", new_id)
@@ -147,147 +158,64 @@ class Main:
             self.database = DataBase(self.metadata, self, filename)
             await self.database.add_log_line("meta", self.metadata)
 
+    async def deliver_metadata(self):
+        metaslate = {}
+        nodes = {"quail": self.quail}  # this is a bodge
+
+        for node_key, node in nodes.items():
+            metaslate[node_key] = {}
+            for slate_key, slate in node.slates.items():
+                metaslate[node_key][slate_key] = slate.metaslate
+
+        # actually delivers to all clients
+        await self.sio.emit("deliver-metaslate", metaslate)
+
     def get_meta(self, path, endpoint=None):
-        print(path)
-        print(endpoint)
-        path = path.split(".")
-        if path[0] == "slate":
-            return 69
-
-        
-        path.pop(0)
-
-        if endpoint:
-            path.extend(endpoint.split("."))
-
-        # node = self.metadata
-        # for name in path:
-        #     try:
-        #         node = node[name]
-        #     except KeyError:
-        #         print("Not found key", name, "in", path)
-        #         return "null"
-
         return 1
 
-        #return node
-
     def flat_meta(self, function, node=None, path=None):
-        if node is None:
-            node = self.metadata
-            path = ["slate"]
-
-        if "valu" in node.keys():
-            return [ function(node, path) ]
-
-        if type(node) == dict:
-            list_of_lists = [ self.flat_meta(function, node[key], path + [key] ) for key in node.keys() ]
-            return [item for sublist in list_of_lists for item in sublist]
-
         return []
 
-    def transform_meta(self, function, node=None, path=None):
-        if node is None:
-            node = self.metadata
-            path = ["slate"]
-
-        if type(node) == dict:
-            if "valu" in node.keys() or "desc" in node.keys():
-                return function(node, path)
-            return {key: self.transform_meta(function, node[key], path + [key] ) for key in node.keys()}
-        else:
-            print(type(node), node, path)
-            assert False
-    
-    def update_meta(self, update, node=None):
-        if node is None:
-            node = self.metadata
-
-        if "valu" in node.keys():
-            # TODO enforce types
-            node["valu"] = update
-
-        elif type(node) == dict:
-            for key in node.keys():
-                if key in update:
-                    self.update_meta(update[key], node = node[key])
-                else:
-                    print("missing slate key in update", key)
-        else:
-            print(node, update)
-            assert False
-
-    def unflatten_command(self, flat):
-        out = {}
-        for path in flat.keys():
-            ids = path.split(".")
-            if ids[0] == "slate":
-                ids.pop(0)
-            node = out
-            for id in ids[:-1]:
-                node = node.setdefault(id, {})
-            node[ids[-1]] = flat[path]
-        return out
+    async def start_database(self):
+        metadata = self.quail.slates['telemetry'].metaslate['channels']
+        self.database = DataBase(metadata, self, "init")
+        await self.database.add_log_line("meta", metadata)
 
     async def rx_task(self):
-
-        while(True):
+        # This is hacky but it works for now
+        while (True):
             slate = await self.quail.slates['telemetry'].recv_slate()
-            
+
             await self.database.add_log_line("update", slate)
-            
+
             for key, value in slate.items():
+                if key not in self.history:
+                    self.history[key] = []
                 self.history[key].append(value)
                 while len(self.history[key]) > 10000:
                     self.history[key].pop()
 
+            slate = {'quail': {'telemetry': slate}}
             await self.sio.emit("new", slate)
 
     async def send_heartbeat(self):
-        while(True):
+        while (True):
             await asyncio.sleep(60)
             to_send = {"cmd": "heart"}
             self.tx_queue.put_nowait(to_send)
 
-    async def tx_task(self):
-        while(True):
-            to_send = await self.tx_queue.get()
-            print("sending", to_send)
-            try:
-                self.tcp_quail_writer.write(json.dumps(to_send).encode())
-                await asyncio.wait_for(self.tcp_quail_writer.drain(), timeout=self.TCP_TIMEOUT)
-
-                echo = await asyncio.wait_for(self.tcp_quail_reader.readline(), timeout=self.TCP_TIMEOUT)
-                print("got responce", echo)
-
-            except (ConnectionResetError, asyncio.TimeoutError):
-                print("command timed out reconnecting")
-                await self.connect_quail()
-            finally:
-                self.tx_queue.task_done()
-
-    async def get_metaslate_from_quail(self):
-
-        self.metadata = self.quail.slates['telemetry'].metaslate['channels']
-
-        self.database = DataBase(self.metadata, self, "init")
-        await self.database.add_log_line("meta", self.metadata)
-
-        self.history = {key: [] for key,_ in  self.metadata.items() }
-
-
     async def start_background_tasks(self, app):
-        self.quail = SnorkelClient('192.168.2.2',1002)
+        self.quail = SnorkelClient('192.168.2.2', 1002)
         self.quail.connect()
 
         await self.quail.slates['telemetry'].connect()
 
-        await self.get_metaslate_from_quail()
+        await self.start_database()
+        await self.deliver_metadata()
 
         self.app.rx_task = asyncio.create_task(self.rx_task())
         # self.app.heartbeat_task = asyncio.create_task(self.send_heartbeat())
         # self.app.tx_task = asyncio.create_task(self.tx_task())
-
 
     async def cleanup_background_tasks(self, app):
         self.app.rx_task.cancel()
@@ -305,6 +233,7 @@ def get_app():
     page = Main()
     return page.app
     # page.start()
+
 
 if __name__ == "__main__":
     page = Main()
