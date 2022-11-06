@@ -43,8 +43,8 @@ class Dashboard(Page):
         #                                     time_seconds = 60))
 
         self.add_child(MiniGraph("Ox Fill", [
-            "slate.quail.sensors.PT3.cal",
-            "slate.quail.sensors.PT4.cal"],
+            "quail.telemetry.pt2",
+            "quail.telemetry.pt4"],
             time_seconds=60, units=["Pa->psi"] * 2))
 
         self.add_child(MiniGraph("Fuel Fill", [
@@ -57,14 +57,14 @@ class Dashboard(Page):
             time_seconds=60, units=["N->kg"]))
 
         self.add_child(
-            RawSensorTable("Pressure Sensors", ["slate.quail.sensors.PT1",
-                                                "slate.quail.sensors.PT2",
-                                                "slate.quail.sensors.PT3",
-                                                "slate.quail.sensors.PT4",
-                                                "slate.quail.sensors.PT5",
-                                                "slate.quail.sensors.PT6",
-                                                "slate.quail.sensors.PT7",
-                                                "slate.quail.sensors.PT8"], units=["Pa->psi"] * 8
+            RawSensorTable("Pressure Sensors", ["quail.telemetry.pt1",
+                                                "quail.telemetry.pt2",
+                                                "quail.telemetry.pt3",
+                                                "quail.telemetry.pt4",
+                                                "quail.telemetry.pt5",
+                                                "quail.telemetry.pt6",
+                                                "quail.telemetry.pt7",
+                                                "quail.telemetry.pt8"], units=["Pa->psi"] * 8
                            )
         )
 
@@ -100,8 +100,8 @@ class Dashboard(Page):
         )
 
         self.add_child(
-            RawSensorTable("MAGIC", ["slate.quail.battery.Voltage",
-                                     "slate.quail.battery.Current"]
+            RawSensorTable("Housekeeping", ["quail.telemetry.v_batt",
+                                            "quail.telemetry.i_batt"]
                            )
         )
 
