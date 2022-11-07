@@ -10,7 +10,6 @@
       <thead>
         <tr>
           <th>ID</th>
-          <th>PIN</th>
           <th>Desc</th>
           <th>Open</th>
           <th>Time</th>
@@ -22,7 +21,6 @@
 		{% for item in list_ids %}
                             <tr>
                             <td>{{item.id}}</td>
-                            <td>{{item.qpin}}</td>
                             <td>{{item.desc}}</td>
                             <td> <p id="{{item.id}}"> None </p> </td>
                             {# TODO save value for future#}
@@ -59,7 +57,7 @@
 
     new_data_callbacks.push( () => { 
       {% for item in list_ids %}
-              document.getElementById('{{item.id}}').innerHTML = {{item.id}}.stt.valu
+              document.getElementById('{{item.id}}').innerHTML = slate.{{item.id}} ? "Open" : "Closed"
       {% endfor %}
     });
     </script>

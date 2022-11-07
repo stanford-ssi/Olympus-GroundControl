@@ -165,8 +165,15 @@ class Main:
         # actually delivers to all clients
         await self.sio.emit("deliver-metaslate", self.metaslate)
 
-    def get_meta(self, path, endpoint=None):
-        return 1
+    def get_meta(self, path, var):
+        try:
+            parts = path.split(".")
+            meta = self.metaslate[parts[0]][parts[1]]["channels"][parts[2]][var]
+            return meta
+        except Exception as e:
+            print(f"Couldn't find metaslate entry: {path}.{var}")
+            print(str(e))
+            return 0
 
     def flat_meta(self, function, node=None, path=None):
         return []
