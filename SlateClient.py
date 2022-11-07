@@ -40,7 +40,6 @@ class SlateClient:
         return slate
 
     def set_field(self,channel,value):
-        print(f"writing {value} to {channel}")
         channel_meta = self.metaslate["channels"][channel]
         msg = cmd_pb2.Message()
         msg.set_field.SetInParent()

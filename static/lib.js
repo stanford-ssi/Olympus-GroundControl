@@ -37,12 +37,9 @@ socket.on("deliver-metaslate", (update) => {
 
 socket.emit("get-meta")
 
-function send_command(cmd, target = "cmd") {
-    //TODO: check if it is editable
-
+function send_command(path, value) {
     if (Cookies.get('auth')) {
-        out = { "auth": Cookies.get('auth') }
-        out[target] = cmd;
+        out = { "auth": Cookies.get('auth'), "path" : path, "value":value}
         socket.emit("cmd", out);
     } else {
         alert("Observers can't send commands");

@@ -81,7 +81,6 @@ class Main:
                 contents = await f.read()
             self.authenticated_ids = json.loads(contents)
 
-            print(self.authenticated_ids)
             if data.get("auth") not in self.authenticated_ids:
                 print("not allow to execute")
                 await self.sio.emit("bad-auth", room=sid)
@@ -89,17 +88,7 @@ class Main:
             del data["auth"]
 
             await self.database.add_log_line("cmd", data)
-
-            if "cmd" in data:
-                to_send = {"cmd": self.unflatten_command(data['cmd'])}
-                print("executing command", data['cmd'])
-            elif "reboot" in data:
-                to_send = {"reboot": None}
-                print("rebooting quail")
-            else:
-                raise ValueError("unknown command" + str(data))
-
-            self.tx_queue.put_nowait(to_send)
+            self.tx_queue.put_nowait((data['path'],data['value']))
 
         @self.sio.on("get-data")
         async def get_data(sid, data):
@@ -204,11 +193,20 @@ class Main:
             slate = {'quail': {'telemetry': slate}}
             await self.sio.emit("new", slate)
 
+    async def tx_task(self):
+        while(True):
+            path, value = await self.tx_queue.get()
+            print(f"Setting {path} to {value}")
+            path = path.split(".")
+            assert path[0] == "quail"
+            self.quail.slates[path[1]].set_field(path[2], int(value)) # does this break booleans? smh
+            self.tx_queue.task_done()
+
     async def send_heartbeat(self):
         while (True):
             await asyncio.sleep(60)
             to_send = {"cmd": "heart"}
-            self.tx_queue.put_nowait(to_send)
+            # self.tx_queue.put_nowait(to_send)
 
     async def start_background_tasks(self, app):
         self.quail = SnorkelClient('192.168.2.2', 1002)
@@ -220,18 +218,16 @@ class Main:
         await self.deliver_metaslate()
 
         self.app.rx_task = asyncio.create_task(self.rx_task())
+        self.app.tx_task = asyncio.create_task(self.tx_task())
         # self.app.heartbeat_task = asyncio.create_task(self.send_heartbeat())
-        # self.app.tx_task = asyncio.create_task(self.tx_task())
 
     async def cleanup_background_tasks(self, app):
         self.app.rx_task.cancel()
-        await self.app.rx_task
-        # self.app.udp_task.cancel()
+        self.app.tx_task.cancel()
         # self.app.heartbeat_task.cancel()
-        # self.app.tcp_sender_task.cancel()
-        # await self.app.udp_task
+        await self.app.rx_task
+        await self.app.tx_task
         # await self.app.heartbeat_task
-        # await self.app.tcp_sender_task
         pass
 
 

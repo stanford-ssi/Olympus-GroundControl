@@ -3,31 +3,33 @@
       <div class="box_title"> {{title}} </div>
     </div>
 
-    <button type="button" class="button red button_halfsize" onclick="send_command({{uuid}}_safe_valve_cmd)">Depower All Valves </button> 
+    <button type="button" class="button red button_halfsize" onclick="{{uuid}}_safe_all_valves()">Depower All Valves </button> 
     <button type="button" class="button button_halfsize" onclick="{{uuid}}_pulse_valves()"> Pulse Linked </button> 
     </tr>
     <table class="dashboard-table">
       <thead>
         <tr>
           <th>ID</th>
-          <th>Desc</th>
-          <th>Open</th>
+          <th>Description</th>
+          <th>Status</th>
           <th>Time</th>
           <th>Linked</th>
-          <th>Button</th>
+          <th>Pulse</th>
+          <th>Drive</th>
         </tr>
       </thead>
       <tbody>
 		{% for item in list_ids %}
-                            <tr>
+                            <tr id="{{item.id}}">
                             <td>{{item.id}}</td>
                             <td>{{item.desc}}</td>
-                            <td> <p id="{{item.id}}"> None </p> </td>
-                            {# TODO save value for future#}
+                            <td> <p class="value"> None </p> </td>
                             <td> <input type="number" id="{{item.id}}.pulse" step="10" value="100" style="width: 4em"> </td>
                             <td> <input type="checkbox" id="{{item.id}}.selected"> </td>
                             <td> <button type="button" class="button" 
-                              onclick='send_command({"{{item.id}}.ptm": document.getElementById("{{item.id}}.pulse").value  })'>  Pulse </button> </td>
+                              onclick='send_command("{{item.id}}_pulse", document.getElementById("{{item.id}}.pulse").value)'>  Pulse </button> </td>
+                            <td> <button type="button" class="button on_off" 
+                              onclick='send_command("{{item.id}}", slate.{{item.id}} ? 0 : 1)'> Open </button> </td>
 		{% endfor %}
 
       </tbody>
@@ -39,25 +41,33 @@
             {{uuid}}_checkboxes.push("{{item.id}}");
     {% endfor %}
 
-    {{uuid}}_safe_valve_cmd = {}
-    {% for item in list_ids %}
-            {{uuid}}_safe_valve_cmd["{{item.id}}.stt"] = 0;
-    {% endfor %}
+    function {{uuid}}_safe_all_valves() {
+      {% for item in list_ids %}
+            send_command("{{item.id}}", 0)
+      {% endfor %}
+    }
 
     function {{uuid}}_pulse_valves() {
         //TODO: check if it is editable
         var cmd = {};
         for (id of {{uuid}}_checkboxes) {
           if (document.getElementById(id + '.selected').checked){
-            cmd[id+'.ptm'] = document.getElementById(id+'.pulse').value;
+            send_command(id+'_pulse', document.getElementById(id+".pulse").value)
           }
         }
-        send_command(cmd);
     }
 
     new_data_callbacks.push( () => { 
       {% for item in list_ids %}
-              document.getElementById('{{item.id}}').innerHTML = slate.{{item.id}} ? "Open" : "Closed"
+              document.getElementById('{{item.id}}').getElementsByClassName("value")[0].innerHTML = slate.{{item.id}} ? "Open" : "Closed"
+              button = document.getElementById('{{item.id}}').getElementsByClassName("on_off")[0]
+              if(slate.{{item.id}}){
+                button.innerHTML = "Close"
+                button.style.backgroundColor = "#c54545"
+              }else{
+                button.innerHTML = "Open"
+                button.style.backgroundColor = "#4CAF50"
+              }
       {% endfor %}
     });
     </script>
