@@ -14,9 +14,9 @@ Run `pip install -r requirements.txt` to install the dependancies
 
 Ensure you're on the same network (and have a ip address in the right range) as quail.
 
-To launch dev server `adev runserver demo.py --port 8080 --livereload`
+To launch dev server `adev runserver main.py --port 8080 --livereload`
 
-To launch "deployment" server `python demo.py`
+To launch "deployment" server `python main.py`
 
 Go to `localhost:8080` to see the page (only after it connects to quail). That access from a differnt computer on the same network go to `{server ip}:8080` on that computers browser
 

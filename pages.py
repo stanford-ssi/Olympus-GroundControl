@@ -44,9 +44,8 @@ class Dashboard(Page):
 
         self.add_child(MiniGraph("Ox Fill", [
             "quail.telemetry.pt3",
-            "quail.telemetry.pt4",
-            "quail.telemetry.v_batt"],
-            time_seconds=60, units=["Pa->psi"] * 2 + [ None ]))
+            "quail.telemetry.pt4"],
+            time_seconds=60, units=["Pa->psi"] * 2))
 
         self.add_child(MiniGraph("Fuel Fill", [
             "quail.telemetry.pt1",
