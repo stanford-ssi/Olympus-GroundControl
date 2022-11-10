@@ -106,7 +106,12 @@ class Dashboard(Page):
         )
 
         self.add_child(
-            DataTable("Health", ["quail.telemetry.tick","quail.telemetry.comms","quail.telemetry.logging","quail.telemetry.error"]
+            DataTable("Health", ["quail.telemetry.tick",
+                                 "quail.telemetry.comms",
+                                 "quail.telemetry.logging",
+                                 "quail.telemetry.error",
+                                 "quail.telemetry.watchdog_counter",
+                                 "quail.telemetry.watchdog_control"]
                       )
         )
 

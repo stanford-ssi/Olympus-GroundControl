@@ -200,13 +200,12 @@ class Main:
             path = path.split(".")
             assert path[0] == "quail"
             self.quail.slates[path[1]].set_field(path[2], int(value)) # does this break booleans? smh
-            self.tx_queue.task_done()
+            self.tx_queue.task_done() 
 
     async def send_heartbeat(self):
         while (True):
-            await asyncio.sleep(60)
-            to_send = {"cmd": "heart"}
-            # self.tx_queue.put_nowait(to_send)
+            await asyncio.sleep(2)
+            self.tx_queue.put_nowait(("quail.telemetry.watchdog_counter",16000))
 
     async def start_background_tasks(self, app):
         self.quail = SnorkelClient('192.168.2.2', 1002)
@@ -219,15 +218,15 @@ class Main:
 
         self.app.rx_task = asyncio.create_task(self.rx_task())
         self.app.tx_task = asyncio.create_task(self.tx_task())
-        # self.app.heartbeat_task = asyncio.create_task(self.send_heartbeat())
+        self.app.heartbeat_task = asyncio.create_task(self.send_heartbeat())
 
     async def cleanup_background_tasks(self, app):
         self.app.rx_task.cancel()
         self.app.tx_task.cancel()
-        # self.app.heartbeat_task.cancel()
+        self.app.heartbeat_task.cancel()
         await self.app.rx_task
         await self.app.tx_task
-        # await self.app.heartbeat_task
+        await self.app.heartbeat_task
         pass
 
 

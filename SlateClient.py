@@ -50,6 +50,8 @@ class SlateClient:
             msg.set_field.data_int16 = value
         elif channel_meta["type"] == "bool":
             msg.set_field.data_bool = value
+        elif channel_meta["type"] == "uint32_t":
+            msg.set_field.data_uint32 = value
         else:
             print("don't know how to write!")
 
