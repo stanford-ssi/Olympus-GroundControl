@@ -59,7 +59,11 @@
 
     new_data_callbacks.push( () => { 
       {% for item in list_ids %}
-              document.getElementById('{{item.id}}').getElementsByClassName("value")[0].innerHTML = slate.{{item.id}} ? "Open" : "Closed"
+              if(slate.{{item.id}}_pulse > 0){
+                document.getElementById('{{item.id}}').getElementsByClassName("value")[0].innerHTML = (slate.{{item.id}}_pulse/1000).toFixed(1);
+              }else{
+                document.getElementById('{{item.id}}').getElementsByClassName("value")[0].innerHTML = slate.{{item.id}} ? "Open" : "Closed"
+              }
               button = document.getElementById('{{item.id}}').getElementsByClassName("on_off")[0]
               if(slate.{{item.id}}){
                 button.innerHTML = "Close"
