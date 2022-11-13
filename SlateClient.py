@@ -47,11 +47,13 @@ class SlateClient:
         msg.set_field.offset = channel_meta["offset"]
 
         if channel_meta["type"] == "int16_t":
-            msg.set_field.data_int16 = value
+            msg.set_field.data_int16 = int(value)
         elif channel_meta["type"] == "bool":
-            msg.set_field.data_bool = value
+            msg.set_field.data_bool = int(value)
         elif channel_meta["type"] == "uint32_t":
-            msg.set_field.data_uint32 = value
+            msg.set_field.data_uint32 = int(value)
+        elif channel_meta["type"] == "float":
+            msg.set_field.data_float = float(value)
         else:
             print("don't know how to write!")
 

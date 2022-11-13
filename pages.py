@@ -11,7 +11,7 @@ import jinja2
 
 from unit_conversions import unit_factor
 
-from ui_elements import Element, Graph, SquibTable, ValveTable, RawSensorTable, DataTable, MiniGraph, Sequence
+from ui_elements import Element, Graph, SquibTable, ValveTable, RawSensorTable, DataTable, MiniGraph, Sequence, FillMassController
 
 
 class Page(Element):
@@ -69,12 +69,13 @@ class Dashboard(Page):
         )
 
         self.add_child(
-            RawSensorTable("Other Sensors", ["quail.telemetry.load_mass",
-                                             "quail.telemetry.lc1",
-                                             "quail.telemetry.lc2",
-                                             "quail.telemetry.tc1",
-                                             "quail.telemetry.tc2"], units=["N->kg"] * 3 + [None] * 2
+            RawSensorTable("Other Sensors", ["quail.telemetry.tc1",
+                                             "quail.telemetry.tc2"], [None] * 2
                            )
+        )
+
+        self.add_child(
+            FillMassController()
         )
 
         self.add_child(

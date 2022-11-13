@@ -138,6 +138,17 @@ class RawSensorTable(Element):
         test = box.render( {"list_ids": items, "title": self.name} )
         return test
 
+class FillMassController(Element):
+    def __init__(self):
+        super().__init__("Load Mass")
+
+    def render(self):
+        with open("templates/load_mass.template.html") as file:
+            box = jinja2.Template(file.read())
+
+        test = box.render( {"metaslate": self.top.metaslate} )
+        return test
+
 class DataTable(Element):
     def __init__(self, name, line_ids):
         super().__init__(name)

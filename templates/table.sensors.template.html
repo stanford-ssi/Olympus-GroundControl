@@ -9,7 +9,7 @@
           <th>Desc</th>
           <th>Value</th>
           <th>Unit</th>
-          <th>Tare</th>
+          <!-- <th>Tare</th> -->
         </tr>
       </thead>
       <tbody>
@@ -20,9 +20,9 @@
                             <td> <p id="{{item.id}}"> None </p> </td>
                             <td>{{item.unit}}</td>
                             <!-- Ideally we'd send quail a message to tare to a value but this is janky quick fix -->
-                            <td> <button type="button" class="button button_halfsize" onclick='send_command( {"{{item.id}}.ofs": -{{item.id}}.raw.valu } )'> Tare </button> 
+                            <!-- <td> <button type="button" class="button button_halfsize" onclick='send_command( {"{{item.id}}.ofs": -{{item.id}}.raw.valu } )'> Tare </button> 
                                   <button type="button" class="button button_halfsize red" onclick='send_command( {"{{item.id}}.ofs": 0 } )'> Clear </button> 
-                            </td>
+                            </td> -->
                             </tr>
 		{% endfor %}
 

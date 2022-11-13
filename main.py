@@ -199,7 +199,7 @@ class Main:
             print(f"Setting {path} to {value}")
             path = path.split(".")
             assert path[0] == "quail"
-            self.quail.slates[path[1]].set_field(path[2], int(value)) # does this break booleans? smh
+            self.quail.slates[path[1]].set_field(path[2], value) # does this break booleans? smh
             self.tx_queue.task_done() 
 
     async def send_heartbeat(self):
