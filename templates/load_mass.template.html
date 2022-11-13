@@ -23,14 +23,16 @@
         this.lastElementChild.firstChild.style.fill = '#002626'
       };
 
-      svgDoc.getElementById('dry_mass_field').ondblclick = function () {
+      svgDoc.getElementById('dry_mass_field').onclick = function () {
         this.contentEditable = true
 
         this.addEventListener('keydown', (evt) => {
           if (evt.keyCode === 13) {
             if (svgDoc.getElementById('dry_mass_field').contentEditable == "true") {
               new_dry_mass = parseFloat(this.innerHTML)
-              send_command("quail.telemetry.load_mass_offset", new_dry_mass)
+              if(!Number.isNaN(new_dry_mass)){
+                send_command("quail.telemetry.load_mass_offset", new_dry_mass)
+              }
             }
             this.innerHTML = new_dry_mass + " " + metaslate.quail.telemetry.channels.load_mass_offset.unit
             this.contentEditable = false
