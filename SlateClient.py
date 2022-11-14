@@ -1,5 +1,6 @@
 
 import asyncudp
+import asyncio
 import struct
 import cmd_pb2
 
@@ -11,35 +12,45 @@ class SlateClient:
         self.size = slate_size
         self.metaslate = None
         self.udp_sock = None
-        self.connected = False
 
     async def connect(self):
-        if self.metaslate is None:
-            self.fetch_metaslate()
-        self.udp_sock = await asyncudp.create_socket(local_addr=('0', 0))
-        port = self.udp_sock._transport._sock.getsockname()[1]
-        self.start_udp(port)
-        self.connected = True
+        if self.udp_sock is None:
+            self.udp_sock = await asyncudp.create_socket(local_addr=('0', 0))
+
+        try:
+            await asyncio.wait_for(self.fetch_metaslate(), timeout=1.0)
+            port = self.udp_sock._transport._sock.getsockname()[1]
+            await asyncio.wait_for(self.start_udp(port), timeout=1.0)
+        except Exception as e:
+            print(f"Slate \"{self.snorkel.name}.{self.name}\" Disconnected")
+        else:
+            print(f"Slate \"{self.snorkel.name}.{self.name}\" Connected")
 
     async def recv_slate(self):
-        message, _ = await self.udp_sock.recvfrom()
+        while True:
+            try:
+                recv = await asyncio.wait_for(self.udp_sock.recvfrom(), timeout=1.0)
+                message, _ = recv
+            except Exception as e:
+                await self.connect()
+                continue
 
-        slate = {}
-        for name, el in self.metaslate["channels"].items():
-            if el["type"] == "int16_t":
-                slate[name] = int.from_bytes(
-                    message[el["offset"]:el["offset"]+el["size"]], "little", signed=True)
-            elif el["type"] == "uint32_t":
-                slate[name] = int.from_bytes(
-                    message[el["offset"]:el["offset"]+el["size"]], "little", signed=False)
-            elif el["type"] == "bool":
-                slate[name] = (message[el["offset"]] != 0b0)
-            elif el["type"] == "float":
-                slate[name] = struct.unpack('f', message[el["offset"]:el["offset"]+el["size"]])[0]
+            slate = {}
+            for name, el in self.metaslate["channels"].items():
+                if el["type"] == "int16_t":
+                    slate[name] = int.from_bytes(
+                        message[el["offset"]:el["offset"]+el["size"]], "little", signed=True)
+                elif el["type"] == "uint32_t":
+                    slate[name] = int.from_bytes(
+                        message[el["offset"]:el["offset"]+el["size"]], "little", signed=False)
+                elif el["type"] == "bool":
+                    slate[name] = (message[el["offset"]] != 0b0)
+                elif el["type"] == "float":
+                    slate[name] = struct.unpack('f', message[el["offset"]:el["offset"]+el["size"]])[0]
 
-        return slate
+            return slate
 
-    def set_field(self,channel,value):
+    async def set_field(self,channel,value):
         channel_meta = self.metaslate["channels"][channel]
         msg = cmd_pb2.Message()
         msg.set_field.SetInParent()
@@ -57,14 +68,18 @@ class SlateClient:
         else:
             print("don't know how to write!")
 
-        self.snorkel.write_cmd(msg)
+        try:
+            await asyncio.wait_for(self.snorkel.write_cmd(msg), timeout=1.0)
+        except Exception as e:
+            print(repr(e))
+            print('Failed to Send')
 
-    def fetch_metaslate(self):
+    async def fetch_metaslate(self):
         print(f"Requesting metaslate for slate \"{self.name}\" ({hex(self.hash)})")
-        self.metaslate = self.snorkel.query_metaslate(self.hash)
+        self.metaslate = await self.snorkel.query_metaslate(self.hash)
         print(f"Received valid metaslate for slate \"{self.name}\" ({hex(self.hash)}), describing {len(self.metaslate['channels'])} channels")
 
-    def start_udp(self,port):
+    async def start_udp(self,port):
         print(f"Requesting UDP feed of slate \"{self.name}\" ({hex(self.hash)}) to {port}")
-        self.snorkel.request_udp_stream(self.hash,port)
+        await self.snorkel.request_udp_stream(self.hash,port)
 

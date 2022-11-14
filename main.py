@@ -1,4 +1,5 @@
-
+# import os
+# os.environ['PYTHONASYNCIODEBUG'] = '1'
 
 from aiohttp import web
 import aiohttp
@@ -37,9 +38,6 @@ class Main:
 
         self.TCP_TIMEOUT = 2.0
         self.tx_queue = asyncio.Queue()
-
-        self.tcp_quail_reader = None
-        self.tcp_quail_writer = None
 
         self.history = {}
         self.metaslate = {}
@@ -199,7 +197,7 @@ class Main:
             print(f"Setting {path} to {value}")
             path = path.split(".")
             assert path[0] == "quail"
-            self.quail.slates[path[1]].set_field(path[2], value) # does this break booleans? smh
+            await self.quail.slates[path[1]].set_field(path[2], value) # does this break booleans? smh
             self.tx_queue.task_done() 
 
     async def send_heartbeat(self):
@@ -207,26 +205,32 @@ class Main:
             await asyncio.sleep(2)
             self.tx_queue.put_nowait(("quail.telemetry.watchdog_counter",16000))
 
-    async def start_background_tasks(self, app):
-        self.quail = SnorkelClient('192.168.2.2', 1002)
-        self.quail.connect()
-
-        await self.quail.slates['telemetry'].connect()
-
+    async def connect_task(self):
+        await self.quail.connect()
+        await self.quail.slates['telemetry'].recv_slate() # pre-load metaslate
         await self.start_database()
         await self.deliver_metaslate()
-
         self.app.rx_task = asyncio.create_task(self.rx_task())
         self.app.tx_task = asyncio.create_task(self.tx_task())
         self.app.heartbeat_task = asyncio.create_task(self.send_heartbeat())
 
+
+    async def start_background_tasks(self, app):
+        self.quail = SnorkelClient('192.168.2.2', 1002)
+        self.app.connect_task = asyncio.create_task(self.connect_task())
+
     async def cleanup_background_tasks(self, app):
-        self.app.rx_task.cancel()
-        self.app.tx_task.cancel()
-        self.app.heartbeat_task.cancel()
-        await self.app.rx_task
-        await self.app.tx_task
-        await self.app.heartbeat_task
+        self.app.connect_task.cancel()
+
+        if 'rx_task' in self.app:
+            self.app.rx_task.cancel()
+            self.app.tx_task.cancel()
+            self.app.heartbeat_task.cancel()
+            await self.app.rx_task
+            await self.app.tx_task
+            await self.app.heartbeat_task
+
+        await self.app.connect_task
         pass
 
 

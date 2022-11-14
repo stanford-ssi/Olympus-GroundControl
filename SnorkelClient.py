@@ -4,12 +4,12 @@ import msgpack
 import zlib
 import hashlib
 from SlateClient import SlateClient
+import asyncudp
 
 class SnorkelClient:
     def __init__(self, ip, cmd_port):
         self.ip = ip
         self.cmd_port = cmd_port
-        self.connected = False
         self.cmd_sock = None
         self.seq = 0
         self.slates = {}
@@ -19,21 +19,29 @@ class SnorkelClient:
     def __enter__(self):
         return self
 
-    def connect(self):
-        self.cmd_sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        self.query_slate_info()
-        self.connected = True
+    async def connect(self):
+        while True:
+            try:
+                self.cmd_sock = await asyncio.wait_for(asyncudp.create_socket(remote_addr=(self.ip, self.cmd_port)), timeout=1.0)
+                await asyncio.wait_for(self.query_slate_info(), timeout=1.0)
+            except Exception as e:
+                print(f"Device \"{self.name}\" Disconnected")
+                continue
+            else:
+                print(f"Device \"{self.name}\" Connected")
+                break
+
 
 # query the device for the metaslate associated with a particular hash
-    def query_metaslate(self, slate_hash):
+    async def query_metaslate(self, slate_hash):
         self.seq += 1
         msg = cmd_pb2.Message()
         msg.sequence = self.seq
         msg.request_metaslate.SetInParent()
         msg.request_metaslate.hash = slate_hash
-        self.cmd_sock.sendto(msg.SerializeToString(), (self.ip, self.cmd_port))
+        self.cmd_sock.sendto(msg.SerializeToString())
 
-        data = self.cmd_sock.recv(1024)
+        data, _ = await self.cmd_sock.recvfrom()
         read_msg = cmd_pb2.Message()
         read_msg.ParseFromString(data)
         assert read_msg.sequence == self.seq
@@ -46,7 +54,7 @@ class SnorkelClient:
         return metaslate_data
         
 # request the device target a specific slate at the provided address and port
-    def request_udp_stream(self, slate_hash, targetPort, targetAddr=0):
+    async def request_udp_stream(self, slate_hash, targetPort, targetAddr=0):
         self.seq += 1
         msg = cmd_pb2.Message()
         msg.sequence = self.seq
@@ -54,36 +62,35 @@ class SnorkelClient:
         msg.start_udp.hash = slate_hash
         msg.start_udp.addr = targetAddr
         msg.start_udp.port = targetPort
-        self.cmd_sock.sendto(msg.SerializeToString(), (self.ip, self.cmd_port))
+        self.cmd_sock.sendto(msg.SerializeToString())
 
-        data = self.cmd_sock.recv(1024)
+        data, _ = await self.cmd_sock.recvfrom()
         read_msg = cmd_pb2.Message()
         read_msg.ParseFromString(data)
         assert read_msg.sequence == self.seq
         assert read_msg.WhichOneof('message') == 'ack'
     
-    def write_cmd(self, cmd_msg):
+    async def write_cmd(self, cmd_msg):
         assert cmd_msg.WhichOneof('message') == 'set_field'
         self.seq += 1
         cmd_msg.sequence = self.seq
-        self.cmd_sock.sendto(cmd_msg.SerializeToString(), (self.ip, self.cmd_port))
+        self.cmd_sock.sendto(cmd_msg.SerializeToString())
 
-        data = self.cmd_sock.recv(1024)
+        data, _ = await self.cmd_sock.recvfrom()
         read_msg = cmd_pb2.Message()
         read_msg.ParseFromString(data)
         assert read_msg.sequence == self.seq
         assert read_msg.WhichOneof('message') == 'ack'
 
 # qeries the device for a list of available slates, and populates the results into self.slates
-    def query_slate_info(self):
+    async def query_slate_info(self):
         print(f"Requesting slate list from {self.ip}")
         self.seq += 1
         msg = cmd_pb2.Message()
         msg.sequence = self.seq
         msg.query_info.SetInParent()
-        self.cmd_sock.sendto(msg.SerializeToString(), (self.ip, self.cmd_port))
-
-        data = self.cmd_sock.recv(1024)
+        self.cmd_sock.sendto(msg.SerializeToString())
+        data, _ = await self.cmd_sock.recvfrom()
         read_msg = cmd_pb2.Message()
         read_msg.ParseFromString(data)
         assert read_msg.sequence == self.seq
@@ -101,9 +108,10 @@ class SnorkelClient:
         if self.cmd_sock:
             self.cmd_sock.close()
 
+'''This example works, but if the watchdog is on, the test might be interupted'''
 async def test():
     s = SnorkelClient('192.168.2.2',1002)
-    s.connect()
+    await s.connect()
     key = "telemetry"
     await s.slates[key].connect()
 
@@ -112,7 +120,7 @@ async def test():
         print(
             f'tick {slate["tick"]} s1_pulse: {slate["s1_pulse"]} s1: {slate["s1"]} pt3: {slate["pt3"]}')
 
-    s.slates[key].set_field("s1_pulse",500)
+    await s.slates[key].set_field("s1_pulse",500)
 
     for _ in range(20):
         slate = await s.slates[key].recv_slate()
