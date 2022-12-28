@@ -6,7 +6,6 @@
       <thead>
         <tr>
           <th>ID</th>
-          <th>PIN</th>
           <th>Desc</th>
           <th>Enabled</th>
           <th>Fire</th>
@@ -16,7 +15,6 @@
 		{% for item in list_ids %}
           <tr>
           <td>{{item.id}}</td>
-          <td>{{item.qpin}}</td>
           <td>{{item.desc}}</td>
           <td> <input type="checkbox" id="{{item.id}}.check"> </td>
           <td> <button type="button" class="button" id="{{item.id}}.button" disabled> Fire </button> </td>

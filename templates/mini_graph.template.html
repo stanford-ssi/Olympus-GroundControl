@@ -88,7 +88,7 @@
 
             missing_data = [];
             {% for item in list_ids %}
-                    new_data = get_data("{{item.id}}" + ".valu") * {{item.conv}}
+                    new_data = get_data("{{item.id}}") * {{item.conv}}
                     {{uuid}}_data["{{item.id}}"].push(new_data);
 
                     while ({{uuid}}_data["{{item.id}}"].length > totalPoints){

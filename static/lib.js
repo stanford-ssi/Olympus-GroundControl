@@ -7,16 +7,11 @@ new_data_callbacks = [];
 // new_data_callbacks = [() => { console.log("got data", slate) }];
 slate = {};
 
-iter = 0
+metaslate = {};
+new_metaslate_callbacks = [];
 
 socket.on("new", (update) => {
-    iter += 1;
-    if(iter % 10 == 0) {
-        // console.log("here");
-        // console.log(update);
-    }
-    // console.log(update)
-    update_slate(update, slate)
+    slate = update
     for (func of new_data_callbacks) {
         try {
             func();
@@ -27,42 +22,33 @@ socket.on("new", (update) => {
     }
 });
 
-
-function update_slate(update, meta) {
-    // console.log(typeof(update))
-    // console.log(typeof(meta))
-    // console.log(update, meta)
-
-    if ("valu" in meta){
-        meta["valu"] = update
-        return
+socket.on("deliver-metaslate", (update) => {
+    console.log("ok")
+    metaslate = update
+    for (func of new_metaslate_callbacks) {
+        try {
+            func();
+        } catch (error) {
+            console.error("failed new_data_callback");
+            console.error(error);
+        }
     }
+});
 
-    for (key in meta) {
-        update_slate(update[key], meta[key])
-    }
-    
-}
+socket.emit("get-meta")
 
-function send_command(cmd, target = "cmd") {
-    //TODO: check if it is editable
-
-    if(Cookies.get('auth') ){
-      out = { "auth": Cookies.get('auth')}
-      out[target] = cmd;
-      socket.emit("cmd", out);
-    }else{
-      alert("Observers can't send commands");
+function send_command(path, value) {
+    if (Cookies.get('auth')) {
+        out = { "auth": Cookies.get('auth'), "path" : path, "value":value}
+        socket.emit("cmd", out);
+    } else {
+        alert("Observers can't send commands");
     }
 
 }
 
 function get_data(path) {
     path = path.split(".")
-    if (path[0] != "slate") {
-        return null
-    }
-    path.shift()
     node = slate
     for (item of path) {
         node = node[item]

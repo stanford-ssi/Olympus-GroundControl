@@ -87,8 +87,7 @@ class SquibTable(Element):
             box = jinja2.Template(file.read())
 
         items = [ {"id":id,
-            "qpin":self.top.get_meta(id, "fir.qpin"),
-            "desc":self.top.get_meta(id, "fir.desc"), } for id in self.line_ids]
+            "desc":self.top.get_meta(id, "desc"), } for id in self.line_ids]
 
         return box.render( {"list_ids": items, "title": self.name} )
 
@@ -102,8 +101,7 @@ class ValveTable(Element):
             box = jinja2.Template(file.read())
 
         items = [ {"id":id,
-            "qpin":self.top.get_meta(id, "stt.qpin"),
-            "desc":self.top.get_meta(id, "stt.desc"), } for id in self.line_ids]
+            "desc":self.top.get_meta(id, "desc"), } for id in self.line_ids]
 
         test = box.render( {"list_ids": items, "title": self.name, "uuid": get_uuid() } )
         return test
@@ -126,19 +124,29 @@ class RawSensorTable(Element):
         for id in self.line_ids:
 
             if self.units[id] is None:
-                unit = self.top.get_meta(id, "raw.unit")
+                unit = self.top.get_meta(id, "unit")
             else:
                 source, target = self.units[id].split("->")
-                assert source == self.top.get_meta(id, "raw.unit")
+                # assert source == self.top.get_meta(id, "raw.unit")
                 unit = target
 
             items.append( {"id":id,
                             "conv": unit_factor( self.units[id] ),
-                            "qpin":self.top.get_meta(id, "raw.qpin"),
                             "unit": unit,
-                            "desc":self.top.get_meta(id, "raw.desc"), })
+                            "desc": self.top.get_meta(id, "desc"), })
 
         test = box.render( {"list_ids": items, "title": self.name} )
+        return test
+
+class FillMassController(Element):
+    def __init__(self):
+        super().__init__("Load Mass")
+
+    def render(self):
+        with open("templates/load_mass.template.html") as file:
+            box = jinja2.Template(file.read())
+
+        test = box.render( {"metaslate": self.top.metaslate} )
         return test
 
 class DataTable(Element):

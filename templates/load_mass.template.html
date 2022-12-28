@@ -1,0 +1,61 @@
+<div class="box">
+  <div style="text-align: center;">
+    <object data="static/svg_test.svg" type="image/svg+xml" id="load_mass_svg" height="250"
+      onload="setup_svg()"></object>
+  </div>
+
+  <script>
+
+    function setup_svg() {
+      var svgDoc = document.getElementById("load_mass_svg").contentDocument;
+      svgDoc.getElementById('tare_button').onclick = function () {
+        var offset = (slate.quail.telemetry.lc1 + slate.quail.telemetry.lc2) / 9.807
+        send_command("quail.telemetry.load_mass_offset", offset)
+      };
+
+      svgDoc.getElementById('tare_button').onmousedown = function () {
+        this.firstElementChild.style.fill = '#002626'
+        this.lastElementChild.firstChild.style.fill = '#ffbd00'
+      };
+
+      svgDoc.getElementById('tare_button').onmouseup = function () {
+        this.firstElementChild.style.fill = '#ffbd00'
+        this.lastElementChild.firstChild.style.fill = '#002626'
+      };
+
+      svgDoc.getElementById('dry_mass_field').onclick = function () {
+        this.contentEditable = true
+
+        this.addEventListener('keydown', (evt) => {
+          if (evt.keyCode === 13) {
+            if (svgDoc.getElementById('dry_mass_field').contentEditable == "true") {
+              new_dry_mass = parseFloat(this.innerHTML)
+              if(!Number.isNaN(new_dry_mass)){
+                send_command("quail.telemetry.load_mass_offset", new_dry_mass)
+              }
+            }
+            this.innerHTML = new_dry_mass + " " + metaslate.quail.telemetry.channels.load_mass_offset.unit
+            this.contentEditable = false
+            evt.preventDefault();
+          }
+        });
+
+        document.onclick = function () {
+          this.onclick = ''
+          document.getElementById("load_mass_svg").contentDocument.getElementById('dry_mass_field').contentEditable = false
+        };
+      };
+
+    }
+
+    new_data_callbacks.push(() => {
+      var svgDoc = document.getElementById("load_mass_svg").contentDocument;
+      svgDoc.getElementById('load_mass_value').firstChild.innerHTML = (slate.quail.telemetry.load_mass.toFixed(2) + " " + metaslate.quail.telemetry.channels.load_mass.unit)
+      if (svgDoc.getElementById('dry_mass_field').contentEditable != "true") {
+        svgDoc.getElementById('dry_mass_field').innerHTML = (slate.quail.telemetry.load_mass_offset.toFixed(2) + " " + metaslate.quail.telemetry.channels.load_mass_offset.unit)
+      }
+      svgDoc.getElementById('load_cell_left_value').firstChild.innerHTML = (slate.quail.telemetry.lc1.toFixed(1) + " " + metaslate.quail.telemetry.channels.lc1.unit)
+      svgDoc.getElementById('load_cell_right_value').firstChild.innerHTML = (slate.quail.telemetry.lc2.toFixed(1) + " " + metaslate.quail.telemetry.channels.lc2.unit)
+    });
+  </script>
+</div>
