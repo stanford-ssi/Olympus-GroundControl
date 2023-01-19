@@ -25,10 +25,11 @@ class SnorkelClient:
                 self.cmd_sock = await asyncio.wait_for(asyncudp.create_socket(remote_addr=(self.ip, self.cmd_port)), timeout=1.0)
                 await asyncio.wait_for(self.query_slate_info(), timeout=1.0)
             except Exception as e:
-                print(f"Device \"{self.name}\" Disconnected")
+                print(f"Device \"{self.name}\" at {self.ip}:{self.cmd_port} failed to connect with \"{e}\". Retrying in {1 if self.cmd_sock else 5} seconds.")
+                await asyncio.sleep(1 if self.cmd_sock else 5)
                 continue
             else:
-                print(f"Device \"{self.name}\" Connected")
+                print(f"Device \"{self.name}\" at {self.ip}:{self.cmd_port} connected.")
                 break
 
 
@@ -108,7 +109,7 @@ class SnorkelClient:
         if self.cmd_sock:
             self.cmd_sock.close()
 
-'''This example works, but if the watchdog is on, the test might be interupted'''
+'''This example works, but if the watchdog is on, the test might be interrupted'''
 async def test():
     s = SnorkelClient('192.168.2.2',1002)
     await s.connect()
